@@ -6,6 +6,7 @@ before_script:
 pages:
   tags:
     - docker
+    - linux
   cache:
     paths:
       - node_modules/
