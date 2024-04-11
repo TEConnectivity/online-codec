@@ -1,5 +1,5 @@
-import { List, ListItem, ListIcon } from "@chakra-ui/react";
-import { MdCheckCircle, MdDangerous  } from "react-icons/md"
+import { List, ListIcon, ListItem } from "@chakra-ui/react";
+import { MdCheckCircle, MdDangerous } from "react-icons/md";
 
 export default function App() {
 
@@ -17,7 +17,7 @@ export default function App() {
       </ListItem>
       <ListItem>
         <ListIcon as={MdCheckCircle} color='orange.500' />
-        Coming Soon : New Multipoint Vibration sensors (8931N/8933N/8931EX/8933EX) 
+        Coming Soon : New Multipoint Vibration sensors (8931N/8933N/8931EX/8933EX)
       </ListItem>
       {/* You can also use custom icons from react-icons */}
       <ListItem>

@@ -4,6 +4,6 @@ export default function App() {
 
 
   return (
-   <div>89</div>
+    <div>89</div>
   );
 };

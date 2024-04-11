@@ -1,18 +1,18 @@
-import { Flex, FormControl, FormHelperText, FormLabel, Radio, RadioGroup, Stack, VStack, Text, Box, StackDivider, Input, NumberInput, NumberInputField, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper, HStack, InputGroup, InputLeftAddon, Tooltip } from "@chakra-ui/react";
-import * as React from "react";
+import { Box, FormControl, FormHelperText, FormLabel, HStack, Radio, RadioGroup, Stack, StackDivider, Text, Tooltip, VStack } from "@chakra-ui/react";
 import {
   AutoComplete,
   AutoCompleteInput,
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
+import * as React from "react";
 
-import { SP_Charac } from "./SP_charac";
-import { Characteristic } from "../../shared/Schemas";
-import { encode } from "../../shared/EncoderLib";
-import EncodedFrameOutput from "../EncodedFrameOutput";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import  UserPayload  from "./UserPayload"
+import { encode } from "../../shared/EncoderLib";
+import { Characteristic } from "../../shared/Schemas";
+import EncodedFrameOutput from "../EncodedFrameOutput";
+import { SP_Charac } from "./SP_charac";
+import UserPayload from "./UserPayload";
 
 
 function getArrayOperation(charac: Characteristic) {
@@ -49,7 +49,7 @@ export default function App() {
   function characSelected() {
 
 
-    {/* Si une charac est choisi ET quil existe au moins une operation LoRa sur la charac, alors on affiche les boutons radios */ }
+    // Si une charac est choisi ET quil existe au moins une operation LoRa sur la charac, alors on affiche les boutons radios
     if (charac) {
       if (getArrayOperation(charac).length !== 0) {
 
@@ -64,8 +64,8 @@ export default function App() {
                 }
               </Stack>
             </RadioGroup>
-            <Tooltip  label="R: Read, W: Write, WR : Write, then the sensor sends back the new value" placement="right" fontSize='md'>
-              <QuestionOutlineIcon ml={"10px"}/>
+            <Tooltip label="R: Read, W: Write, WR : Write, then the sensor sends back the new value" placement="right" fontSize='md'>
+              <QuestionOutlineIcon ml={"10px"} />
             </Tooltip>
           </HStack>
         </Box>
@@ -80,7 +80,7 @@ export default function App() {
   }
 
   return (
-    <VStack pt="10px" w="full"  divider={<StackDivider borderColor='gray.200' />}>
+    <VStack pt="10px" w="full" divider={<StackDivider borderColor='gray.200' />}>
 
       {/* Select characteristic */}
       <FormControl>
@@ -110,7 +110,7 @@ export default function App() {
 
 
       {/* If WRITE or WRITE+READ is selected : generate userPayload component frame */}
-      {(charac && (operation === "w" || operation === "wr" )) && <UserPayload charac={charac} operation={operation}/> }
+      {(charac && (operation === "w" || operation === "wr")) && <UserPayload charac={charac} operation={operation} />}
 
 
     </VStack>

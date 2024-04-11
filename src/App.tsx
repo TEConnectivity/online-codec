@@ -1,27 +1,20 @@
-import * as React from "react"
 import {
   ChakraProvider,
   Container,
-  Box,
-  theme,
-  Flex,
+  theme
 } from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
-import NavBar from "./components/NavBar"
 import {
   BrowserRouter,
-  createBrowserRouter,
   Route,
-  RouterProvider,
-  Routes,
-} from "react-router-dom";
-import Decoder from "./components/Decoder"
-import Encoder from "./components/Encoder"
-import Products from "./components/Products"
-import Footer from "./components/Footer"
+  Routes
+} from "react-router-dom"
 import Characteristics from "./components/Characteristics"
+import Decoder from "./components/Decoder"
 import Download from "./components/Download"
+import Encoder from "./components/Encoder"
+import Footer from "./components/Footer"
+import NavBar from "./components/NavBar"
+import Products from "./components/Products"
 
 
 

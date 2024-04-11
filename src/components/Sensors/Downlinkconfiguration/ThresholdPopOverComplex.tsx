@@ -1,5 +1,5 @@
-import { Popover, Text, Image, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverBody, Link, Card, CardBody, Heading, Stack, HStack, ListItem, UnorderedList, Code } from "@chakra-ui/react";
-import complex_threshold from "../../../img/complex_threshold.png"
+import { Card, CardBody, Code, Heading, Image, Link, ListItem, Popover, PopoverBody, PopoverContent, PopoverTrigger, Stack, Text, UnorderedList } from "@chakra-ui/react";
+import complex_threshold from "../../../img/complex_threshold.png";
 
 
 
@@ -39,8 +39,8 @@ export default function App({ children }: MyComponentProps) {
                   <UnorderedList>
                     <ListItem>When the PRIMARY sensor go above/below a first, then a second value</ListItem>
                     <ListItem>When the SECONDARY sensor go above/below a first, then a second value</ListItem>
-                    <ListItem>When the PRIMARY sensor go out-of-range <Code children="(threshold1 < value < threshold2)"/></ListItem>
-                    <ListItem>When the SECONDARY sensor go out-of-range <Code children="(threshold1 < value < threshold2)"/></ListItem>
+                    <ListItem>When the PRIMARY sensor go out-of-range <Code children="(threshold1 < value < threshold2)" /></ListItem>
+                    <ListItem>When the SECONDARY sensor go out-of-range <Code children="(threshold1 < value < threshold2)" /></ListItem>
                   </UnorderedList>
                   Enabling a second threshold does nothing special in itself. It simply add a new detection.
                 </Text>

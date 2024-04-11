@@ -1,8 +1,8 @@
-import { HStack, Box, Text, InputGroup, InputLeftAddon, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, useBoolean } from "@chakra-ui/react";
-import { Characteristic, CharacType } from "../../shared/Schemas";
+import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import EncodedFrameOutput from "../EncodedFrameOutput";
 import { encode } from "../../shared/EncoderLib";
+import { CharacType, Characteristic } from "../../shared/Schemas";
+import EncodedFrameOutput from "../EncodedFrameOutput";
 import MeasurementInterval from "./Downlinkconfiguration/MeasurementInterval";
 import Threshold from "./Downlinkconfiguration/Threshold";
 

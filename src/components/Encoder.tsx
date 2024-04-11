@@ -1,7 +1,7 @@
-import { Box, Text, Flex, Radio, RadioGroup, Select, Stack } from "@chakra-ui/react";
+import { Flex, Select, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import SinglePoint from "./Sensors/SinglePoint";
 import Legacy89XX from "./Sensors/Legacy89XX";
+import SinglePoint from "./Sensors/SinglePoint";
 
 
 export default function App() {
@@ -23,12 +23,12 @@ export default function App() {
   return (
     <Flex flexDirection="column">
       <Text mt="10px">Select Sensor Family</Text>
-      <Select  onChange={(ev) => setSensorFamily(ev.target.value)} placeholder='Singlepoint, Multipoint...'>
+      <Select onChange={(ev) => setSensorFamily(ev.target.value)} placeholder='Singlepoint, Multipoint...'>
         <option value='89XX'>8911 / 8931 Legacy</option>
         <option value='SP'>SinglePoint</option>
         <option disabled value='MP'>Multipoint - Coming Soon !</option>
       </Select>
-      
+
       {sensorChosen}
 
     </Flex>

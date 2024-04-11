@@ -1,5 +1,5 @@
-import { List, ListItem, ListIcon } from "@chakra-ui/react";
-import { MdCheckCircle, MdDangerous } from "react-icons/md";
+import { List, ListIcon, ListItem } from "@chakra-ui/react";
+import { MdCheckCircle } from "react-icons/md";
 
 
 export default function App() {

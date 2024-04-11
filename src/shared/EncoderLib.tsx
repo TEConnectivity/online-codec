@@ -48,8 +48,8 @@ export function encode(charac: Characteristic, operationChosen: string, user_pay
   var payload = new Uint8Array(0)
 
   // Creation of user payload if needed
-  if (operationChosen === "w" || operationChosen === "wr"){
-     payload = payloadFormatter(charac,user_payload)
+  if (operationChosen === "w" || operationChosen === "wr") {
+    payload = payloadFormatter(charac, user_payload)
   }
 
 

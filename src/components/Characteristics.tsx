@@ -1,19 +1,17 @@
 import {
+  Divider,
+  Flex,
   Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
   TableCaption,
   TableContainer,
-  Box,
+  Tbody,
+  Td,
   Text,
-  Divider,
-  VStack,
-  Flex,
-} from '@chakra-ui/react'
+  Tfoot,
+  Th,
+  Thead,
+  Tr
+} from '@chakra-ui/react';
 
 import { SP_Charac } from './Sensors/SP_charac';
 
@@ -26,7 +24,7 @@ export default function App() {
 
       <Text p={"10px"} fontSize="19px" textAlign={"center"}>List given for illustratives purposes. Please refer to detailed spectech associated with each sensor for the full list.</Text>
 
-      <Divider/>
+      <Divider />
       <TableContainer>
         <Table variant='striped' colorScheme="blue">
           <TableCaption>List of configurable characheristics (contact us for an exhaustive documentation on the matter)</TableCaption>

@@ -1,11 +1,11 @@
-import { Box, VStack, Text, Input} from "@chakra-ui/react";
+import { Input, Text, VStack } from "@chakra-ui/react";
 
-interface Props{
+interface Props {
   frame: string
 }
 
-function toBase64(input: string){
-  return btoa(input.match(/\w{2}/g)!.map(function(a){return String.fromCharCode(parseInt(a, 16));} ).join(""))
+function toBase64(input: string) {
+  return btoa(input.match(/\w{2}/g)!.map(function (a) { return String.fromCharCode(parseInt(a, 16)); }).join(""))
 }
 
 
@@ -16,13 +16,13 @@ function toBase64(input: string){
 export default function App(props: Props) {
 
   console.log("Generated dowlink frame...")
-  
+
   return (
-   <VStack width={"100%"} justifyContent={"flex-start"}>
-    <Text>Frame : </Text>
-    <Input isReadOnly value={props.frame}></Input>
-    <Text>Base64 : </Text>
-    <Input isReadOnly value={toBase64(props.frame)}></Input>
-   </VStack>
+    <VStack width={"100%"} justifyContent={"flex-start"}>
+      <Text>Frame : </Text>
+      <Input isReadOnly value={props.frame}></Input>
+      <Text>Base64 : </Text>
+      <Input isReadOnly value={toBase64(props.frame)}></Input>
+    </VStack>
   );
 };

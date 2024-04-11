@@ -12,5 +12,5 @@ export interface Characteristic {
 export enum CharacType {
   MEAS_INTERVAL = "meas_interval",
   THREHSOLD = "threshold"
-  
+
 }

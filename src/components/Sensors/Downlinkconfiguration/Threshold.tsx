@@ -1,8 +1,6 @@
-import { HStack, Text, InputGroup, InputLeftAddon, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Select, VStack, Tooltip } from "@chakra-ui/react";
-import { useState } from "react";
-import PopoverCustom from "../../../shared/PopoverCustom";
-import ThresholdPopOverSimple from "./ThresholdPopOverSimple";
+import { Select, Text, VStack } from "@chakra-ui/react";
 import ThresholdPopOverComplex from "./ThresholdPopOverComplex";
+import ThresholdPopOverSimple from "./ThresholdPopOverSimple";
 
 
 interface ChildrenProps {
@@ -17,11 +15,11 @@ interface ChildrenProps {
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState({
-    id_data: '0',
-    minute: '0',
-    second: '0',
-  });
+  // const [inputValues, setInputValues] = useState({
+  //   id_data: '0',
+  //   minute: '0',
+  //   second: '0',
+  // });
 
   // // Callback function, when the user edit the form, the payload is automatically regenerated
   // function handleHour(inputHour: string) {

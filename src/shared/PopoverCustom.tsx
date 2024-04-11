@@ -1,4 +1,4 @@
-import { Popover, Text, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverBody, Link } from "@chakra-ui/react";
+import { Link, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger } from "@chakra-ui/react";
 
 interface MyComponentProps {
   children: string;
@@ -6,7 +6,7 @@ interface MyComponentProps {
   body: string;
 }
 
-export default function App({children, header, body }: MyComponentProps) {
+export default function App({ children, header, body }: MyComponentProps) {
 
 
   return (

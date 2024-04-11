@@ -1,5 +1,5 @@
-import { Popover, Text, Image, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverBody, Link, Card, CardBody, Heading, Stack, HStack, ListItem, UnorderedList } from "@chakra-ui/react";
-import basic_threshold from "../../../img/basic_threshold.png"
+import { Card, CardBody, Heading, Image, Link, ListItem, Popover, PopoverBody, PopoverContent, PopoverTrigger, Stack, Text, UnorderedList } from "@chakra-ui/react";
+import basic_threshold from "../../../img/basic_threshold.png";
 
 
 

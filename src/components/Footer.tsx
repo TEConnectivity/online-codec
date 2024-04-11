@@ -2,15 +2,10 @@
 
 import {
   Box,
-  chakra,
   Container,
-  Stack,
   Text,
-  useColorModeValue,
-  VisuallyHidden,
+  useColorModeValue
 } from '@chakra-ui/react'
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa'
-import { ReactNode } from 'react'
 
 
 
@@ -25,7 +20,7 @@ export default function SmallWithLogoLeft() {
       left="0px"
       right="0px"
       p="35px"
-      >
+    >
       <Container>
         LOGO??
 

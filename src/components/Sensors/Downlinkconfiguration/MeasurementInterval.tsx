@@ -1,4 +1,4 @@
-import { HStack, InputGroup, InputLeftAddon, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from "@chakra-ui/react";
+import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface ChildrenProps {
@@ -17,7 +17,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   // Callback function, when the user edit the form, the payload is automatically regenerated
   function handleHour(inputHour: string) {
-    var newState = {hour:inputHour, minute: inputValues.minute, second:inputValues.second}
+    var newState = { hour: inputHour, minute: inputValues.minute, second: inputValues.second }
     setInputValues(newState)
     onInputChange(newState)
   }

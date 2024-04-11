@@ -1,4 +1,4 @@
-import { Stack, Switch, Button, Box, Radio, RadioGroup, Input, Text, InputGroup, InputLeftAddon, Spacer, useBoolean, Divider, StackDivider, VStack } from '@chakra-ui/react'
+import { Input, InputGroup, InputLeftAddon, StackDivider, Switch, Text, VStack, useBoolean } from '@chakra-ui/react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 export default function App() {
@@ -6,7 +6,7 @@ export default function App() {
   const [isBase64, setIsBase64] = useBoolean(false)
 
 
-  var temp_decoded_exemple={
+  var temp_decoded_exemple = {
     "bat": 98,
     "cnt": 13149,
     "data": "1.0051547288894653 Bar",
@@ -37,11 +37,11 @@ export default function App() {
 
       <StackDivider />
 
-      
 
-        <SyntaxHighlighter  language="javascript" >
-          {JSON.stringify(temp_decoded_exemple, null, " ")}
-        </SyntaxHighlighter>
+
+      <SyntaxHighlighter language="javascript" >
+        {JSON.stringify(temp_decoded_exemple, null, " ")}
+      </SyntaxHighlighter>
 
 
     </VStack>

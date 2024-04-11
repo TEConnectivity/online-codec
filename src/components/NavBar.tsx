@@ -1,32 +1,26 @@
-import React from "react";
 
 import {
-  chakra,
   Box,
-  Flex,
-  useColorModeValue,
-  VisuallyHidden,
-  HStack,
   Button,
-  useDisclosure,
-  VStack,
-  IconButton,
-  CloseButton,
-  Tooltip,
+  Center,
   Drawer,
-  DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Input,
-  Center,
+  Flex,
+  HStack,
+  IconButton,
+  Tooltip,
+  VStack,
+  chakra,
+  useColorModeValue,
+  useDisclosure
 } from "@chakra-ui/react";
-import { AiOutlineMenu, AiFillHome } from "react-icons/ai";
+import { AiFillHome, AiOutlineMenu } from "react-icons/ai";
 
-import { Link as ReactRouterLink } from 'react-router-dom'
-import { Link as ChakraLink, LinkProps } from '@chakra-ui/react'
+import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function App() {
   const bg = useColorModeValue("white", "gray.800");
