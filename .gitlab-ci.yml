@@ -4,6 +4,8 @@ image: node:lts
 before_script:
   - npm ci
 pages:
+  tags:
+    - docker
   cache:
     paths:
       - node_modules/
