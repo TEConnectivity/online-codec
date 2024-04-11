@@ -5,8 +5,7 @@ before_script:
   - npm ci
 pages:
   tags:
-    - docker
-    - linux
+    - build
   cache:
     paths:
       - node_modules/
