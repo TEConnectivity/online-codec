@@ -2,10 +2,14 @@
 image: node:lts
 # Functions that should be executed before the build script is run
 before_script:
+  - unset http_proxy
+  - unset https_proxy
+  - env
   - npm ci
 pages:
   tags:
-    - build
+    - docker
+    - linux
   cache:
     paths:
       - node_modules/
