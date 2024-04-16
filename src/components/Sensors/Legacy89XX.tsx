@@ -4,6 +4,6 @@ export default function App() {
 
 
   return (
-    <div>89</div>
+    <div>Not supported for the moment.</div>
   );
 };

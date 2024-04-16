@@ -1,10 +1,10 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { encode } from "../../shared/EncoderLib";
 import { CharacType, Characteristic } from "../../shared/Schemas";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 import MeasurementInterval from "./Downlinkconfiguration/MeasurementInterval";
-import Threshold from "./Downlinkconfiguration/Threshold";
+import Threshold from "./Downlinkconfiguration/Threshold/Threshold";
 
 
 
@@ -14,6 +14,17 @@ interface Props {
 }
 
 
+function isConfReady(input: Object): boolean {
+
+  // On verifie que l'objet n'est pas vide {}
+  if (Object.keys(input).length <= 0)
+    return false
+
+  // Pour chaque pair de key/value contenu dans  dans l'objet on verifie que la clée est valide et que la valeur de la clée n'est pas une chaine vide
+  return Object.entries(input).every(([key, value]) =>
+    typeof key === 'string' && key !== '' && typeof value !== 'undefined' && value !== ""
+  );
+}
 
 /**
  * Manage the user input to configure all the different characteristics.
@@ -23,11 +34,11 @@ interface Props {
 export default function App(props: Props) {
 
   const [userPayload, setUserPayload] = useState({})
-  console.log(userPayload)
 
   // Function to receive data from children component
   const handleInputChange = (data: any) => {
     setUserPayload(data);
+    console.log(data)
   };
 
   var returnComponent = null;
@@ -47,16 +58,16 @@ export default function App(props: Props) {
 
 
   return (
-    <Box>
+    <>
       <Text align={"center"} mb="10px">Configuration : </Text>
 
       {/* The configuration component allowing the user to tune the parameter related to this specific charac */}
       {returnComponent}
 
       {/* The output component showing the b64 frame */}
-      {(Object.keys(userPayload).length !== 0) && <EncodedFrameOutput frame={encode(props.charac, props.operation, userPayload)}></EncodedFrameOutput>}
+      {isConfReady(userPayload) && <EncodedFrameOutput frame={encode(props.charac, props.operation, userPayload)}></EncodedFrameOutput>}
 
 
-    </Box>
+    </>
   );
 };

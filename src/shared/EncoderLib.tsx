@@ -1,23 +1,24 @@
+import { displayUint8ArrayAsHex } from "./Helper";
 import { Characteristic, CharacType } from "./Schemas";
 
-// Pretty print uint8array to hex
-function toHex(byte: number) {
-  return ('0' + byte.toString(16).toUpperCase()).slice(-2);
-}
 
-// Fonction pour afficher un Uint8Array en hexadécimal dans une div
-function displayUint8ArrayAsHex(uint8Array: Uint8Array) {
-  let hexString = '';
-  for (let i = 0; i < uint8Array.length; i++) {
-    hexString += toHex(uint8Array[i]);
-    if (i < uint8Array.length - 1) {
-      hexString += ' '; // Ajoute un espace entre chaque octet
+/** Découpe un string "0A0A0A" en tableau de byte [0x0A,0x0A,0x0A]
+ */
+function toByteArray(byte_string: string, size: number) {
+  const byteArray = byte_string.match(/.{1,2}/g)?.map((byte: string) => parseInt(byte, 16)) || [];
+
+
+
+  if (size > byteArray.length) {
+    const paddingSize = size - byteArray.length;
+    for (let i = 0; i < paddingSize; i++) {
+      byteArray.unshift(0);
     }
   }
-  return hexString;
+
+
+  return byteArray;
 }
-
-
 
 
 
@@ -63,6 +64,9 @@ export function encode(charac: Characteristic, operationChosen: string, user_pay
 
 
 
+
+
+
 function payloadFormatter(charac: Characteristic, user_payload: any) {
 
   var encoded_input = new Uint8Array(parseInt(charac.payload_size, 10))
@@ -72,6 +76,13 @@ function payloadFormatter(charac: Characteristic, user_payload: any) {
       encoded_input[0] = parseInt(user_payload.hour, 10) //Hour
       encoded_input[1] = parseInt(user_payload.minute, 10) //Minute
       encoded_input[2] = parseInt(user_payload.second, 10) //Second
+      break;
+    case (CharacType.THREHSOLD):
+      encoded_input[0] = parseInt(user_payload.id_data, 16)
+      encoded_input[1] = parseInt(user_payload.param_sel, 16)
+      const bytesArray: number[] = toByteArray(user_payload.data32, 4)
+      encoded_input.set(bytesArray, 2)
+      break;
   }
 
   return encoded_input
