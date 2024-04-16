@@ -19,7 +19,7 @@ export default function App(props: Props) {
   useEffect(() => {
     // Modifier la valeur de data32 dès le premier rendu
     pushParent(format(bleMode, loraMode))
-  }, []); // le tableau de dépendances est vide, donc cette fonction s'exécutera uniquement après le premier rendu
+  }); // le tableau de dépendances est vide, donc cette fonction s'exécutera uniquement après le premier rendu
 
 
 
