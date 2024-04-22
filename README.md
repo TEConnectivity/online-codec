@@ -4,7 +4,7 @@ This repo host the website Online Codec, allowing the user to encode (generate d
 
 # Demo
 
-A demo website is available, hosted through Gitlab Pages, [here](https://tes.gitlab-pages.connect.te.com/iot/tools/website/online-codec/).
+A demo website is available, hosted through Gitlab Pages, [here](https://online-codec-tes-iot-tools-website-625d73cc1a74a9e9a676f3522d74.gitlab-pages.connect.te.com/encoder).
 
 
 # How is it build
