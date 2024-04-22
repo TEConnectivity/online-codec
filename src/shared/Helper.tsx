@@ -58,3 +58,61 @@ export function displayUint8ArrayAsHex(uint8Array: Uint8Array, space = " ") {
     }
     return hexString;
 }
+
+
+/** For a given byte, insert a value at the offset
+ *  
+ * Par exemple inserer a=3 dans un octet 0x00 a l'offset 1 donnerait :
+ * 0b00000110
+ * Puisque 3 est "11 "en binaire
+ * 
+ * @param byte 
+ * @param value 
+ * @param offset 
+ * @returns 
+ */
+export function insertValueInByte(byte: number, value: number, offset: number) {
+    // Assurez-vous que le byte est un entier compris entre 0 et 255
+    if (byte < 0 || byte > 255) {
+        throw new Error("Le byte doit être un entier compris entre 0 et 255");
+    }
+
+    // Assurez-vous que la valeur est un entier compris entre 0 et 255
+    if (value < 0 || value > 255) {
+        throw new Error("La valeur doit être un entier compris entre 0 et 255");
+    }
+
+    // Assurez-vous que l'offset est un entier compris entre 0 et 7
+    if (offset < 0 || offset > 7) {
+        throw new Error("L'offset doit être un entier compris entre 0 et 7");
+    }
+
+    // Créez un masque avec un seul bit à l'offset spécifié
+    let mask = 1 << offset;
+
+    // Effacez le bit à l'offset spécifié dans le byte
+    byte &= ~mask;
+
+    // Insérer la valeur dans le byte en utilisant l'opérateur OU bit à bit
+    byte |= (value << offset);
+
+    return byte;
+}
+
+
+
+export function numberToByteArray(number: any) {
+    // Déterminer le nombre de bytes nécessaires
+    const byteCount = Math.ceil(Math.log2(number + 1) / 8);
+
+    // Créer un tableau pour stocker les bytes
+    const byteArray = [];
+
+    // Extraire chaque byte
+    for (let i = 0; i < byteCount; i++) {
+        const byte = (number >> (8 * (byteCount - i - 1))) & 0xFF;
+        byteArray.push(byte);
+    }
+
+    return byteArray;
+}

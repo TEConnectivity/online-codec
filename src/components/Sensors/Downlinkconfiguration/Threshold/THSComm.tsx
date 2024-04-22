@@ -1,5 +1,5 @@
 import { Radio, RadioGroup, Stack, Text, Tooltip } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { displayUint8ArrayAsHex } from "../../../../shared/Helper";
 
 interface Props {
@@ -16,10 +16,10 @@ export default function App(props: Props) {
 
   const [loraMode, setLoraMode] = useState<string>("lora-p")
 
-  useEffect(() => {
-    // Modifier la valeur de data32 dès le premier rendu
-    pushParent(format(bleMode, loraMode))
-  }); // le tableau de dépendances est vide, donc cette fonction s'exécutera uniquement après le premier rendu
+  // useEffect(() => {
+  //   // Modifier la valeur de data32 dès le premier rendu
+  //   pushParent(format(bleMode, loraMode))
+  // }); // le tableau de dépendances est vide, donc cette fonction s'exécutera uniquement après le premier rendu
 
 
 

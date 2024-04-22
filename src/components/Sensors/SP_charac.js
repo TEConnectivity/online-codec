@@ -117,7 +117,7 @@ export const SP_Charac = [
         "payload_size": "1",
         "ble": "r|w|n",
         "lora": "r|w|wr",
-        "type": ""
+        "type": "battery"
     },
     {
         "uuid": "0xCD01",
@@ -157,7 +157,7 @@ export const SP_Charac = [
         "payload_size": "1",
         "ble": "",
         "lora": "r|w|wr",
-        "type": ""
+        "type": "ble_activation"
     },
     {
         "uuid": "0x2A6E",
@@ -173,7 +173,7 @@ export const SP_Charac = [
         "payload_size": "1",
         "ble": "r|w",
         "lora": "r|w|wr",
-        "type": ""
+        "type": "keepalive"
     },
     {
         "uuid": "0xCE02",
@@ -234,18 +234,18 @@ export const SP_Charac = [
     {
         "uuid": "0xDB01",
         "charac_name": "Datalog data",
-        "payload_size": "0",
+        "payload_size": "4",
         "ble": "r|w|n",
         "lora": "wr",
-        "type": ""
+        "type": "datalog_data"
     },
     {
         "uuid": "0xDB02",
         "charac_name": "Datalog analysis request",
-        "payload_size": "27",
+        "payload_size": "3",
         "ble": "r|w|n",
         "lora": "wr",
-        "type": ""
+        "type": "datalog_analysis"
     },
     {
         "uuid": "0xF810",
@@ -253,7 +253,7 @@ export const SP_Charac = [
         "payload_size": "1",
         "ble": "r|w",
         "lora": "r|w|wr",
-        "type": ""
+        "type": "lora_mode"
     },
     {
         "uuid": "0xF801",
@@ -300,8 +300,8 @@ export const SP_Charac = [
         "charac_name": "Percentage of confirmed uplink",
         "payload_size": "1",
         "ble": "r|w",
-        "lora": "r|w|n",
-        "type": ""
+        "lora": "r|w|wr",
+        "type": "lora_percentage"
     },
     {
         "uuid": "0xEE00",

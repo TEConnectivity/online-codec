@@ -35,6 +35,8 @@ export default function App(props: Props) {
       // Int values are interpreted as (value received / 100)
       parsedValue = parseInt(value, 10)
       parsedValue = (clamp(0, maxClamp, parsedValue) * 100).toString(16)
+      console.log(parsedValue)
+
     }
 
     var newState = { id_data: props.thresholdConfig.id_data, param_sel: props.thresholdConfig.param_sel, data32: parsedValue }

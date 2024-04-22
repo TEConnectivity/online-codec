@@ -1,4 +1,4 @@
-import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
+import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack } from "@chakra-ui/react";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 import { zeroPadding } from "../../../../shared/Helper";
@@ -53,8 +53,8 @@ export default function App(props: Props) {
   }
 
   return (
-    <HStack >
-      <InputGroup>
+    <Stack direction={['column', 'row']} width={"100%"} >
+      <InputGroup >
         <InputLeftAddon>
           Hour
         </InputLeftAddon>
@@ -97,6 +97,6 @@ export default function App(props: Props) {
       </InputGroup>
 
 
-    </HStack>
+    </Stack>
   );
 };

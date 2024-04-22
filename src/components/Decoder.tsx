@@ -27,14 +27,18 @@ export default function App() {
       <Text m="10px">Enter your uplink frame </Text>
 
       <InputGroup>
-
         <InputLeftAddon p="0px">
           <Switch p="10px" onChange={setIsBase64.toggle}>Base64</Switch>
         </InputLeftAddon>
-
         <Input placeholder={isBase64 ? "V2l0Y2hlcjMgYmVzdCBnYW1lIGV2ZXI=" : "AABBCCDDEEFF"} />
       </InputGroup>
 
+      <InputGroup>
+        <InputLeftAddon >
+          Fport
+        </InputLeftAddon>
+        <Input value="10" />
+      </InputGroup>
       <StackDivider />
 
 

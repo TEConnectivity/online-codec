@@ -1,0 +1,122 @@
+import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
+import { clamp } from "framer-motion";
+import { useEffect, useState } from "react";
+
+
+
+interface ChildrenProps {
+  onInputChange: (data: { type: number, index: number, length: number }) => void;
+}
+
+
+export default function App({ onInputChange }: ChildrenProps) {
+
+
+  const [inputValues, setInputValues] = useState({
+    type: 0,
+    index: 0,
+    length: 1,
+  });
+
+  const [maxValue, setMaxValue] = useState(120);
+
+  const maxIndex = 4095;
+
+
+  // Appelé dès que maxValues change pour mettre a jour correctement le numberInput, sinon il faut attendre le prochain re-render
+  useEffect(() => {
+    handleLengthChange(inputValues.length.toString())
+    // eslint-disable-next-line
+  }, [maxValue]);
+
+
+  // Callback function, when the user edit the form, the payload is automatically regenerated
+
+  function handleTypeChange(type: string) {
+    switch (type) {
+      case "0":
+        setMaxValue(120)
+        break;
+      case "1":
+        setMaxValue(60)
+        break;
+      case "2":
+        setMaxValue(40)
+        break;
+    }
+
+    setInputValues(prevState => {
+      const newState = { ...prevState, type: parseInt(type) };
+      onInputChange(newState);
+      return newState;
+    });
+
+  }
+
+
+  function handleIndexChange(index: string) {
+
+    setInputValues(prevState => {
+      const newState = { ...prevState, index: clamp(0, maxIndex, parseInt(index)) };
+      onInputChange(newState);
+      return newState;
+    });
+
+  }
+
+  function handleLengthChange(length: string) {
+
+    setInputValues(prevState => {
+      const newState = { ...prevState, length: clamp(0, maxValue, parseInt(length)) };
+      onInputChange(newState);
+      return newState;
+    });
+  }
+
+
+  return (
+    <VStack direction={['column', 'row']} >
+
+      <Text>Read the datalog, from : </Text>
+
+      <RadioGroup onChange={handleTypeChange} value={inputValues.type.toString()} >
+        <Stack direction={['column', 'row']}>
+          <Radio value='0'>Secondary sensor</Radio>
+          <Radio value='1'>Primary sensor</Radio>
+          <Radio value='2'>Both</Radio>
+        </Stack>
+      </RadioGroup>
+
+
+      <InputGroup>
+        <InputLeftAddon>
+          Index
+        </InputLeftAddon>
+        <NumberInput defaultValue={0} precision={0} min={0} max={4095} value={inputValues.index} onChange={handleIndexChange}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </InputGroup>
+
+
+
+      <InputGroup  >
+        <InputLeftAddon>
+          Number of value to read
+        </InputLeftAddon>
+        <NumberInput defaultValue={0} precision={0} min={1} max={maxValue} value={inputValues.length} onChange={handleLengthChange}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </InputGroup>
+
+
+    </VStack>
+  );
+};

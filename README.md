@@ -1,7 +1,25 @@
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+# Introduction 
 
-## Available Scripts
+This repo host the website Online Codec, allowing the user to encode (generate downlink frames) or decode (parsing uplink frames into JSON) frames. 
+
+# Demo
+
+A demo website is available, hosted through Gitlab Pages, [here](https://tes.gitlab-pages.connect.te.com/iot/tools/website/online-codec/).
+
+
+# How is it build
+
+It is purely front-end, no server is used. All the coding/decoding is made on the browser, through Javascript. This architecture is on purpose, to allow the user to re-use the easily the source code on platform and to host this website on pure HTTP server.
+
+## Framework
+
+- React
+- UI : Chakra UI, for all the components
+- Decoding : Made with the official [TE TTN Decoder](https://gitlab.connect.te.com/tes/iot/tools/iot-applications/ttn-payload-formater). Included as a Git Submodule.
+- Encoding : Made in Typescript.
+
+
+## Available NPM Scripts
 
 In the project directory, you can run:
 
@@ -32,28 +50,3 @@ See the section about
 [deployment](https://facebook.github.io/create-react-app/docs/deployment) for
 more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
-
-Instead, it will copy all the configuration files and the transitive
-dependencies (webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

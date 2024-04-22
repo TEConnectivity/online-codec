@@ -85,7 +85,7 @@ export default function App() {
       {/* Select characteristic */}
       <FormControl>
         <FormLabel>Downlink Command</FormLabel>
-        <AutoComplete onChange={handleCharacChange} openOnFocus>
+        <AutoComplete restoreOnBlurIfEmpty={false} suggestWhenEmpty onChange={handleCharacChange} openOnFocus>
           <AutoCompleteInput variant="filled" />
           <AutoCompleteList>
             {SP_Charac.map((charac, cid) => (
