@@ -118,10 +118,10 @@ export default function App() {
           </h2>
           <AccordionPanel pb={4}>
             <UnorderedList>
-              <ListItem>Multipoint : 1121FFFFFF0009DD47000C28040B2710210A013B402B64046B80BC600F7A031B8033181254026A600538 </ListItem>
-              <ListItem>SinglePoint :
+              <ListItem>Multipoint (fPort 10) : 1121FFFFFF0009DD47000C28040B2710210A013B402B64046B80BC600F7A031B8033181254026A600538 </ListItem>
+              <ListItem>SinglePoint (fPort 10) :
                 <UnorderedList>
-                  <ListItem>SinglePoint : 14221064086309EE00000D09 </ListItem>
+                  <ListItem>Humidity : 14221064086309EE00000D09 </ListItem>
                 </UnorderedList>
               </ListItem>
             </UnorderedList>
