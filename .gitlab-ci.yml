@@ -1,6 +1,11 @@
 # The Docker image that will be used to build your app
 image: node:lts
 # Functions that should be executed before the build script is run
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: "true"
+
 before_script:
   - unset http_proxy
   - unset https_proxy

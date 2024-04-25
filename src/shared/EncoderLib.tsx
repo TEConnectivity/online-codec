@@ -28,6 +28,7 @@ function toByteArray(byte_string: string, size: number) {
  * Take full json object as input 
  * 
  */
+// eslint-disable-next-line
 function directEncode() {
 
 }
