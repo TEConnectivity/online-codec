@@ -56,7 +56,11 @@ export default function App() {
       return false
     }
 
-    const base64Regex = /[0-9a-fA-F]/;
+
+
+    const base64Regex = /^[0-9a-fA-F]+$/;
+
+    console.log(base64Regex.test(_input))
     if (!_isBase64 && !base64Regex.test(_input)) {
       setDecodedFrame({})
       setErrorMessage("The HEX string is invalid. Maybe you copied pasted Base64 instead ?")
