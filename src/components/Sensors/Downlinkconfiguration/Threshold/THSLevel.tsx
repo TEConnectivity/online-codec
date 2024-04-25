@@ -29,7 +29,7 @@ export default function App(props: Props) {
 
     let parsedValue;
     if (measureType === "p") {
-      parsedValue = Math.trunc((parseFloat(value)))
+      parsedValue = (parseFloat(value))
       parsedValue = floatToHexString(clamp(0, maxClamp, parsedValue))
     } else {
       // Int values are interpreted as (value received / 100)

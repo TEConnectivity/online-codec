@@ -100,6 +100,31 @@ export function insertValueInByte(byte: number, value: number, offset: number) {
 }
 
 
+/** Prends une chaine "AABBCC" et renvoi le tableau de bytes associé : [0xAA,0xBB,0xCC]
+ * 
+ * L'input doit etre paire (pas de demi octet)
+ * 
+ * @param hexString 
+ * @returns 
+ */
+export function hexStringToUint8Array(hexString: string) {
+    // Vérifier si la chaîne hexadécimale a une longueur valide
+    if (hexString.length % 2 !== 0) {
+        throw new Error("La chaîne hexadécimale doit avoir une longueur paire");
+    }
+
+    // Convertir la chaîne hexadécimale en tableau d'octets
+    let byteArray = [];
+    for (let i = 0; i < hexString.length; i += 2) {
+        let byte = parseInt(hexString.substr(i, 2), 16);
+        byteArray.push(byte);
+    }
+
+    // Créer un Uint8Array à partir du tableau d'octets
+    let uint8Array = new Uint8Array(byteArray);
+
+    return uint8Array;
+}
 
 export function numberToByteArray(number: any) {
     // Déterminer le nombre de bytes nécessaires
@@ -115,4 +140,19 @@ export function numberToByteArray(number: any) {
     }
 
     return byteArray;
+}
+
+export function base64ToHex(base64String: string) {
+    // Convertir la chaîne Base64 en chaîne binaire
+    let binaryString = atob(base64String);
+    // Convertir la chaîne binaire en tableau d'octets
+    let byteArray = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        byteArray[i] = binaryString.charCodeAt(i);
+    }
+    // Convertir le tableau d'octets en chaîne hexadécimale
+    let hexString = Array.from(byteArray, byte => {
+        return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+    }).join('');
+    return hexString;
 }

@@ -23,6 +23,14 @@ function toByteArray(byte_string: string, size: number) {
 }
 
 
+/** High Level function allowing other programmer to interface with the encoding library.
+ * 
+ * Take full json object as input 
+ * 
+ */
+function directEncode() {
+
+}
 
 
 export function encode(charac: Characteristic, operationChosen: string, user_payload: any) {
