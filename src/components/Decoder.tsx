@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputLeftAddon, NumberInput, NumberInputField, StackDivider, Switch, Text, VStack, useBoolean } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Input, InputGroup, InputLeftAddon, ListItem, NumberInput, NumberInputField, StackDivider, Switch, Text, UnorderedList, VStack, useBoolean } from '@chakra-ui/react';
 import { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { base64ToHex, hexStringToUint8Array } from '../shared/Helper';
@@ -27,7 +27,7 @@ export default function App() {
 
   function handleInputChange(input: string) {
     parseInput(input, isBase64)
-    setInput(input.trim().toUpperCase())
+    setInput(input.trim().toUpperCase().replace(/\s/g, ''))
 
   }
 
@@ -105,8 +105,34 @@ export default function App() {
 
       <Text m="10px">Enter your uplink frame </Text>
 
+      <Accordion w={"full"} allowToggle>
+
+        <AccordionItem>
+          <h2>
+            <AccordionButton>
+              <Box as='span' flex='1' textAlign='left'>
+                Frame examples
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            <UnorderedList>
+              <ListItem>Multipoint : 1121FFFFFF0009DD47000C28040B2710210A013B402B64046B80BC600F7A031B8033181254026A600538 </ListItem>
+              <ListItem>SinglePoint :
+                <UnorderedList>
+                  <ListItem>SinglePoint : 14221064086309EE00000D09 </ListItem>
+                </UnorderedList>
+              </ListItem>
+            </UnorderedList>
+
+          </AccordionPanel>
+        </AccordionItem>
+
+      </Accordion>
+
       <InputGroup>
-        <InputLeftAddon p="0px">
+        <InputLeftAddon w={"8rem"} p="0px">
           <Switch p="10px" onChange={(ev) => handleToggleChange(ev.target.checked)}>Base64</Switch>
         </InputLeftAddon>
         <Input value={input} isInvalid={isInputError} errorBorderColor='crimson' onChange={(ev) => handleInputChange(ev.target.value)} placeholder={isBase64 ? "V2l0Y2hlcjMgYmVzdCBnYW1lIGV2ZXI=" : "AABBCCDDEEFF"} />
@@ -115,11 +141,11 @@ export default function App() {
       {/* Message d'erreur d'input */}
       {isInputError && <Text>{errorMessage}</Text>}
 
-      <InputGroup>
-        <InputLeftAddon >
-          Fport
+      <InputGroup >
+        <InputLeftAddon justifyContent={"center"} w={"8rem"} >
+          fPort
         </InputLeftAddon>
-        <NumberInput value={fPort} min={0} max={255} onChange={handlefPortChange} >
+        <NumberInput w={"full"} value={fPort} min={0} max={255} onChange={handlefPortChange} >
           <NumberInputField />
         </NumberInput>
 

@@ -10,6 +10,8 @@ const container = document.getElementById("root")
 if (!container) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(container)
 
+document.title = "Online Codec"
+
 root.render(
   <React.StrictMode>
     <ColorModeScript />
