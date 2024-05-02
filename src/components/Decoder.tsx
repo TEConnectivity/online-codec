@@ -26,10 +26,9 @@ export default function App() {
 
 
   function handleInputChange(input: string) {
-    if (isBase64)
-      input = input.trim().replace(/\s/g, '')
-    else
-      input = input.trim().toUpperCase().replace(/\s/g, '')
+
+    input = input.trim().replace(/\s/g, '')
+
 
     parseInput(input, isBase64)
     setInput(input)
