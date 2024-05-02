@@ -26,7 +26,11 @@ export default function App() {
 
 
   function handleInputChange(input: string) {
-    input = input.trim().toUpperCase().replace(/\s/g, '')
+    if (isBase64)
+      input = input.trim().replace(/\s/g, '')
+    else
+      input = input.trim().toUpperCase().replace(/\s/g, '')
+
     parseInput(input, isBase64)
     setInput(input)
 
@@ -61,7 +65,6 @@ export default function App() {
 
     const base64Regex = /^[0-9a-fA-F]+$/;
 
-    console.log(base64Regex.test(_input))
     if (!_isBase64 && !base64Regex.test(_input)) {
       setDecodedFrame({})
       setErrorMessage("The HEX string is invalid. Maybe you copied pasted Base64 instead ?")
@@ -123,12 +126,20 @@ export default function App() {
           </h2>
           <AccordionPanel pb={4}>
             <UnorderedList>
-              <ListItem>Multipoint (fPort 10) : 1121FFFFFF0009DD47000C28040B2710210A013B402B64046B80BC600F7A031B8033181254026A600538 </ListItem>
-              <ListItem>SinglePoint (fPort 10) :
+
+              <ListItem>Vibration sensor : Multipoint (fPort 10) :                <UnorderedList>
+                <ListItem>Frame Format 0 : 152F01000000097907000C267F0B2700002680FF68267F0B2700002680FF68267F0B2700002680FF68 </ListItem>
+                <ListItem>Frame Format 1 (default) : 152F01000000092E44000C26A9001C00BD127F000900DA000A00D9000800D70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 </ListItem>
+                <ListItem>Frame Format 2 : 152F01000000097984000C26A9001C00BD0A013B402B64046B80BC600F7A031B8033181254026A600538 </ListItem>
+
+              </UnorderedList></ListItem>
+
+              <ListItem>Humidity, Temperature or Pressure sensor : SinglePoint (fPort 10) :
                 <UnorderedList>
                   <ListItem>Humidity : 14221064086309EE00000D09 </ListItem>
                 </UnorderedList>
               </ListItem>
+
             </UnorderedList>
 
           </AccordionPanel>
