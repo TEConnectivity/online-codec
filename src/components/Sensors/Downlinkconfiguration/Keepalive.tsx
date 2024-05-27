@@ -1,9 +1,10 @@
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import { Radio, RadioGroup, Stack, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
+import { KeepaliveType } from "../../../shared/Schemas";
 
 interface Props {
-  onInputChange: (data: { keepaliveInterval: string, keepaliveMode: string }) => void;
+  onInputChange: (data: KeepaliveType) => void;
 
 }
 

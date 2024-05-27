@@ -1,5 +1,5 @@
 import { displayUint8ArrayAsHex, insertValueInByte, numberToByteArray } from "./Helper";
-import { CharacType, Characteristic } from "./Schemas";
+import { CharacType, Characteristic, Operation, UserPayloadType } from "./Schemas";
 
 
 /** Découpe un string "A0A0A" en tableau de byte [0x0A,0x0A,0x0A]
@@ -23,18 +23,14 @@ function toByteArray(byte_string: string, size: number) {
 }
 
 
-/** High Level function allowing other programmer to interface with the encoding library.
+/** High Level function to encode frames.
  * 
- * Take full json object as input 
+ * See typescript schemas for the definition of input parameters.
+ * 
+ * @return Encoded frame as hexstring (e.g. "AABBCC")
  * 
  */
-// eslint-disable-next-line
-function directEncode() {
-
-}
-
-
-export function encode(charac: Characteristic, operationChosen: string, user_payload: any) {
+export function encode(charac: Characteristic, operationChosen: Operation, user_payload: UserPayloadType): string {
 
 
   var payload_header = new Uint8Array(3);
@@ -79,13 +75,15 @@ export function encode(charac: Characteristic, operationChosen: string, user_pay
 
 
 
-function payloadFormatter(charac: Characteristic, user_payload: any) {
+function payloadFormatter(charac: Characteristic, user_payload: UserPayloadType) {
+
+  console.log(user_payload)
 
   var encoded_input = new Uint8Array(parseInt(charac.payload_size, 10))
 
   let bytesArray: number[];
 
-  switch (charac.type) {
+  switch (user_payload.type) {
     case (CharacType.MEAS_INTERVAL):
       encoded_input[0] = parseInt(user_payload.hour, 10) //Hour
       encoded_input[1] = parseInt(user_payload.minute, 10) //Minute
@@ -109,17 +107,16 @@ function payloadFormatter(charac: Characteristic, user_payload: any) {
       encoded_input[0] = insertValueInByte(encoded_input[0], parseInt(user_payload.keepaliveMode), 3)
       break;
     case (CharacType.DATALOG_DATA):
-      encoded_input[0] = user_payload.type
-      console.log(user_payload.index)
-      encoded_input.set(numberToByteArray(user_payload.index), 1)
+      encoded_input[0] = user_payload.datalog_type
+      encoded_input.set(numberToByteArray(user_payload.index, 2), 1)
       encoded_input[3] = user_payload.length
       break;
     case (CharacType.DATALOG_ANALYSIS):
-      encoded_input[0] = 0x02
-      encoded_input.set(numberToByteArray(user_payload.length), 1)
+      encoded_input[0] = 0x02 // check spec, always 2
+      encoded_input.set(numberToByteArray(user_payload.length, 2), 1)
       break;
     case (CharacType.LORA_MODE):
-      encoded_input[0] = user_payload.type
+      encoded_input[0] = user_payload.mode
       break;
     case (CharacType.LORA_PERCENTAGE):
       encoded_input[0] = user_payload.percentage

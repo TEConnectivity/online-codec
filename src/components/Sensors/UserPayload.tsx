@@ -1,11 +1,12 @@
 import { Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { encode } from "../../shared/EncoderLib";
-import { CharacType, Characteristic } from "../../shared/Schemas";
+import { CharacType, Characteristic, Operation, UserPayloadType } from "../../shared/Schemas";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 import BLEActivation from "./Downlinkconfiguration/BLEActivation";
 import Battery from "./Downlinkconfiguration/Battery";
 import DatalogAnalysis from "./Downlinkconfiguration/DatalogAnalysis";
+import DatalogData from "./Downlinkconfiguration/DatalogData";
 import Keepalive from "./Downlinkconfiguration/Keepalive";
 import LoRaConfirmation from "./Downlinkconfiguration/LoRaConfirmation";
 import LoRaMode from "./Downlinkconfiguration/LoRaMode";
@@ -16,21 +17,9 @@ import Threshold from "./Downlinkconfiguration/Threshold/Threshold";
 
 interface Props {
   charac: Characteristic,
-  operation: string
+  operation: Operation
 }
 
-
-function isConfReady(input: Object): boolean {
-
-  // On verifie que l'objet n'est pas vide {}
-  if (Object.keys(input).length <= 0)
-    return false
-
-  // Pour chaque pair de key/value contenu dans l'objet on verifie que la clée est valide et que la valeur de la clée n'est pas une chaine vide
-  return Object.entries(input).every(([key, value]) =>
-    typeof key === 'string' && key !== '' && typeof value !== 'undefined' && value !== ""
-  );
-}
 
 /**
  * Manage the user input to configure all the different characteristics.
@@ -39,12 +28,13 @@ function isConfReady(input: Object): boolean {
  */
 export default function App(props: Props) {
 
-  const [userPayload, setUserPayload] = useState({})
+  const [userPayload, setUserPayload] = useState<UserPayloadType>({})
 
   // Function to receive data from children component
   const handleInputChange = (data: any) => {
-    setUserPayload(data);
-    console.log(data)
+
+    setUserPayload({ ...data, type: props.charac.type });
+
   };
 
 
@@ -66,6 +56,9 @@ export default function App(props: Props) {
       break;
     case (CharacType.KEEPALIVE):
       returnComponent = <Keepalive onInputChange={handleInputChange} />
+      break;
+    case (CharacType.DATALOG_DATA):
+      returnComponent = <DatalogData onInputChange={handleInputChange} />
       break;
     case (CharacType.DATALOG_ANALYSIS):
       returnComponent = <DatalogAnalysis onInputChange={handleInputChange} />
@@ -95,3 +88,17 @@ export default function App(props: Props) {
     </>
   );
 };
+
+
+
+function isConfReady(input: Object): boolean {
+
+  // On verifie que l'objet n'est pas vide {}
+  if (Object.keys(input).length <= 0)
+    return false
+
+  // Pour chaque pair de key/value contenu dans l'objet on verifie que la clée est valide et que la valeur de la clée n'est pas une chaine vide
+  return Object.entries(input).every(([key, value]) =>
+    typeof key === 'string' && key !== '' && typeof value !== 'undefined' && value !== ""
+  );
+}

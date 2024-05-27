@@ -1,8 +1,9 @@
 import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
 import { useState } from "react";
+import { MeasIntervalType } from "../../../shared/Schemas";
 
 interface ChildrenProps {
-  onInputChange: (data: { hour: string, minute: string, second: string }) => void;
+  onInputChange: (data: MeasIntervalType) => void;
 }
 
 

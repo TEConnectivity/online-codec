@@ -126,17 +126,30 @@ export function hexStringToUint8Array(hexString: string) {
     return uint8Array;
 }
 
-export function numberToByteArray(number: any) {
+/** Converti un nombre en son tableau d'octet
+ * 
+ * size 2, number 256 -> [0x01, 0xFF]
+ * 
+ * @param number : number to be converted 
+ * @param size : initial size. If the provided size is not enough, it is automatically resized.
+ * @returns bytearray
+ */
+export function numberToByteArray(number: any, size: number) {
     // Déterminer le nombre de bytes nécessaires
     const byteCount = Math.ceil(Math.log2(number + 1) / 8);
 
-    // Créer un tableau pour stocker les bytes
-    const byteArray = [];
+    // Créer un tableau pour stocker les bytes avec la taille fournie
+    const byteArray = new Array(size).fill(0);
+
+    // Vérifier si la taille fournie est suffisante pour contenir le nombre
+    if (size < byteCount) {
+        size = byteCount;
+    }
 
     // Extraire chaque byte
     for (let i = 0; i < byteCount; i++) {
         const byte = (number >> (8 * (byteCount - i - 1))) & 0xFF;
-        byteArray.push(byte);
+        byteArray[size - byteCount + i] = byte;
     }
 
     return byteArray;

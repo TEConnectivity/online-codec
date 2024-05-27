@@ -15,8 +15,6 @@ function toBase64(input: string) {
  */
 export default function App(props: Props) {
 
-  console.log("Generated dowlink frame...")
-
   return (
     <VStack width={"100%"} my={"1rem"} justifyContent={"flex-start"}>
       <Text>Frame : </Text>

@@ -1,8 +1,9 @@
 import { Text } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { BatteryType } from "../../../shared/Schemas";
 
 interface ChildrenProps {
-  onInputChange: (data: { reset: boolean }) => void;
+  onInputChange: (data: BatteryType) => void;
 }
 
 

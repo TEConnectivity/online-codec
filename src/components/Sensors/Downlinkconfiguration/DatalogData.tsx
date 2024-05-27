@@ -1,19 +1,20 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
 import { clamp } from "framer-motion";
 import { useEffect, useState } from "react";
+import { DatalogArrayType } from "../../../shared/Schemas";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: { type: number, index: number, length: number }) => void;
+  onInputChange: (data: DatalogArrayType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState({
-    type: 0,
+  const [inputValues, setInputValues] = useState<DatalogArrayType>({
+    datalog_type: 0,
     index: 0,
     length: 1,
   });
@@ -32,8 +33,8 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   // Callback function, when the user edit the form, the payload is automatically regenerated
 
-  function handleTypeChange(type: string) {
-    switch (type) {
+  function handleTypeChange(datalog_type: string) {
+    switch (datalog_type) {
       case "0":
         setMaxValue(120)
         break;
@@ -46,7 +47,7 @@ export default function App({ onInputChange }: ChildrenProps) {
     }
 
     setInputValues(prevState => {
-      const newState = { ...prevState, type: parseInt(type) };
+      const newState = { ...prevState, datalog_type: parseInt(datalog_type) };
       onInputChange(newState);
       return newState;
     });
@@ -79,7 +80,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
       <Text>Read the datalog, from : </Text>
 
-      <RadioGroup onChange={handleTypeChange} value={inputValues.type.toString()} >
+      <RadioGroup onChange={handleTypeChange} value={inputValues.datalog_type.toString()} >
         <Stack direction={['column', 'row']}>
           <Radio value='0'>Secondary sensor</Radio>
           <Radio value='1'>Primary sensor</Radio>

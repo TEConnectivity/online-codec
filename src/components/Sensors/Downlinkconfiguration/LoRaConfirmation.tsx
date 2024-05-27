@@ -1,11 +1,12 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, VStack } from "@chakra-ui/react";
 import { clamp } from "framer-motion";
 import { useState } from "react";
+import { LorapercentageType } from "../../../shared/Schemas";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: { percentage: number }) => void;
+  onInputChange: (data: LorapercentageType) => void;
 }
 
 

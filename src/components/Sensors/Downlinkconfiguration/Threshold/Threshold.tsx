@@ -1,5 +1,6 @@
 import { Select, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
+import { ThresholdType } from "../../../../shared/Schemas";
 import THSComm from "./THSComm";
 import THSConfig from "./THSConfig";
 import THSLevel from "./THSLevel";
@@ -10,14 +11,14 @@ import ThresholdPopOverSimple from "./ThresholdPopOverSimple";
 
 
 interface ChildrenProps {
-  onInputChange: (data: { id_data: string, param_sel: string, data32: string }) => void;
+  onInputChange: (data: ThresholdType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [thresholdConfig, setThresholdConfig] = useState({
+  const [thresholdConfig, setThresholdConfig] = useState<ThresholdType>({
     id_data: '', // 1 Byte
     param_sel: '', // 1 Byte
     data32: '', // 4 Bytes

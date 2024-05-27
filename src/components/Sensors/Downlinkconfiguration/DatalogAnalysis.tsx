@@ -1,11 +1,12 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, VStack } from "@chakra-ui/react";
 import { clamp } from "framer-motion";
 import { useState } from "react";
+import { DatalogAnalysisType } from "../../../shared/Schemas";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: { length: number }) => void;
+  onInputChange: (data: DatalogAnalysisType) => void;
 }
 
 

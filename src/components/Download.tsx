@@ -1,4 +1,4 @@
-import { List, ListIcon, ListItem } from "@chakra-ui/react";
+import { Link, List, ListIcon, ListItem, Text, VStack } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
 
@@ -6,15 +6,18 @@ export default function App() {
 
 
   return (
-    <List m="10px" spacing={3}>
-      <ListItem>
-        <ListIcon as={MdCheckCircle} color='green.500' />
-        Encoding library (to generate downlink frames) : link
-      </ListItem>
-      <ListItem>
-        <ListIcon as={MdCheckCircle} color='green.500' />
-        Decoding library (to decode uplinks frames) : link
-      </ListItem>
-    </List>
+    <VStack flex={"start"}>
+      <Text p={"10px"} fontSize="19px" >This website is open-source, the code is available on Git, alongside its coding & decoding libraries.</Text>
+      <List m="10px" spacing={3}>
+        <ListItem>
+          <ListIcon as={MdCheckCircle} color='green.500' />
+          Encoding library (to generate downlink frames) : <Link color='teal.500' href="https://github.com/TEConnectivity" isExternal>Github</Link>
+        </ListItem>
+        <ListItem>
+          <ListIcon as={MdCheckCircle} color='green.500' />
+          Decoding library (to decode uplinks frames) : <Link color='teal.500' href="https://github.com/TEConnectivity" isExternal>Github</Link>
+        </ListItem>
+      </List>
+    </VStack>
   );
 };

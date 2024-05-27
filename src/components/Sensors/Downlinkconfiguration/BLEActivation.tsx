@@ -1,7 +1,8 @@
 import { Checkbox, Link, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, UnorderedList, useBoolean } from "@chakra-ui/react";
+import { BLEActivationType } from "../../../shared/Schemas";
 
 interface ChildrenProps {
-  onInputChange: (data: { checked: boolean }) => void;
+  onInputChange: (data: BLEActivationType) => void;
 }
 
 
