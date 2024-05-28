@@ -23,7 +23,7 @@ export default function App() {
   return (
     <Flex flexDirection="column">
       <Text mt="10px">Select Sensor Family</Text>
-      <Select onChange={(ev) => setSensorFamily(ev.target.value)} placeholder='Singlepoint, Multipoint...'>
+      <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value)} >
         <option value='SP'>59XX / 69XX / 79XX - SinglePoint family</option>
         <option value='MP'>Multipoint - Coming Soon !</option>
       </Select>

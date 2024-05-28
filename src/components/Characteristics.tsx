@@ -40,7 +40,7 @@ export default function App() {
           <Tbody>
 
             {SP_Charac.map((charac, cid) => (
-              <Tr>
+              <Tr key={cid}>
                 <Td>{charac.uuid}</Td>
                 <Td>{charac.charac_name}</Td>
                 <Td isNumeric>{charac.payload_size}</Td>

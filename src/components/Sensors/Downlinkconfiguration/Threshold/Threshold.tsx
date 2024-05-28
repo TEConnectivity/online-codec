@@ -43,8 +43,8 @@ export default function App({ onInputChange }: ChildrenProps) {
   return (
     <VStack width={"100%"} >
 
-      <Text>For a given data, configure <ThresholdPopOverSimple>one threshold</ThresholdPopOverSimple> if you want a simple alarm. Configure <ThresholdPopOverComplex>two threshold</ThresholdPopOverComplex> if you want out-of-range or successive detection.</Text>
-      <Text><ThresholdPopOverGuide>Need Help ?</ThresholdPopOverGuide></Text>
+      <span>For a given data, configure <ThresholdPopOverSimple>one threshold</ThresholdPopOverSimple> if you want a simple alarm. Configure <ThresholdPopOverComplex>two threshold</ThresholdPopOverComplex> if you want out-of-range or successive detection.</span>
+      <span><ThresholdPopOverGuide>Need Help ?</ThresholdPopOverGuide></span>
       <Select value={thresholdConfig.id_data} onChange={(ev) => handleID_Data(ev.target.value)} placeholder='Threshold...'>
         <optgroup label="Threshold 1">
           <option value='00'>Main Sensor simple data</option>
