@@ -1,7 +1,7 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Input, InputGroup, InputLeftAddon, ListItem, NumberInput, NumberInputField, StackDivider, Switch, Text, UnorderedList, VStack, useBoolean } from '@chakra-ui/react';
+import { base64ToHex, hexStringToUint8Array } from '@te-connectivity/iot-codec';
 import { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { base64ToHex, hexStringToUint8Array } from '../shared/Helper';
 import { te_decoder } from '../submodules/ttn-payload-formater/TnnJsDecoder/TE_TtnDecoder';
 
 export default function App() {

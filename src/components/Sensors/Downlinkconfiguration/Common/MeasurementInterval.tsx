@@ -1,6 +1,6 @@
 import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
+import { CharacType, MeasIntervalType } from "@te-connectivity/iot-codec";
 import { useState } from "react";
-import { MeasIntervalType } from "../../../shared/Schemas";
 
 interface ChildrenProps {
   onInputChange: (data: MeasIntervalType) => void;
@@ -10,27 +10,37 @@ interface ChildrenProps {
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<MeasIntervalType>({
     hour: '0',
     minute: '0',
     second: '0',
+    type: CharacType.MEAS_INTERVAL
   });
+
+
 
   // Callback function, when the user edit the form, the payload is automatically regenerated
   function handleHour(inputHour: string) {
-    var newState = { hour: inputHour, minute: inputValues.minute, second: inputValues.second }
-    setInputValues(newState)
-    onInputChange(newState)
+    setInputValues(prevState => {
+      const newState = { ...prevState, hour: inputHour };
+      onInputChange(newState);
+      return newState;
+    });
+
   }
   function handleMinute(inputMinute: string) {
-    var newState = { hour: inputValues.hour, minute: inputMinute, second: inputValues.second }
-    setInputValues(newState)
-    onInputChange(newState)
+    setInputValues(prevState => {
+      const newState = { ...prevState, minute: inputMinute };
+      onInputChange(newState);
+      return newState;
+    });
   }
   function handleSecond(inputSecond: string) {
-    var newState = { hour: inputValues.hour, minute: inputValues.minute, second: inputSecond }
-    setInputValues(newState)
-    onInputChange(newState)
+    setInputValues(prevState => {
+      const newState = { ...prevState, second: inputSecond };
+      onInputChange(newState);
+      return newState;
+    });
   }
 
   return (

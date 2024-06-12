@@ -1,6 +1,6 @@
-export const SP_Charac = [
+export const MP_Charac = [
     {
-        "uuid": "2A00",
+        "uuid": "0x2A00",
         "charac_name": "Device Name",
         "payload_size": "9",
         "ble": "r",
@@ -8,7 +8,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A01",
+        "uuid": "0x2A01",
         "charac_name": "Appearance",
         "payload_size": "2",
         "ble": "r",
@@ -16,7 +16,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A04",
+        "uuid": "0x2A04",
         "charac_name": "Peripheral Preferred Connection Parameters",
         "payload_size": "8",
         "ble": "r",
@@ -24,7 +24,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2AA6",
+        "uuid": "0x2AA6",
         "charac_name": "Central Address Resolution",
         "payload_size": "1",
         "ble": "r",
@@ -32,7 +32,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A05",
+        "uuid": "0x2A05",
         "charac_name": "Service Change",
         "payload_size": "0",
         "ble": "i",
@@ -40,7 +40,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A24",
+        "uuid": "0x2A24",
         "charac_name": "Model Number",
         "payload_size": "4",
         "ble": "r",
@@ -48,7 +48,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A25",
+        "uuid": "0x2A25",
         "charac_name": "Serial Number",
         "payload_size": "12",
         "ble": "r",
@@ -56,7 +56,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A26",
+        "uuid": "0x2A26",
         "charac_name": "Firmware revision",
         "payload_size": "40",
         "ble": "r",
@@ -64,7 +64,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A27",
+        "uuid": "0x2A27",
         "charac_name": "Hardware revision",
         "payload_size": "7",
         "ble": "r",
@@ -72,7 +72,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A29",
+        "uuid": "0x2A29",
         "charac_name": "Manufacturer",
         "payload_size": "9",
         "ble": "r",
@@ -80,7 +80,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CF01",
+        "uuid": "0xCF01",
         "charac_name": "Sensor Diagnosis",
         "payload_size": "1",
         "ble": "r",
@@ -88,7 +88,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CF02",
+        "uuid": "0xCF02",
         "charac_name": "Communication Diagnosis",
         "payload_size": "1",
         "ble": "r",
@@ -96,7 +96,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CF03",
+        "uuid": "0xCF03",
         "charac_name": "Battery Diagnosis",
         "payload_size": "1",
         "ble": "r",
@@ -104,7 +104,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "FC01",
+        "uuid": "0xFC01",
         "charac_name": "Device status",
         "payload_size": "1",
         "ble": "r|n",
@@ -112,7 +112,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "2A19",
+        "uuid": "0x2A19",
         "charac_name": "Battery level",
         "payload_size": "1",
         "ble": "r|w|n",
@@ -120,7 +120,7 @@ export const SP_Charac = [
         "type": "battery"
     },
     {
-        "uuid": "CD01",
+        "uuid": "0xCD01",
         "charac_name": "Customer Specific Data",
         "payload_size": "4",
         "ble": "r|w",
@@ -128,7 +128,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CD02",
+        "uuid": "0xCD02",
         "charac_name": "BLE Adv Mode Configuration",
         "payload_size": "1",
         "ble": "r|w",
@@ -136,7 +136,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CD04",
+        "uuid": "0xCD04",
         "charac_name": "BLE ADV interval",
         "payload_size": "1",
         "ble": "r|w",
@@ -144,7 +144,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CD03",
+        "uuid": "0xCD03",
         "charac_name": "Change Device Name",
         "payload_size": "25",
         "ble": "r|w",
@@ -152,7 +152,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CD05",
+        "uuid": "0xCD05",
         "charac_name": "BLE Activation over LoRa",
         "payload_size": "1",
         "ble": "",
@@ -160,7 +160,7 @@ export const SP_Charac = [
         "type": "ble_activation"
     },
     {
-        "uuid": "2A6E",
+        "uuid": "0x2A6E",
         "charac_name": "Internal platform temperature",
         "payload_size": "2",
         "ble": "r|n",
@@ -168,7 +168,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "CE01",
+        "uuid": "0xCE01",
         "charac_name": "LoRa Keep Alive",
         "payload_size": "1",
         "ble": "r|w",
@@ -176,7 +176,7 @@ export const SP_Charac = [
         "type": "keepalive"
     },
     {
-        "uuid": "CE02",
+        "uuid": "0xCE02",
         "charac_name": "BLE Keep Alive",
         "payload_size": "1",
         "ble": "r|w",
@@ -184,7 +184,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B301",
+        "uuid": "0xB301",
         "charac_name": "Measurement Counter",
         "payload_size": "2",
         "ble": "r|w|n",
@@ -192,15 +192,15 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B302",
+        "uuid": "0xB302",
         "charac_name": "Measurement interval",
         "payload_size": "3",
-        "ble": "r|w",
-        "lora": "r|w|wr",
+        "ble": "r",
+        "lora": "r",
         "type": "meas_interval"
     },
     {
-        "uuid": "DA01",
+        "uuid": "0xDA01",
         "charac_name": "Last data acquired",
         "payload_size": "6",
         "ble": "r|n",
@@ -208,7 +208,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B401",
+        "uuid": "0xB401",
         "charac_name": "Live Measurement interval",
         "payload_size": "1",
         "ble": "r",
@@ -216,7 +216,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B402",
+        "uuid": "0xB402",
         "charac_name": "Live mode configuration",
         "payload_size": "1",
         "ble": "r|w",
@@ -224,7 +224,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B201",
+        "uuid": "0xB201",
         "charac_name": "Threshold",
         "payload_size": "6",
         "ble": "r|w|n",
@@ -232,7 +232,7 @@ export const SP_Charac = [
         "type": "threshold"
     },
     {
-        "uuid": "DB01",
+        "uuid": "0xDB01",
         "charac_name": "Datalog data",
         "payload_size": "4",
         "ble": "r|w|n",
@@ -240,7 +240,7 @@ export const SP_Charac = [
         "type": "datalog_data"
     },
     {
-        "uuid": "DB02",
+        "uuid": "0xDB02",
         "charac_name": "Datalog analysis request",
         "payload_size": "3",
         "ble": "r|w|n",
@@ -248,7 +248,7 @@ export const SP_Charac = [
         "type": "datalog_analysis"
     },
     {
-        "uuid": "F810",
+        "uuid": "0xF810",
         "charac_name": "LoRaWAN Mode Configuration",
         "payload_size": "1",
         "ble": "r|w",
@@ -256,7 +256,7 @@ export const SP_Charac = [
         "type": "lora_mode"
     },
     {
-        "uuid": "F801",
+        "uuid": "0xF801",
         "charac_name": "DevEUI",
         "payload_size": "8",
         "ble": "r",
@@ -264,7 +264,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "F802",
+        "uuid": "0xF802",
         "charac_name": "AppEUI",
         "payload_size": "1",
         "ble": "r",
@@ -272,7 +272,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "F803",
+        "uuid": "0xF803",
         "charac_name": "Region",
         "payload_size": "1",
         "ble": "r",
@@ -280,7 +280,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "F804",
+        "uuid": "0xF804",
         "charac_name": "NetID",
         "payload_size": "4",
         "ble": "r",
@@ -288,7 +288,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "F805",
+        "uuid": "0xF805",
         "charac_name": "LoRaWAN Status",
         "payload_size": "4",
         "ble": "r",
@@ -296,7 +296,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "F806",
+        "uuid": "0xF806",
         "charac_name": "Percentage of confirmed uplink",
         "payload_size": "1",
         "ble": "r|w",
@@ -304,7 +304,7 @@ export const SP_Charac = [
         "type": "lora_percentage"
     },
     {
-        "uuid": "EE00",
+        "uuid": "0xEE00",
         "charac_name": "Factory Mode activation",
         "payload_size": "0",
         "ble": "r|w",
@@ -312,7 +312,7 @@ export const SP_Charac = [
         "type": ""
     },
     {
-        "uuid": "F806",
+        "uuid": "0xF806",
         "charac_name": "OTA process",
         "payload_size": "0",
         "ble": "w",

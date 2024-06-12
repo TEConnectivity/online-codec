@@ -1,7 +1,7 @@
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import { Radio, RadioGroup, Stack, Text, Tooltip } from "@chakra-ui/react";
+import { CharacType, KeepaliveType } from "@te-connectivity/iot-codec";
 import { useState } from "react";
-import { KeepaliveType } from "../../../shared/Schemas";
 
 interface Props {
   onInputChange: (data: KeepaliveType) => void;
@@ -25,18 +25,18 @@ export default function App(props: Props) {
 
   // Chakra onChange return value and not event, so we use a nested function to allow event to be visible
   const handleChange = (name: any) => (value: any) => {
-    var newState;
+    var newState: KeepaliveType;
 
     if (name === "interval") {
       setKeepaliveInterval(value);
-      newState = { keepaliveInterval: value, keepaliveMode: keepaliveMode }
-      props.onInputChange(newState)
+      newState = { type: CharacType.KEEPALIVE, keepaliveInterval: value, keepaliveMode: keepaliveMode }
     }
     else {
       setKeepaliveMode(value);
-      newState = { keepaliveInterval: keepaliveInterval, keepaliveMode: value }
-      props.onInputChange(newState)
+      newState = { type: CharacType.KEEPALIVE, keepaliveInterval: keepaliveInterval, keepaliveMode: value }
     }
+
+    props.onInputChange(newState)
 
   }
 

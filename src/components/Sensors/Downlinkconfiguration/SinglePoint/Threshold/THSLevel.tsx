@@ -1,7 +1,7 @@
 import { NumberInput, NumberInputField, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { floatToHexString } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
-import { floatToHexString } from "../../../../shared/Helper";
 
 interface Props {
   setThresholdConfig: CallableFunction

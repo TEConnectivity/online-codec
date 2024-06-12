@@ -1,5 +1,5 @@
 import { Card, CardBody, Code, Heading, Image, Link, ListItem, Popover, PopoverBody, PopoverContent, PopoverTrigger, Stack, Text, UnorderedList } from "@chakra-ui/react";
-import complex_threshold from "../../../../img/complex_threshold.png";
+import complex_threshold from "../../../../../img/complex_threshold.png";
 
 
 

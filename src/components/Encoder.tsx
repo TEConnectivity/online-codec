@@ -1,34 +1,25 @@
 import { Flex, Select, Text } from "@chakra-ui/react";
+import { SensorFamily } from "@te-connectivity/iot-codec";
 import { useState } from "react";
-import MultiPoint from "./Sensors/MultiPoint";
-import SinglePoint from "./Sensors/SinglePoint";
+import CharacSelector from "./Sensors/CharacSelector";
+
 
 
 export default function App() {
 
-  const [sensorFamily, setSensorFamily] = useState("SP");
+  const [sensorFamily, setSensorFamily] = useState<SensorFamily>(SensorFamily.Singlepoint);
 
-  var sensorChosen = null
-  switch (sensorFamily) {
-    case "SP":
-      sensorChosen = <SinglePoint />;
-      break;
-    case "MP":
-      sensorChosen = <MultiPoint />;
-      break;
-    default:
-      sensorChosen = null;
-  }
+
 
   return (
     <Flex flexDirection="column">
       <Text mt="10px">Select Sensor Family</Text>
-      <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value)} >
-        <option value='SP'>59XX / 69XX / 79XX - SinglePoint family</option>
-        <option value='MP'>Multipoint - Coming Soon !</option>
+      <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value as SensorFamily)} >
+        <option value={SensorFamily.Singlepoint}>59XX / 69XX / 79XX - SinglePoint</option>
+        <option value={SensorFamily.Multipoint}>8911 / 8931 - Multipoint</option>
       </Select>
 
-      {sensorChosen}
+      <CharacSelector family={sensorFamily} />
 
     </Flex>
 

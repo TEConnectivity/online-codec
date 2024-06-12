@@ -1,7 +1,7 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack } from "@chakra-ui/react";
+import { zeroPadding } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
-import { zeroPadding } from "../../../../shared/Helper";
 
 interface Props {
   setThresholdConfig: CallableFunction

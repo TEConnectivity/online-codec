@@ -28,17 +28,9 @@ Just use the ```te_decoder()``` function from the [TE_TtnDecoder.js](src/submodu
 
 This function takes a *bytearray*  and the LoRa *fport* as input, and return a JSON containing decoded data. The JSON Schema of the output is not available. The output shall match the sensor's specification.
 
-## Encoding
+## Encoding 
 
-The encoding is done using [EncoderLib.tsx](src/shared/EncoderLib.tsx), and all the input schemas are available on the reference file [Schemas.tsx](src/shared/Schemas.tsx).
-
-To be used as an API, you need to call the ```encode()``` function with the following args : 
-
-- ```charac```: Its Typescript type is ```Characteristic```. It holds information about the parameter being configured, typically its *uuid* and *length*, for the decoder to know how to build the frame. The list of charac is available on this JS file [SP_charac.js](src/components/Sensors/SP_charac.js).
-- ```operationChosen```: Its Typescript type is ```Operation```. It contains the type of operation : *read*, *write* or *readwrite*. The ```user_payload``` is ignored in case of *read* operation.
-- ```user_payload```: Its Typescript type is ```UserPayloadType```. The actual data configured. It's a Union type, so please refer to the schemas to check the shape of this argument.
-
-
+This website use the TE Connectivity [iot-codec](https://github.com/TEConnectivity/iot-codec) NPM module to generate downlink frames.
 
 # Supported sensors
 

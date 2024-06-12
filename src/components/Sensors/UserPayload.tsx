@@ -1,23 +1,23 @@
 import { Text } from "@chakra-ui/react";
+import { CharacType, Characteristic, Operation, SensorFamily, UserPayloadType, encode } from "@te-connectivity/iot-codec";
 import { useState } from "react";
-import { encode } from "../../shared/EncoderLib";
-import { CharacType, Characteristic, Operation, UserPayloadType } from "../../shared/Schemas";
 import EncodedFrameOutput from "../EncodedFrameOutput";
-import BLEActivation from "./Downlinkconfiguration/BLEActivation";
-import Battery from "./Downlinkconfiguration/Battery";
-import DatalogAnalysis from "./Downlinkconfiguration/DatalogAnalysis";
-import DatalogData from "./Downlinkconfiguration/DatalogData";
-import Keepalive from "./Downlinkconfiguration/Keepalive";
-import LoRaConfirmation from "./Downlinkconfiguration/LoRaConfirmation";
-import LoRaMode from "./Downlinkconfiguration/LoRaMode";
-import MeasurementInterval from "./Downlinkconfiguration/MeasurementInterval";
-import Threshold from "./Downlinkconfiguration/Threshold/Threshold";
+import BLEActivation from "./Downlinkconfiguration/Common/BLEActivation";
+import Battery from "./Downlinkconfiguration/Common/Battery";
+import Keepalive from "./Downlinkconfiguration/Common/Keepalive";
+import LoRaConfirmation from "./Downlinkconfiguration/Common/LoRaConfirmation";
+import LoRaMode from "./Downlinkconfiguration/Common/LoRaMode";
+import MeasurementInterval from "./Downlinkconfiguration/Common/MeasurementInterval";
+import DatalogAnalysis from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogAnalysis";
+import DatalogData from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogData";
+import Threshold from "./Downlinkconfiguration/SinglePoint/Threshold/Threshold";
 
 
 
 interface Props {
   charac: Characteristic,
-  operation: Operation
+  operation: Operation,
+  family: SensorFamily
 }
 
 
@@ -28,7 +28,7 @@ interface Props {
  */
 export default function App(props: Props) {
 
-  const [userPayload, setUserPayload] = useState<UserPayloadType>({})
+  const [userPayload, setUserPayload] = useState<UserPayloadType>({} as UserPayloadType)
 
   // Function to receive data from children component
   const handleInputChange = (data: any) => {
@@ -45,7 +45,7 @@ export default function App(props: Props) {
     case (CharacType.MEAS_INTERVAL):
       returnComponent = <MeasurementInterval onInputChange={handleInputChange} />
       break;
-    case (CharacType.THREHSOLD):
+    case (CharacType.THRESHOLD):
       returnComponent = <Threshold onInputChange={handleInputChange} />
       break;
     case (CharacType.BLE_ACTIVATION):
@@ -82,7 +82,7 @@ export default function App(props: Props) {
       {returnComponent}
 
       {/* The output component showing the b64 frame */}
-      {isConfReady(userPayload) && <EncodedFrameOutput frame={encode(props.charac, props.operation, userPayload)}></EncodedFrameOutput>}
+      {isConfReady(userPayload) && <EncodedFrameOutput frame={encode(props.charac, props.operation, userPayload, props.family).toHexString()}></EncodedFrameOutput>}
 
 
     </>

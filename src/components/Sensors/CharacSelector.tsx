@@ -8,9 +8,9 @@ import {
 import * as React from "react";
 
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { encode } from "../../shared/EncoderLib";
-import { Characteristic, Operation } from "../../shared/Schemas";
+import { Characteristic, Operation, SensorFamily, UserPayloadType, encode } from "@te-connectivity/iot-codec";
 import EncodedFrameOutput from "../EncodedFrameOutput";
+import { MP_Charac } from "./MP_charac";
 import { SP_Charac } from "./SP_charac";
 import UserPayload from "./UserPayload";
 
@@ -22,25 +22,45 @@ function getArrayOperation(charac: Characteristic) {
   else return arrayOutput
 }
 
+interface AppProps {
+  family: SensorFamily;
+}
 
-export default function App() {
 
-
+export default function App(props: AppProps) {
 
   // For radio button, will hold r / w / wr
-  const [operation, setCharacOperation] = React.useState<string>()
-
+  const [operation, setCharacOperation] = React.useState<string>("")
 
   // Will hold the charac object
   const [charac, setCharac] = React.useState<Characteristic>()
 
+  // Ternary should be switched to switch/case if more sensor family than SP/MP is added
+  const CHARAC_DATABASE = props.family === SensorFamily.Singlepoint ? SP_Charac : MP_Charac;
+
+
+  // Clear charac when sensor family change
+  React.useEffect(() => {
+    setCharac(undefined);
+  }, [props.family])
+
+
 
   function handleCharacChange(charac_name: string) {
 
-    // Reset charac operation if the user chose another
+    // Reset charac operation if the user chose another charac
     setCharacOperation("")
 
-    setCharac(SP_Charac.find(charac => charac.charac_name === charac_name) as Characteristic)
+    console.log(charac)
+
+    switch (props.family) {
+      case (SensorFamily.Singlepoint):
+        setCharac(SP_Charac.find(charac => charac.charac_name === charac_name) as Characteristic);
+        break;
+      case (SensorFamily.Multipoint):
+        setCharac(MP_Charac.find(charac => charac.charac_name === charac_name) as Characteristic);
+        break;
+    }
 
 
   }
@@ -85,10 +105,10 @@ export default function App() {
       {/* Select characteristic */}
       <FormControl>
         <FormLabel>Downlink Command</FormLabel>
-        <AutoComplete restoreOnBlurIfEmpty={false} suggestWhenEmpty onChange={handleCharacChange} openOnFocus>
+        <AutoComplete key={props.family} restoreOnBlurIfEmpty={false} suggestWhenEmpty onChange={handleCharacChange} openOnFocus>
           <AutoCompleteInput variant="filled" />
           <AutoCompleteList>
-            {SP_Charac.map((charac, cid) => (
+            {CHARAC_DATABASE.map((charac, cid) => (
               <AutoCompleteItem
                 key={`option-${cid}`}
                 value={charac.charac_name}
@@ -106,11 +126,11 @@ export default function App() {
       {characSelected()}
 
       {/* If READ is selected :  generate downlink frame */}
-      {(charac && operation === Operation.READ) && <EncodedFrameOutput frame={encode(charac, operation, {})}></EncodedFrameOutput>}
+      {(charac && operation === Operation.READ) && <EncodedFrameOutput frame={encode(charac, operation, {} as UserPayloadType, props.family).toHexString()}></EncodedFrameOutput>}
 
 
       {/* If WRITE or WRITE+READ is selected : generate userPayload component frame */}
-      {(charac && (operation === Operation.WRITE || operation === Operation.READWRITE)) && <UserPayload charac={charac} operation={operation} />}
+      {(charac && (operation === Operation.WRITE || operation === Operation.READWRITE)) && <UserPayload family={props.family} charac={charac} operation={operation} />}
 
 
     </VStack>

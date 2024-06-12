@@ -1,6 +1,6 @@
 import { Select, Text, VStack } from "@chakra-ui/react";
+import { CharacType, ThresholdType } from "@te-connectivity/iot-codec";
 import { useState } from "react";
-import { ThresholdType } from "../../../../shared/Schemas";
 import THSComm from "./THSComm";
 import THSConfig from "./THSConfig";
 import THSLevel from "./THSLevel";
@@ -22,11 +22,12 @@ export default function App({ onInputChange }: ChildrenProps) {
     id_data: '', // 1 Byte
     param_sel: '', // 1 Byte
     data32: '', // 4 Bytes
+    type: CharacType.THRESHOLD
   });
 
   // Callback function, when the user edit the form, the payload is automatically regenerated
   function handleID_Data(id_data: string) {
-    var newState = { id_data: id_data, param_sel: "", data32: "00000000" }
+    var newState: ThresholdType = { type: CharacType.THRESHOLD, id_data: id_data, param_sel: "", data32: "00000000" }
     setThresholdConfig(newState)
     onInputChange(newState)
 
@@ -34,7 +35,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   // Callback function, when the user edit the form, the payload is automatically regenerated
   function handlePARAM_SEL(param_sel: string) {
-    var newState = { id_data: thresholdConfig.id_data, param_sel: param_sel, data32: "00000000" }
+    var newState: ThresholdType = { type: CharacType.THRESHOLD, id_data: thresholdConfig.id_data, param_sel: param_sel, data32: "00000000" }
     setThresholdConfig(newState)
     onInputChange(newState)
   }

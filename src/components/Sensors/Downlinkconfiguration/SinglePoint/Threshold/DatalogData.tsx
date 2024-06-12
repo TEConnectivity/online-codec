@@ -1,7 +1,7 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
+import { CharacType, DatalogArrayType } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useEffect, useState } from "react";
-import { DatalogArrayType } from "../../../shared/Schemas";
 
 
 
@@ -17,6 +17,7 @@ export default function App({ onInputChange }: ChildrenProps) {
     datalog_type: 0,
     index: 0,
     length: 1,
+    type: CharacType.DATALOG_DATA,
   });
 
   const [maxValue, setMaxValue] = useState(120);

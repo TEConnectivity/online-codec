@@ -1,6 +1,6 @@
 import { Radio, RadioGroup, Stack, Text, Tooltip } from "@chakra-ui/react";
+import { displayUint8ArrayAsHex } from "@te-connectivity/iot-codec";
 import { useState } from "react";
-import { displayUint8ArrayAsHex } from "../../../../shared/Helper";
 
 interface Props {
   setThresholdConfig: CallableFunction
