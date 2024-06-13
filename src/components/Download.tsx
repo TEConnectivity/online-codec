@@ -11,11 +11,11 @@ export default function App() {
       <List m="10px" spacing={3}>
         <ListItem>
           <ListIcon as={MdCheckCircle} color='green.500' />
-          Encoding library (to generate downlink frames) : <Link color='teal.500' href="https://github.com/TEConnectivity" isExternal>Github</Link>
+          Encoding library (to generate downlink frames) : <Link color='teal.500' href="https://github.com/TEConnectivity/iot-codec" isExternal>Github</Link>
         </ListItem>
         <ListItem>
           <ListIcon as={MdCheckCircle} color='green.500' />
-          Decoding library (to decode uplinks frames) : <Link color='teal.500' href="https://github.com/TEConnectivity" isExternal>Github</Link>
+          Decoding library (to decode uplinks frames) : <Link color='teal.500' href="https://github.com/TEConnectivity/ttn-decoder" isExternal>Github</Link>
         </ListItem>
       </List>
     </VStack>
