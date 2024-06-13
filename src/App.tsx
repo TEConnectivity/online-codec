@@ -21,11 +21,11 @@ import Products from "./components/Products"
 
 export const App = () => (
   <ChakraProvider theme={theme}>
-    <BrowserRouter>
+    <BrowserRouter basename={"/online-codec"}>
       <NavBar />
       <Container minHeight="100%" maxW="100%" pb="500px">
         <Routes>
-          <Route path="/" element={<Decoder />} />
+          <Route path="" element={<Decoder />} />
           <Route path="/encoder" element={<Encoder />} />
           <Route path="/decoder" element={<Decoder />} />
           <Route path="/products" element={<Products />} />

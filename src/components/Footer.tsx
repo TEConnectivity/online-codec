@@ -22,9 +22,7 @@ export default function SmallWithLogoLeft() {
       p="35px"
     >
       <Container>
-        LOGO??
-
-        <Text>Not all related to TE. Illustrative purpose only</Text>
+        <Text>This website is a demo, suited for illustrative purpose only, not suited for production (MIT License). The result are shown without any warranty.</Text>
       </Container>
     </Box>
   )
