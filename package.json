@@ -2,6 +2,7 @@
   "name": "online-codec",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://teconnectivity.github.io/online-codec/",
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
@@ -33,7 +34,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
