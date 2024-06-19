@@ -16,7 +16,7 @@ export default function App() {
       <Text mt="10px">Select Sensor Family</Text>
       <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value as SensorFamily)} >
         <option value={SensorFamily.Singlepoint}>59XX / 69XX / 79XX - SinglePoint</option>
-        <option value={SensorFamily.Multipoint}>8911 / 8931 - Multipoint</option>
+        <option disabled value={SensorFamily.Multipoint}>8911 / 8931 - Multipoint</option>
       </Select>
 
       <CharacSelector family={sensorFamily} />
