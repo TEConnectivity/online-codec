@@ -4,7 +4,7 @@ This repo host the website Online Codec, allowing the user to encode (generate d
 
 # Demo
 
-A demo website is available, hosted through Gitlab Pages, [here](https://online-codec-tes-iot-tools-website-625d73cc1a74a9e9a676f3522d74.gitlab-pages.connect.te.com/encoder).
+A demo website is available, hosted through Github Pages, [here](https://teconnectivity.github.io/online-codec/).
 
 
 
@@ -14,7 +14,7 @@ It is purely front-end, no server is used. All the coding/decoding is made on th
 
 - React
 - UI : [Chakra UI](https://v2.chakra-ui.com/), for all the graphical components
-- Decoding : Made with the official [TE TTN Decoder](https://gitlab.connect.te.com/tes/iot/tools/iot-applications/ttn-payload-formater). Included as a Git Submodule.
+- Decoding : Made with the official [TE TTN Decoder](https://github.com/TEConnectivity/ttn-decoder). Included as a Git Submodule.
 - Encoding : Made in Typescript, part of this repository.
 
 
