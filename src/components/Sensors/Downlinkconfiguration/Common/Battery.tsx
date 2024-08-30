@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { BatteryType, CharacType } from "@te-connectivity/iot-codec";
+import { BatteryType, CharacTypeCommon } from "@te-connectivity/iot-codec";
 import { useEffect } from "react";
 
 interface ChildrenProps {
@@ -13,7 +13,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   useEffect(() => {
     // Modifier la valeur de data32 dès le premier rendu
-    onInputChange({ type: CharacType.BATTERY, reset: true })
+    onInputChange({ type: CharacTypeCommon.BATTERY, reset: true })
 
     // eslint-disable-next-line
   }, []); // le tableau de dépendances est vide, donc cette fonction s'exécutera uniquement après le premier rendu

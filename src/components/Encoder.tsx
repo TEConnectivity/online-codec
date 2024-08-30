@@ -11,8 +11,7 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function App() {
 
-  const [sensorFamily, setSensorFamily] = useState<SensorFamily>(SensorFamily.Singlepoint);
-
+  const [sensorFamily, setSensorFamily] = useState<SensorFamily>(SensorFamily.Multipoint);
 
 
   return (
@@ -22,7 +21,7 @@ export default function App() {
       </ChakraLink> )</Text>
       <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value as SensorFamily)} >
         <option value={SensorFamily.Singlepoint}>59XX / 69XX / 79XX - SinglePoint</option>
-        <option disabled value={SensorFamily.Multipoint}>8911 / 8931 - Multipoint</option>
+        <option value={SensorFamily.Multipoint}>8911 / 8931 - Multipoint</option>
       </Select>
 
       <CharacSelector family={sensorFamily} />

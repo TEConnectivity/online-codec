@@ -1,5 +1,5 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, VStack } from "@chakra-ui/react";
-import { CharacType, LorapercentageType } from "@te-connectivity/iot-codec";
+import { CharacTypeCommon, LorapercentageType } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   const [inputValues, setInputValues] = useState<LorapercentageType>({
     percentage: 100,
-    type: CharacType.LORA_PERCENTAGE
+    type: CharacTypeCommon.LORA_PERCENTAGE
   });
 
 

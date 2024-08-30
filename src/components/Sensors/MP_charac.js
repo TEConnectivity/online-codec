@@ -1,3 +1,5 @@
+import { CharacTypeMP } from "@te-connectivity/iot-codec";
+
 export const MP_Charac = [
     {
         "uuid": "2A00",
@@ -224,14 +226,6 @@ export const MP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B201",
-        "charac_name": "Threshold",
-        "payload_size": "6",
-        "ble": "r|w|n",
-        "lora": "w|wr",
-        "type": "threshold"
-    },
-    {
         "uuid": "DB01",
         "charac_name": "Datalog data",
         "payload_size": "4",
@@ -318,5 +312,77 @@ export const MP_Charac = [
         "ble": "w",
         "lora": "",
         "type": ""
-    }
+    },
+    {
+        uuid: "FA01",
+        charac_name: "Axis selection",
+        payload_size: "1",
+        ble: "r|w",
+        lora: "r|w|wr",
+        type: CharacTypeMP.AXIS_SELECTION
+    },
+    {
+        uuid: "FA02",
+        charac_name: "Preset selection",
+        payload_size: "2",
+        ble: "r|w",
+        lora: "r|w|wr",
+        type: CharacTypeMP.PRESET_SELECTION
+    },
+    {
+        uuid: "FA03",
+        charac_name: "Windowing function",
+        payload_size: "1",
+        ble: "r|w",
+        lora: "r|w|wr",
+        type: CharacTypeMP.WINDOWING_FUNCTION
+    },
+    {
+        uuid: "FA10",
+        charac_name: "Preset configuration",
+        payload_size: "6",
+        ble: "r|w",
+        lora: "w|wr",
+        type: CharacTypeMP.PRESET_CONFIGURATION
+    },
+    {
+        uuid: "FA10",
+        charac_name: "Preset request configuration",
+        payload_size: "1",
+        ble: "r|w",
+        lora: "wr",
+        type: CharacTypeMP.PRESET_REQUEST
+    },
+    {
+        uuid: "FA11",
+        charac_name: "Window Configuration",
+        payload_size: "8",
+        ble: "r|w",
+        lora: "w|wr",
+        type: CharacTypeMP.WINDOW_CONFIGURATION
+    },
+    {
+        uuid: "FA11",
+        charac_name: "Window Request",
+        payload_size: "2",
+        ble: "r|w",
+        lora: "wr",
+        type: CharacTypeMP.WINDOW_REQUEST
+    },
+    {
+        uuid: "B201",
+        charac_name: "Multipoint Threshold Request",
+        payload_size: "2",
+        ble: "r|w|n",
+        lora: "w|wr",
+        type: CharacTypeMP.MULTIPOINT_THRESHOLD_REQUEST
+    },
+    {
+        uuid: "B201",
+        charac_name: "Multipoint Threshold",
+        payload_size: "6",
+        ble: "r|w|n",
+        lora: "w|wr",
+        type: CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI
+    },
 ]

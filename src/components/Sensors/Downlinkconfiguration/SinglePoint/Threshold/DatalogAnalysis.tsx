@@ -1,5 +1,5 @@
 import { InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, VStack } from "@chakra-ui/react";
-import { CharacType, DatalogAnalysisType } from "@te-connectivity/iot-codec";
+import { CharacTypeSP, DatalogAnalysisType } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
@@ -21,7 +21,7 @@ export default function App({ onInputChange }: ChildrenProps) {
   function handleLengthChange(length: string) {
 
     setInputValues(prevState => {
-      const newState: DatalogAnalysisType = { ...prevState, type: CharacType.DATALOG_ANALYSIS, length: clamp(0, 65535, parseInt(length)) };
+      const newState: DatalogAnalysisType = { ...prevState, type: CharacTypeSP.DATALOG_ANALYSIS, length: clamp(0, 65535, parseInt(length)) };
       onInputChange(newState);
       return newState;
     });

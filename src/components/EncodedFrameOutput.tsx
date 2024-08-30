@@ -1,26 +1,61 @@
 import { Input, Text, VStack } from "@chakra-ui/react";
+import { Characteristic, CharacTypeMP, encode, encode_multi_frame, Frame, MultiFramePayload, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
+import { useEffect, useState } from "react";
 
 interface Props {
-  frame: string
+  charac: Characteristic,
+  operation: Operation,
+  family: SensorFamily,
+  payload: UserPayloadType | MultiFramePayload
 }
-
-function toBase64(input: string) {
-  return btoa(input.match(/\w{2}/g)!.map(function (a) { return String.fromCharCode(parseInt(a, 16)); }).join(""))
-}
-
-
 
 /**
- * Component which render the output encoded frame, in HEX & Base64 format
+ * Component which renders the output encoded frame, in HEX & Base64 format.
  */
 export default function App(props: Props) {
+  const [decodingError, setDecodingError] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [multiFrameResult, setMultiFrameResult] = useState<Frame[] | null>(null);
+
+
+
+  useEffect(() => {
+    console.log(props.payload.type)
+    try {
+      if (props.payload.type === CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI) {
+        const array_encoded = encode_multi_frame(props.charac, props.operation, props.payload, props.family);
+        console.log(array_encoded)
+        setMultiFrameResult(array_encoded);
+      }
+      else {
+        const encodedFrame = encode(props.charac, props.operation, props.payload, props.family);
+        console.log(encodedFrame)
+        setMultiFrameResult([encodedFrame]);
+      }
+      setDecodingError(false);
+    } catch (exception: any) {
+      setErrorMsg(exception.message || 'An unknown error occurred');
+      setDecodingError(true);
+    }
+  }, [props.charac, props.operation, props.payload, props.family]);
 
   return (
-    <VStack width={"100%"} my={"1rem"} justifyContent={"flex-start"}>
-      <Text>Frame : </Text>
-      <Input isReadOnly value={props.frame}></Input>
-      <Text>Base64 : </Text>
-      <Input isReadOnly value={toBase64(props.frame)}></Input>
-    </VStack>
+    <>
+      {decodingError ? (
+        <Text>Error during encoding: {errorMsg}</Text>
+      ) : (
+        <VStack width="100%" my="1rem" justifyContent="flex-start">
+          <Text>Send the following frame in this order:</Text>
+          {multiFrameResult?.map((frame, index) =>
+            <Input isReadOnly value={frame.toHexString() || ''}></Input>
+          )}
+          <Text>Base64:</Text>
+          {multiFrameResult?.map((frame, index) =>
+            <Input isReadOnly value={frame.toBase64() || ''}></Input>
+          )}
+        </VStack >
+      )
+      }
+    </>
   );
-};
+}

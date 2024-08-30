@@ -1,5 +1,5 @@
 import { Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
-import { CharacType, LoramodeType } from "@te-connectivity/iot-codec";
+import { CharacTypeCommon, LoramodeType } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   const [inputValues, setInputValues] = useState<LoramodeType>({
     mode: 0,
-    type: CharacType.LORA_MODE
+    type: CharacTypeCommon.LORA_MODE
   });
 
 

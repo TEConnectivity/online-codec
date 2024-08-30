@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { Characteristic, Operation, SensorFamily, UserPayloadType, encode } from "@te-connectivity/iot-codec";
+import { Characteristic, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 import { MP_Charac } from "./MP_charac";
 import { SP_Charac } from "./SP_charac";
@@ -79,12 +79,12 @@ export default function App(props: AppProps) {
             <RadioGroup onChange={setCharacOperation} value={operation}>
               <Stack direction='row'>
                 {getArrayOperation(charac).map((_operation, op_id) => (
-                  <Radio checked={operation === _operation} key={op_id} value={_operation}>{_operation.toUpperCase()}</Radio>
+                  <Radio checked={operation === _operation} key={op_id} value={_operation}>{displayOperationHumanFriendly(_operation)}</Radio>
                 ))
                 }
               </Stack>
             </RadioGroup>
-            <Tooltip label="R: Read, W: Write, WR : Write, then the sensor sends back the new value" placement="right" fontSize='md'>
+            <Tooltip label="Read : A simple read, expect an answer, Write: Edit configuration, no answer from the sensor, Write+Read : Write, then the sensor sends back the new value." placement="right" fontSize='md'>
               <QuestionOutlineIcon ml={"10px"} />
             </Tooltip>
           </HStack>
@@ -126,7 +126,7 @@ export default function App(props: AppProps) {
       {characSelected()}
 
       {/* If READ is selected :  generate downlink frame */}
-      {(charac && operation === Operation.READ) && <EncodedFrameOutput frame={encode(charac, operation, {} as UserPayloadType, props.family).toHexString()}></EncodedFrameOutput>}
+      {(charac && operation === Operation.READ) && <EncodedFrameOutput charac={charac} family={props.family} operation={operation} payload={{} as UserPayloadType}></EncodedFrameOutput>}
 
 
       {/* If WRITE or WRITE+READ is selected : generate userPayload component frame */}
@@ -139,3 +139,19 @@ export default function App(props: AppProps) {
 
   );
 };
+
+
+function displayOperationHumanFriendly(input: string): string {
+  switch (input) {
+    case ("r"):
+      return "Read"
+    case ("w"):
+      return "Write"
+    case ("wr"):
+      return "Write+Read"
+    case ("n"):
+      return "Notify"
+    default:
+      return ""
+  }
+}

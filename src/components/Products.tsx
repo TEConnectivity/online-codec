@@ -21,13 +21,13 @@ export default function App() {
         <Tbody>
 
           <Tr >
-            <Td>8931 (4.0.1)</Td>
-            <Td>❌</Td>
+            <Td>8931 (4.0.6)</Td>
+            <Td>✅ (Beta)</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
-            <Td>8911 (4.0.1)</Td>
-            <Td>❌</Td>
+            <Td>8911 (4.0.6)</Td>
+            <Td>✅ (Beta)</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
@@ -53,6 +53,7 @@ export default function App() {
         <ListItem>
           <ListIcon as={MdDangerous} color='red.500' />
           All older sensors are not supported : 5600, U8900...
+
         </ListItem>
       </List>
 

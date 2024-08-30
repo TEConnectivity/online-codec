@@ -20,8 +20,10 @@ export default function App(props: Props) {
   // If humidity, max clamp to 100%
   const maxClamp = (measureType === "h") ? 100 : 10000000
 
-  // if Pression, field have to two decimal precision (float)
-  const precision = (measureType === "p") ? 2 : 0
+  // if Pression, two decimal precision (float)
+  // If Humidity, two decimal precision (0.01 %)
+  // If Temperature, two decimal precision (0.01 °C)
+  const precision = 2
 
 
 
@@ -29,12 +31,12 @@ export default function App(props: Props) {
 
     let parsedValue;
     if (measureType === "p") {
-      parsedValue = (parseFloat(value))
+      parsedValue = parseFloat(value)
       parsedValue = floatToHexString(clamp(0, maxClamp, parsedValue))
     } else {
       // Int values are interpreted as (value received / 100)
-      parsedValue = parseInt(value, 10)
-      parsedValue = (clamp(0, maxClamp, parsedValue) * 100).toString(16)
+      parsedValue = Math.round(parseFloat(value) * 100)
+      parsedValue = clamp(0, maxClamp * 100, parsedValue).toString(16)
       console.log(parsedValue)
 
     }

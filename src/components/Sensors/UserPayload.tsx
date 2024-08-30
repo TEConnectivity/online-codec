@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { CharacType, Characteristic, Operation, SensorFamily, UserPayloadType, encode } from "@te-connectivity/iot-codec";
+import { CharacTypeCommon, CharacTypeMP, CharacTypeSP, Characteristic, MultiFramePayload, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 import BLEActivation from "./Downlinkconfiguration/Common/BLEActivation";
@@ -8,6 +8,14 @@ import Keepalive from "./Downlinkconfiguration/Common/Keepalive";
 import LoRaConfirmation from "./Downlinkconfiguration/Common/LoRaConfirmation";
 import LoRaMode from "./Downlinkconfiguration/Common/LoRaMode";
 import MeasurementInterval from "./Downlinkconfiguration/Common/MeasurementInterval";
+import AxisSelection from "./Downlinkconfiguration/Multpoint/AxisSelection";
+import MultipointThreshold from "./Downlinkconfiguration/Multpoint/MultipointThreshold";
+import PresetConfiguration from "./Downlinkconfiguration/Multpoint/PresetConfiguration";
+import PresetRequest from "./Downlinkconfiguration/Multpoint/PresetRequest";
+import PresetSelection from "./Downlinkconfiguration/Multpoint/PresetSelection";
+import WindowConfiguration from "./Downlinkconfiguration/Multpoint/WindowConfiguration";
+import WindowRequest from "./Downlinkconfiguration/Multpoint/WindowRequest";
+import WindowingFunction from "./Downlinkconfiguration/Multpoint/WindowingFunction";
 import DatalogAnalysis from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogAnalysis";
 import DatalogData from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogData";
 import Threshold from "./Downlinkconfiguration/SinglePoint/Threshold/Threshold";
@@ -28,11 +36,13 @@ interface Props {
  */
 export default function App(props: Props) {
 
-  const [userPayload, setUserPayload] = useState<UserPayloadType>({} as UserPayloadType)
+  console.log(props)
+
+  const [userPayload, setUserPayload] = useState<UserPayloadType | MultiFramePayload>({} as UserPayloadType)
 
   // Function to receive data from children component
   const handleInputChange = (data: any) => {
-
+    console.log("Input change ", data)
     setUserPayload({ ...data, type: props.charac.type });
 
   };
@@ -41,33 +51,61 @@ export default function App(props: Props) {
   var returnComponent = null;
   // Output is completlty different, depending on type of charac : 
   switch (props.charac.type) {
-    // Measurement interval, hour & minute & seconds
-    case (CharacType.MEAS_INTERVAL):
-      returnComponent = <MeasurementInterval onInputChange={handleInputChange} />
-      break;
-    case (CharacType.THRESHOLD):
+
+    case (CharacTypeCommon.THRESHOLD):
       returnComponent = <Threshold onInputChange={handleInputChange} />
       break;
-    case (CharacType.BLE_ACTIVATION):
+    case (CharacTypeCommon.BLE_ACTIVATION):
       returnComponent = <BLEActivation onInputChange={handleInputChange} />
       break;
-    case (CharacType.BATTERY):
+    case (CharacTypeCommon.BATTERY):
       returnComponent = <Battery onInputChange={handleInputChange} />
       break;
-    case (CharacType.KEEPALIVE):
+    case (CharacTypeCommon.KEEPALIVE):
       returnComponent = <Keepalive onInputChange={handleInputChange} />
       break;
-    case (CharacType.DATALOG_DATA):
-      returnComponent = <DatalogData onInputChange={handleInputChange} />
-      break;
-    case (CharacType.DATALOG_ANALYSIS):
-      returnComponent = <DatalogAnalysis onInputChange={handleInputChange} />
-      break;
-    case (CharacType.LORA_MODE):
+    case (CharacTypeCommon.LORA_MODE):
       returnComponent = <LoRaMode onInputChange={handleInputChange} />
       break;
-    case (CharacType.LORA_PERCENTAGE):
+    case (CharacTypeCommon.LORA_PERCENTAGE):
       returnComponent = <LoRaConfirmation onInputChange={handleInputChange} />
+      break;
+
+    // SINGLEPOINT
+    case (CharacTypeSP.DATALOG_DATA):
+      returnComponent = <DatalogData onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeSP.DATALOG_ANALYSIS):
+      returnComponent = <DatalogAnalysis onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeSP.MEAS_INTERVAL):
+      returnComponent = <MeasurementInterval onInputChange={handleInputChange} />
+      break;
+
+    // MULTIPOINT
+    case (CharacTypeMP.AXIS_SELECTION):
+      returnComponent = <AxisSelection onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.PRESET_SELECTION):
+      returnComponent = <PresetSelection onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.WINDOWING_FUNCTION):
+      returnComponent = <WindowingFunction onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.PRESET_CONFIGURATION):
+      returnComponent = <PresetConfiguration onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.PRESET_REQUEST):
+      returnComponent = <PresetRequest onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.WINDOW_CONFIGURATION):
+      returnComponent = <WindowConfiguration onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.WINDOW_REQUEST):
+      returnComponent = <WindowRequest onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI):
+      returnComponent = <MultipointThreshold onInputChange={handleInputChange} />
       break;
     default:
       returnComponent = <Text>Sorry the configuration of this characheristic is not yet supported</Text>
@@ -82,7 +120,7 @@ export default function App(props: Props) {
       {returnComponent}
 
       {/* The output component showing the b64 frame */}
-      {isConfReady(userPayload) && <EncodedFrameOutput frame={encode(props.charac, props.operation, userPayload, props.family).toHexString()}></EncodedFrameOutput>}
+      {isConfReady(userPayload) && <EncodedFrameOutput charac={props.charac} family={props.family} operation={props.operation} payload={userPayload}></EncodedFrameOutput>}
 
 
     </>
@@ -102,3 +140,4 @@ function isConfReady(input: Object): boolean {
     typeof key === 'string' && key !== '' && typeof value !== 'undefined' && value !== ""
   );
 }
+

@@ -1,10 +1,15 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Input, InputGroup, InputLeftAddon, ListItem, NumberInput, NumberInputField, StackDivider, Switch, Text, UnorderedList, VStack, useBoolean } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Input, InputGroup, InputLeftAddon, Link, ListItem, NumberInput, NumberInputField, StackDivider, Switch, Text, UnorderedList, VStack, useBoolean } from '@chakra-ui/react';
 import { base64ToHex, hexStringToUint8Array } from '@te-connectivity/iot-codec';
 import { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { te_decoder } from '../submodules/ttn-payload-formater/TnnJsDecoder/TE_TtnDecoder';
 
 export default function App() {
+
+  const vib_frame0 = "152f000208630b9601000c006400C84E20"
+  const vib_frame1 = "152F01000000092E44000C26A9001C00BD127F000900DA000A00D9000800D70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  const vib_frame2 = "152f000408630b3e81000c000000060000180000000400010000d0001c0003c000d0001b00038000d0001a8003600142002880051800cd0019c0033c00cd0019b0033800cd0019a8033600"
+  const frameHumi = "14221064086309EE00000D09"
 
   const [isBase64, setIsBase64] = useState(false)
 
@@ -107,6 +112,14 @@ export default function App() {
   }
 
 
+  function fillFrame(frame: string): void {
+    setIsBase64(false);
+    setFPort("10");
+    setInput(frame);
+
+    parseInput(frame, false, "10")
+  }
+
   return (
     <VStack align='flex-start'>
 
@@ -127,15 +140,15 @@ export default function App() {
             <UnorderedList>
 
               <ListItem>Vibration sensor : Multipoint (fPort 10) :                <UnorderedList>
-                <ListItem>Frame Format 0 : 152f0bc0085e0a7c4101031a7507830084001a0000001a0001001a00020012000000110000001200000013000000000021000000220000002300001a5900501a59004f19e70051148f0023009f002300a00022009e001d000001010000010200000103000000000201000002020000020300000000040100000402000004030000 </ListItem>
-                <ListItem>Frame Format 1 (default) : 152F01000000092E44000C26A9001C00BD127F000900DA000A00D9000800D70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 </ListItem>
-                <ListItem>Frame Format 2 : 152F01000000097984000C26A9001C00BD0A013B402B64046B80BC600F7A031B8033181254026A600538 </ListItem>
+                <ListItem>Frame Format 0 : <Link color={"teal.500"} onClick={() => fillFrame(vib_frame0)}>{vib_frame0}</Link></ListItem>
+                <ListItem>Frame Format 1 (default) :  <Link color={"teal.500"} onClick={() => fillFrame(vib_frame1)}>{vib_frame1}</Link></ListItem>
+                <ListItem>Frame Format 2 :  <Link color={"teal.500"} onClick={() => fillFrame(vib_frame2)}>{vib_frame2}</Link></ListItem>
 
               </UnorderedList></ListItem>
 
               <ListItem>Humidity, Temperature or Pressure sensor : SinglePoint (fPort 10) :
                 <UnorderedList>
-                  <ListItem>Humidity : 14221064086309EE00000D09 </ListItem>
+                  <ListItem>Humidity : <Link color={"teal.500"} onClick={() => fillFrame(frameHumi)}>{frameHumi}</Link></ListItem>
                 </UnorderedList>
               </ListItem>
 
@@ -148,7 +161,7 @@ export default function App() {
 
       <InputGroup>
         <InputLeftAddon w={"8rem"} p="0px">
-          <Switch p="10px" onChange={(ev) => handleToggleChange(ev.target.checked)}>Base64</Switch>
+          <Switch p="10px" isChecked={isBase64} onChange={(ev) => handleToggleChange(ev.target.checked)}>Base64</Switch>
         </InputLeftAddon>
         <Input value={input} isInvalid={isInputError} errorBorderColor='crimson' onChange={(ev) => handleInputChange(ev.target.value)} placeholder={isBase64 ? "V2l0Y2hlcjMgYmVzdCBnYW1lIGV2ZXI=" : "AABBCCDDEEFF"} />
       </InputGroup>
