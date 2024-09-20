@@ -53,6 +53,8 @@ export default function App(props: Props) {
           {multiFrameResult?.map((frame, index) =>
             <Input isReadOnly value={frame.toBase64() || ''}></Input>
           )}
+          <Text>LoRa fPort :</Text>
+          <Input isReadOnly value={multiFrameResult?.at(0)?.fport}></Input>
         </VStack >
       )
       }

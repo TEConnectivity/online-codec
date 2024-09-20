@@ -20,8 +20,8 @@ export default function App() {
         software version compatibility
       </ChakraLink> )</Text>
       <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value as SensorFamily)} >
-        <option value={SensorFamily.Singlepoint}>59XX / 69XX / 79XX - SinglePoint</option>
-        <option value={SensorFamily.Multipoint}>8911 / 8931 - Multipoint</option>
+        <option value={SensorFamily.Singlepoint}>59XXN / 69XXN / 79XXN - SinglePoint (3.5.0)</option>
+        <option value={SensorFamily.Multipoint}>8911N / 8931N - Multipoint (4.0.x)</option>
       </Select>
 
       <CharacSelector family={sensorFamily} />

@@ -210,14 +210,6 @@ export const MP_Charac = [
         "type": ""
     },
     {
-        "uuid": "B401",
-        "charac_name": "Live Measurement interval",
-        "payload_size": "1",
-        "ble": "r",
-        "lora": "",
-        "type": ""
-    },
-    {
         "uuid": "B402",
         "charac_name": "Live mode configuration",
         "payload_size": "1",

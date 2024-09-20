@@ -12,6 +12,7 @@ export default function App() {
         <Thead>
           <Tr>
             <Th>Sensor</Th>
+            <Th>SW Version</Th>
             <Th>Encoding</Th>
             <Th>Decoding</Th>
 
@@ -21,27 +22,45 @@ export default function App() {
         <Tbody>
 
           <Tr >
-            <Td>8931 (4.0.6)</Td>
+            <Td>8931N </Td>
+            <Td>4.0.x (<i>Multipoint</i>)</Td>
             <Td>✅ (Beta)</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
-            <Td>8911 (4.0.6)</Td>
+            <Td>8911N</Td>
+            <Td>4.0.x (<i>Multipoint</i>)</Td>
             <Td>✅ (Beta)</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
-            <Td>59XX  (3.5.0)</Td>
+            <Td>8931N</Td>
+            <Td>2.x.x</Td>
+            <Td>❌</Td>
+            <Td>✅</Td>
+          </Tr>
+          <Tr >
+            <Td>8911N</Td>
+            <Td>1.x.x</Td>
+            <Td>❌</Td>
+            <Td>✅</Td>
+          </Tr>
+          <Tr >
+            <Td>59XXN</Td>
+            <Td>3.5.0 (<i>Singlepoint</i>)</Td>
             <Td>✅</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
-            <Td>69XX  (3.5.0)</Td>
+            <Td>69XXN</Td>
+            <Td>3.5.0 (<i>Singlepoint</i>)</Td>
+
             <Td>✅</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
-            <Td>79XX  (3.5.0)</Td>
+            <Td>79XXN</Td>
+            <Td>3.5.0 (<i>Singlepoint</i>)</Td>
             <Td>✅</Td>
             <Td>✅</Td>
           </Tr>
