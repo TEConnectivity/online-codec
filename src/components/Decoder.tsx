@@ -6,6 +6,8 @@ import { te_decoder } from '../submodules/ttn-payload-formater/TnnJsDecoder/TE_T
 
 export default function App() {
 
+  const vib_frame_old_8911N = "0a18a7040c00000009000a004336000100006300010001200101000105010100007e00010000b400000000e100000000b001000000f33600000091020000002b32000000a725000000c82800000068010000003d0e0000009501000000d23300000078060000001d31000000dd01000000e22f0000002037000000b01c000000"
+  const vib_frame_old_8931N = "00095909880e010000480001000180000c00028002b0001000"
   const vib_frame0 = "152f000208630b9601000c006400C84E20"
   const vib_frame1 = "152F01000000092E44000C26A9001C00BD127F000900DA000A00D9000800D70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
   const vib_frame2 = "152f000408630b3e81000c000000060000180000000400010000d0001c0003c000d0001b00038000d0001a8003600142002880051800cd0019c0033c00cd0019b0033800cd0019a8033600"
@@ -112,12 +114,12 @@ export default function App() {
   }
 
 
-  function fillFrame(frame: string): void {
+  function fillFrame(frame: string, fPort: string): void {
     setIsBase64(false);
-    setFPort("10");
+    setFPort(fPort);
     setInput(frame);
 
-    parseInput(frame, false, "10")
+    parseInput(frame, false, fPort)
   }
 
   return (
@@ -139,18 +141,23 @@ export default function App() {
           <AccordionPanel pb={4}>
             <UnorderedList>
 
-              <ListItem>Vibration sensor : Multipoint (fPort 10) :                <UnorderedList>
-                <ListItem>Frame Format 0 : <Link color={"teal.500"} onClick={() => fillFrame(vib_frame0)}>{vib_frame0}</Link></ListItem>
-                <ListItem>Frame Format 1 (default) :  <Link color={"teal.500"} onClick={() => fillFrame(vib_frame1)}>{vib_frame1}</Link></ListItem>
-                <ListItem>Frame Format 2 :  <Link color={"teal.500"} onClick={() => fillFrame(vib_frame2)}>{vib_frame2}</Link></ListItem>
-
-              </UnorderedList></ListItem>
-
-              <ListItem>Humidity, Temperature or Pressure sensor : SinglePoint (fPort 10) :
+              <ListItem>Vibration sensor 4.x.x : Multipoint (fPort 10) :
                 <UnorderedList>
-                  <ListItem>Humidity : <Link color={"teal.500"} onClick={() => fillFrame(frameHumi)}>{frameHumi}</Link></ListItem>
+                  <ListItem>Frame Format 0 : <Link color={"teal.500"} onClick={() => fillFrame(vib_frame0, "10")}>{vib_frame0}</Link></ListItem>
+                  <ListItem>Frame Format 1 (default) :  <Link color={"teal.500"} onClick={() => fillFrame(vib_frame1, "10")}>{vib_frame1}</Link></ListItem>
+                  <ListItem>Frame Format 2 :  <Link color={"teal.500"} onClick={() => fillFrame(vib_frame2, "10")}>{vib_frame2}</Link></ListItem>
                 </UnorderedList>
               </ListItem>
+
+              <ListItem>Humidity, Temperature or Pressure sensor : SinglePoint 3.x.x (fPort 10) :
+                <UnorderedList>
+                  <ListItem>Humidity : <Link color={"teal.500"} onClick={() => fillFrame(frameHumi, "10")}>{frameHumi}</Link></ListItem>
+                </UnorderedList>
+              </ListItem>
+
+              <ListItem>8911N Legacy Firmware 1.x.x : <Link color={"teal.500"} onClick={() => fillFrame(vib_frame_old_8911N, "1")}>{vib_frame_old_8911N}</Link></ListItem>
+              <ListItem>8931N Legacy Firmware 2.x.x : <Link color={"teal.500"} onClick={() => fillFrame(vib_frame_old_8931N, "5")}>{vib_frame_old_8931N}</Link></ListItem>
+
 
             </UnorderedList>
 
