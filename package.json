@@ -18,6 +18,7 @@
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
     "@types/react-syntax-highlighter": "^15.5.11",
+    "@types/web-bluetooth": "^0.0.20",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.0.0",
     "eslint-plugin-unused-imports": "^3.1.0",
@@ -30,7 +31,8 @@
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webbluetooth": "^3.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -8,6 +8,7 @@ import {
   Route,
   Routes
 } from "react-router-dom"
+import BLE from "./components/BLE"
 import Characteristics from "./components/Characteristics"
 import Decoder from "./components/Decoder"
 import Download from "./components/Download"
@@ -31,6 +32,7 @@ export const App = () => (
           <Route path="/products" element={<Products />} />
           <Route path="/characteristics" element={<Characteristics />} />
           <Route path="/download" element={<Download />} />
+          <Route path="/ble-tool" element={<BLE />} />
 
         </Routes>
       </Container>
