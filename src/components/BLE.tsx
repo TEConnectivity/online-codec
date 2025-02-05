@@ -1,10 +1,13 @@
 import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Skeleton, Stack, StackDivider, Text, useBoolean, VStack } from "@chakra-ui/react";
 import { useState } from "react";
+import DFUlib from "./DFU/DFUlib";
 
 // BLE Utilities
 const BLE_SERVICE_UUID = {
   dataCollection: "b614b300-b14a-40a6-b63f-0166f7868e13",
-  lastData: "b614da00-b14a-40a6-b63f-0166f7868e13"
+  lastData: "b614da00-b14a-40a6-b63f-0166f7868e13",
+  deviceInformation: "device_information",
+  secureDFUService: "0000fe59-0000-1000-8000-00805f9b34fb"
 
 }
 
@@ -19,13 +22,17 @@ const CHARACTERISTICS = {
   measurementCounter: "b614b301-b14a-40a6-b63f-0166f7868e13",
   lastData: "b614da01-b14a-40a6-b63f-0166f7868e13",
 
+  // DFU
+  DFUControlPoint: "8ec90001-f315-4f60-9fb8-838830daea50",
+  DFUPacket: "8ec90002-f315-4f60-9fb8-838830daea50",
+  DFUButtonlessWithoutBonds: "8ec90003-f315-4f60-9fb8-838830daea50",
+
 };
 
 type BLEDataType = "string" | "int" | "float" | "buffer" | "null";
 
 
-const decodeDataView = (dataView: DataView, encoding: string = "ascii") => new TextDecoder(encoding).decode(dataView.buffer);
-
+const decodeDataView = (dataView: DataView, encoding: string = "ascii") => new TextDecoder(encoding).decode(dataView.buffer as ArrayBuffer);
 export default function App() {
 
   const [isDeviceInfoLoaded, isDeviceInfoLoadedToggle] = useBoolean(false)
@@ -46,6 +53,8 @@ export default function App() {
   const [server, setServer] = useState<BluetoothRemoteGATTServer>();
 
   const [sensorConnected, sensorConnectedToggle] = useBoolean(false)
+  const [dfuMode, setDfuMode] = useBoolean(false)
+
   const [log, setLog] = useState("")
 
 
@@ -54,7 +63,7 @@ export default function App() {
     try {
       const device = await navigator.bluetooth.requestDevice({
         filters: [{ manufacturerData: [{ companyIdentifier: 0x08de }] }],
-        optionalServices: ["device_information", ...Object.values(BLE_SERVICE_UUID)],
+        optionalServices: [...Object.values(BLE_SERVICE_UUID)],
       });
       console.log(device)
       setLog("Device found: " + device.name + ", connection...");
@@ -71,7 +80,7 @@ export default function App() {
       const service = await gattServer.getPrimaryService("device_information");
       const firmwareVersion = await readCharacteristicFromService(service, CHARACTERISTICS.firmwareVersion, "string");
       const hardwareRevision = await readCharacteristicFromService(service, CHARACTERISTICS.hardwareRevision, "string");
-      const serialNumber = await readCharacteristicFromService(service, CHARACTERISTICS.serialNumber, "string");
+      const serialNumber = await readCharacteristicFromService(service, CHARACTERISTICS.serialNumber, "string"); // Forbidden to request serial number https://goo.gl/4NeimX
       const manufacturer = await readCharacteristicFromService(service, CHARACTERISTICS.manufacturer, "string");
       const modelNumber = await readCharacteristicFromService(service, CHARACTERISTICS.modelNumber, "string");
 
@@ -151,6 +160,7 @@ export default function App() {
     }
   };
 
+  // TODO : Meas counter should not be hard coded here
   const handleCharacteristicValueChanged = (event: any) => {
     const value = event.target.value.getUint16(0);
     setMeasCounter(value);
@@ -203,91 +213,136 @@ export default function App() {
     }
   }
 
+
+  // DFU
+
+  async function switchDFU() {
+    const service = await server?.getPrimaryService(BLE_SERVICE_UUID.secureDFUService)
+    if (service) {
+
+      // First enable notification because it seems mandatory to switch DFU
+      const characteristic = await service?.getCharacteristic(CHARACTERISTICS.DFUButtonlessWithoutBonds);
+      await characteristic?.startNotifications();
+
+      // Then write 0x01 in the charac
+      await writeCharacteristic(BLE_SERVICE_UUID.secureDFUService, CHARACTERISTICS.DFUButtonlessWithoutBonds, Uint8Array.of(0x01));
+
+      // The sensor should now reboot ! Disconnecting UI 
+      sensorConnectedToggle.off()
+      setDfuMode.on()
+
+
+    }
+  }
+
+
   return (
     <>
-      <Flex flexDirection="column">
-        <Text mt="10px">This BLE tool is in beta-state and <Text as="b">should not be used</Text> in production. Support Singlepoint firmware, tested on 3.5.0.</Text>
-        <Button onClick={initBLE}>Scan nearby devices</Button>
-        <Text>{log}</Text>
-      </Flex>
-      <VStack pt="10px" w="100%" display={sensorConnected ? "inline-block" : "none"} divider={<StackDivider borderColor="gray.200" />}>
+
+      {!dfuMode ?
+
+        // Sensor in normal state
+        <>
+          <Flex flexDirection="column">
+            <Text mt="10px">This BLE tool is in beta-state and <Text as="b">should not be used</Text> in production. Support Singlepoint firmware, tested on 3.5.0.</Text>
+            <Button onClick={initBLE}>Scan nearby devices (take up to 30s)</Button>
+            <Text>{log}</Text>
+
+          </Flex>
 
 
-        <Card>
-          <CardHeader>
-            <Heading size="md">Device Information</Heading>
-          </CardHeader>
-          <CardBody>
-            <Stack divider={<StackDivider />} spacing="4">
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  Firmware Version
-                </Heading>
-                <Skeleton isLoaded={isDeviceInfoLoaded}>
-                  <Text pt="2" fontSize="sm">
-                    {deviceInfo.firmwareVersion}
-                  </Text>
-                </Skeleton>
-              </Box>
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  Hardware Revision
-                </Heading>
-                <Skeleton isLoaded={isDeviceInfoLoaded}>
-                  <Text pt="2" fontSize="sm">
-                    {deviceInfo.hardwareRevision}
-                  </Text>
-                </Skeleton>
-              </Box>
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  Model Number
-                </Heading>
-                <Skeleton isLoaded={isDeviceInfoLoaded}>
-                  <Text pt="2" fontSize="sm">
-                    {deviceInfo.modelNumber}
-                  </Text>
-                </Skeleton>
-              </Box>
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  Serial Number
-                </Heading>
-                <Skeleton isLoaded={isDeviceInfoLoaded}>
-                  <Text pt="2" fontSize="sm">
-                    {deviceInfo.serialNumber}
-                  </Text>
-                </Skeleton>
-              </Box>
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  Manufacturer
-                </Heading>
-                <Skeleton isLoaded={isDeviceInfoLoaded}>
-                  <Text pt="2" fontSize="sm">
-                    {deviceInfo.manufacturer}
-                  </Text>
-                </Skeleton>
-              </Box>
-            </Stack>
-          </CardBody>
-        </Card>
+          <VStack pt="10px" w="100%" display={sensorConnected ? "inline-block" : "none"} divider={<StackDivider borderColor="gray.200" />}>
 
-        <HStack>
 
-          <Button onClick={triggerMeasurement}>Trigger Measurement</Button>
-          <Button onClick={readLastData}>Read Measurement</Button>
-          <Text> Temperature: {lastMeasurement.temp16} °C , {lastMeasurement.measurand}: {lastMeasurement.sensor32} {lastMeasurement.unit} </Text>
-        </HStack>
+            <Card>
+              <CardHeader>
+                <Heading size="md">Device Information</Heading>
+              </CardHeader>
+              <CardBody>
+                <Stack divider={<StackDivider />} spacing="4">
+                  <Box>
+                    <Heading size="xs" textTransform="uppercase">
+                      Firmware Version
+                    </Heading>
+                    <Skeleton isLoaded={isDeviceInfoLoaded}>
+                      <Text pt="2" fontSize="sm">
+                        {deviceInfo.firmwareVersion}
+                      </Text>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Heading size="xs" textTransform="uppercase">
+                      Hardware Revision
+                    </Heading>
+                    <Skeleton isLoaded={isDeviceInfoLoaded}>
+                      <Text pt="2" fontSize="sm">
+                        {deviceInfo.hardwareRevision}
+                      </Text>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Heading size="xs" textTransform="uppercase">
+                      Model Number
+                    </Heading>
+                    <Skeleton isLoaded={isDeviceInfoLoaded}>
+                      <Text pt="2" fontSize="sm">
+                        {deviceInfo.modelNumber}
+                      </Text>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Heading size="xs" textTransform="uppercase">
+                      Serial Number
+                    </Heading>
+                    <Skeleton isLoaded={isDeviceInfoLoaded}>
+                      <Text pt="2" fontSize="sm">
+                        {deviceInfo.serialNumber}
+                      </Text>
+                    </Skeleton>
+                  </Box>
+                  <Box>
+                    <Heading size="xs" textTransform="uppercase">
+                      Manufacturer
+                    </Heading>
+                    <Skeleton isLoaded={isDeviceInfoLoaded}>
+                      <Text pt="2" fontSize="sm">
+                        {deviceInfo.manufacturer}
+                      </Text>
+                    </Skeleton>
+                  </Box>
+                </Stack>
+              </CardBody>
+            </Card>
 
-        <Button onClick={enableMeasurementNotifications}>Notify Measurement Counter</Button>
-        <Text>Measurement Counter: {measCounter}</Text>
+            <HStack>
 
-        <HStack>
-          <Button onClick={readMeasInterv}>Read</Button>
-          <Text>Measurement Interval: {measInterval.h}:{measInterval.m}:{measInterval.s}</Text>
-        </HStack>
+              <Button onClick={triggerMeasurement}>Trigger Measurement</Button>
+              <Button onClick={readLastData}>Read Measurement</Button>
+              <Text> Temperature: {lastMeasurement.temp16} °C , {lastMeasurement.measurand}: {lastMeasurement.sensor32} {lastMeasurement.unit} </Text>
+            </HStack>
 
-      </VStack></>
+            <Button onClick={enableMeasurementNotifications}>Notify Measurement Counter</Button>
+            <Text>Measurement Counter: {measCounter}</Text>
+
+            <HStack>
+              <Button onClick={readMeasInterv}>Read</Button>
+              <Text>Measurement Interval: {measInterval.h}:{measInterval.m}:{measInterval.s}</Text>
+            </HStack>
+
+            <HStack>
+              <Button onClick={switchDFU}><Text>Switch into DFU mode. Sensor is going to <b>reboot</b>.</Text></Button>
+            </HStack>
+          </VStack>
+
+        </> :
+
+        // Sensor in DFU Mode
+        <DFUlib></DFUlib>
+
+      }
+
+    </>
+
+
   );
 }

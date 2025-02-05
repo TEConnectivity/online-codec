@@ -11,6 +11,7 @@ import {
 import BLE from "./components/BLE"
 import Characteristics from "./components/Characteristics"
 import Decoder from "./components/Decoder"
+import DFUlib from "./components/DFU/DFUlib"
 import Download from "./components/Download"
 import Encoder from "./components/Encoder"
 import Footer from "./components/Footer"
@@ -33,7 +34,7 @@ export const App = () => (
           <Route path="/characteristics" element={<Characteristics />} />
           <Route path="/download" element={<Download />} />
           <Route path="/ble-tool" element={<BLE />} />
-
+          <Route path="/ble-tool/dfu" element={<DFUlib />} />
         </Routes>
       </Container>
       <Footer />
