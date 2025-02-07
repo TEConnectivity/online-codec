@@ -1,12 +1,17 @@
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Skeleton, Stack, StackDivider, Text, useBoolean, VStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, Card, CardBody, CardHeader, Checkbox, Flex, Heading, HStack, Skeleton, Stack, StackDivider, Text, useBoolean, VStack } from "@chakra-ui/react";
+import React, { useState } from "react";
+
 import DFUlib from "./DFU/DFUlib";
+import PlotSensor from "./PlotSensor";
+
 
 // BLE Utilities
 const BLE_SERVICE_UUID = {
   dataCollection: "b614b300-b14a-40a6-b63f-0166f7868e13",
   lastData: "b614da00-b14a-40a6-b63f-0166f7868e13",
+  liveMode: "b614b400-b14a-40a6-b63f-0166f7868e13",
   deviceInformation: "device_information",
+
   secureDFUService: "0000fe59-0000-1000-8000-00805f9b34fb"
 
 }
@@ -22,6 +27,10 @@ const CHARACTERISTICS = {
   measurementCounter: "b614b301-b14a-40a6-b63f-0166f7868e13",
   lastData: "b614da01-b14a-40a6-b63f-0166f7868e13",
 
+  // Live Mode
+  liveModeInterv: "b614b401-b14a-40a6-b63f-0166f7868e13",
+  liveModeConfig: "b614b402-b14a-40a6-b63f-0166f7868e13",
+
   // DFU
   DFUControlPoint: "8ec90001-f315-4f60-9fb8-838830daea50",
   DFUPacket: "8ec90002-f315-4f60-9fb8-838830daea50",
@@ -31,6 +40,12 @@ const CHARACTERISTICS = {
 
 type BLEDataType = "string" | "int" | "float" | "buffer" | "null";
 
+export type LastMeasurementType = {
+  temp16: number,
+  sensor32: number,
+  unit: string,
+  measurand: string
+}
 
 const decodeDataView = (dataView: DataView, encoding: string = "ascii") => new TextDecoder(encoding).decode(dataView.buffer as ArrayBuffer);
 export default function App() {
@@ -48,7 +63,8 @@ export default function App() {
   const [measInterval, setMeasInterval] = useState({ h: 0, m: 0, s: 0 });
 
 
-  const [lastMeasurement, setLastMeasurement] = useState({ temp16: 0, sensor32: 0, unit: "", measurand: "" })
+  const [lastMeasurement, setLastMeasurement] = useState<LastMeasurementType>({ temp16: 0, sensor32: 0, unit: "", measurand: "" })
+
 
   const [server, setServer] = useState<BluetoothRemoteGATTServer>();
 
@@ -56,6 +72,13 @@ export default function App() {
   const [dfuMode, setDfuMode] = useBoolean(false)
 
   const [log, setLog] = useState("")
+
+  // Checkbox state : notify data
+  const [notifyDataCheckbox, setNotifyDataCheckbox] = useBoolean(false)
+
+  // Checkbox state : live mode
+  const [liveModeCheckbox, setLiveModeCheckbox] = useBoolean(false)
+
 
 
 
@@ -95,6 +118,7 @@ export default function App() {
       isDeviceInfoLoadedToggle.on()
 
     } catch (error) {
+      setLog(`Error connecting... Please try again : ${error}`)
       console.error("Error initializing BLE:", error);
     }
   };
@@ -134,7 +158,7 @@ export default function App() {
       const service = await server?.getPrimaryService(serviceUUID);
       const characteristic = await service?.getCharacteristic(characUUID);
       await characteristic?.writeValue(data);
-      console.log(`Wrote data to ${characUUID}`);
+      console.log(`Wrote ${data} to ${characUUID}`);
     } catch (error) {
       console.error(`Error writing ${characUUID}:`, error);
     }
@@ -146,23 +170,56 @@ export default function App() {
     await writeCharacteristic(BLE_SERVICE_UUID.dataCollection, CHARACTERISTICS.measurementTrigger, Uint8Array.of(0x01));
   };
 
+
+
   // Notification for Measurement Counter
-  const enableMeasurementNotifications = async () => {
+  const enableMeasCounterNotifications = async () => {
     try {
       const service = await server?.getPrimaryService(BLE_SERVICE_UUID.dataCollection);
       const characteristic = await service?.getCharacteristic(CHARACTERISTICS.measurementCounter);
 
       await characteristic?.startNotifications();
-      characteristic?.addEventListener("characteristicvaluechanged", handleCharacteristicValueChanged);
+      characteristic?.addEventListener("characteristicvaluechanged", handleMeasCountChange);
       console.log("Notifications enabled for measurement counter");
     } catch (error) {
       console.error("Error enabling notifications:", error);
     }
   };
 
-  // TODO : Meas counter should not be hard coded here
-  const handleCharacteristicValueChanged = (event: any) => {
-    const value = event.target.value.getUint16(0);
+
+  /**
+   * 
+   * @param service 
+   * @param charac 
+   * @param handle Handle is a the function taht will be called when the value of the charac change
+   */
+  const enableNotification = async (service: BluetoothServiceUUID, charac: BluetoothCharacteristicUUID, handle: (this: BluetoothRemoteGATTCharacteristic, ev: Event) => any) => {
+    try {
+      const _service = await server?.getPrimaryService(service);
+      const characteristic = await _service?.getCharacteristic(charac);
+
+      await characteristic?.startNotifications();
+      characteristic?.addEventListener("characteristicvaluechanged", handle);
+    } catch (error) {
+      console.error("Error enabling notifications:", error);
+    }
+  };
+
+  const stopNotification = async (service: BluetoothServiceUUID, charac: BluetoothCharacteristicUUID) => {
+    try {
+      const _service = await server?.getPrimaryService(service);
+      const characteristic = await _service?.getCharacteristic(charac);
+
+      await characteristic?.stopNotifications();
+    } catch (error) {
+      console.error("Error stopping notifications:", error);
+    }
+  };
+
+
+  const handleMeasCountChange = (event: any) => {
+    const ev_value: DataView = event.target.value;
+    const value = ev_value.getFloat32(0)
     setMeasCounter(value);
     console.log("Received Notification (meas counter):", value);
   };
@@ -185,32 +242,63 @@ export default function App() {
     if (service) {
       const buffer = await readCharacteristicFromService(service, CHARACTERISTICS.lastData, "buffer")
       if (buffer) {
-
-
-        const new_state = { temp16: buffer.getInt16(0) / 100, sensor32: 0, unit: "", measurand: "" }
-
-        const model = deviceInfo.modelNumber[0]
-        switch (model) {
-          case ("7"): // Temperature
-            new_state.sensor32 = buffer.getInt32(2) / 100
-            new_state.measurand = "Temperature"
-            new_state.unit = "°C"
-            break;
-          case ("6"): // Pressure
-            new_state.sensor32 = buffer.getFloat32(2)
-            new_state.measurand = "Pressure"
-            new_state.unit = "Bar"
-            break;
-          case ("5"): // Humidity
-            new_state.sensor32 = buffer.getInt32(2) / 100
-            new_state.measurand = "Humidity"
-            new_state.unit = "%"
-            break;
-        }
-
+        const new_state = parseLastData(buffer)
         setLastMeasurement(new_state)
       }
     }
+  }
+
+  function parseLastData(buffer: DataView): LastMeasurementType {
+    const new_state = { temp16: buffer.getInt16(0) / 100, sensor32: 0, unit: "", measurand: "" }
+
+    const model = deviceInfo.modelNumber[0]
+    switch (model) {
+      case ("7"): // Temperature
+        new_state.sensor32 = buffer.getInt32(2) / 100
+        new_state.measurand = "Temperature"
+        new_state.unit = "°C"
+        break;
+      case ("6"): // Pressure
+        new_state.sensor32 = buffer.getFloat32(2)
+        new_state.measurand = "Pressure"
+        new_state.unit = "Bar"
+        break;
+      case ("5"): // Humidity
+        new_state.sensor32 = buffer.getInt32(2) / 100
+        new_state.measurand = "Humidity"
+        new_state.unit = "%"
+        break;
+    }
+
+    return new_state;
+  }
+
+  async function handleCheckboxLiveMode(event: React.ChangeEvent<HTMLInputElement>) {
+    setLiveModeCheckbox.toggle();
+
+    if (event.target.checked)
+      await writeCharacteristic(BLE_SERVICE_UUID.liveMode, CHARACTERISTICS.liveModeConfig, Uint8Array.of(0x01));
+    else
+      await writeCharacteristic(BLE_SERVICE_UUID.liveMode, CHARACTERISTICS.liveModeConfig, Uint8Array.of(0x00));
+
+  }
+
+
+  function handleCheckboxNotifyData(event: React.ChangeEvent<HTMLInputElement>): void {
+    setNotifyDataCheckbox.toggle();
+    if (event.target.checked)
+      enableNotification(BLE_SERVICE_UUID.lastData, CHARACTERISTICS.lastData, handleLastDataChange)
+    else {
+      stopNotification(BLE_SERVICE_UUID.lastData, CHARACTERISTICS.lastData)
+    }
+  }
+
+
+  const [incomingData, setIncomingData] = useState<LastMeasurementType>(); // Store the incoming data
+
+  const handleLastDataChange = (event: any) => {
+    const value = parseLastData(event.target.value)
+    setIncomingData(value);
   }
 
 
@@ -234,7 +322,6 @@ export default function App() {
 
     }
   }
-
 
   return (
     <>
@@ -313,15 +400,19 @@ export default function App() {
                 </Stack>
               </CardBody>
             </Card>
+            <PlotSensor incomingData={incomingData}></PlotSensor>
 
             <HStack>
-
+              <Checkbox isChecked={liveModeCheckbox} onChange={handleCheckboxLiveMode}>Live Mode</Checkbox>
               <Button onClick={triggerMeasurement}>Trigger Measurement</Button>
-              <Button onClick={readLastData}>Read Measurement</Button>
+              <Button onClick={readLastData}>Read Last Data</Button>
+              <Checkbox isChecked={notifyDataCheckbox} onChange={handleCheckboxNotifyData}>Notify Data</Checkbox>
               <Text> Temperature: {lastMeasurement.temp16} °C , {lastMeasurement.measurand}: {lastMeasurement.sensor32} {lastMeasurement.unit} </Text>
             </HStack>
 
-            <Button onClick={enableMeasurementNotifications}>Notify Measurement Counter</Button>
+
+
+            <Button onClick={enableMeasCounterNotifications}>Notify Measurement Counter</Button>
             <Text>Measurement Counter: {measCounter}</Text>
 
             <HStack>

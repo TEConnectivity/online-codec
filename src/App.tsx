@@ -8,10 +8,10 @@ import {
   Route,
   Routes
 } from "react-router-dom"
-import BLE from "./components/BLE"
+import BLE from "./components/BLE/BLE"
+import DFUlib from "./components/BLE/DFU/DFUlib"
 import Characteristics from "./components/Characteristics"
 import Decoder from "./components/Decoder"
-import DFUlib from "./components/DFU/DFUlib"
 import Download from "./components/Download"
 import Encoder from "./components/Encoder"
 import Footer from "./components/Footer"
