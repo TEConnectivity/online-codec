@@ -1,6 +1,7 @@
-import { Box, Button, Card, CardBody, CardHeader, Checkbox, Flex, Heading, HStack, Skeleton, Stack, StackDivider, Text, useBoolean, VStack } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, CardHeader, Checkbox, Flex, Heading, HStack, Skeleton, Stack, StackDivider, Text, useBoolean, useDisclosure, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 
+import ModalCustom from "../ModalCustom";
 import DFUlib from "./DFU/DFUlib";
 import PlotSensor from "./PlotSensor";
 
@@ -10,6 +11,8 @@ const BLE_SERVICE_UUID = {
   dataCollection: "b614b300-b14a-40a6-b63f-0166f7868e13",
   lastData: "b614da00-b14a-40a6-b63f-0166f7868e13",
   liveMode: "b614b400-b14a-40a6-b63f-0166f7868e13",
+  dataLog: "b614db00-b14a-40a6-b63f-0166f7868e13",
+
   deviceInformation: "device_information",
 
   secureDFUService: "0000fe59-0000-1000-8000-00805f9b34fb"
@@ -26,6 +29,10 @@ const CHARACTERISTICS = {
   measurementInterval: "b614b302-b14a-40a6-b63f-0166f7868e13",
   measurementCounter: "b614b301-b14a-40a6-b63f-0166f7868e13",
   lastData: "b614da01-b14a-40a6-b63f-0166f7868e13",
+
+  // Datalog
+  datalogData: "b614db01-b14a-40a6-b63f-0166f7868e13",
+  datalogStat: "b614db02-b14a-40a6-b63f-0166f7868e13",
 
   // Live Mode
   liveModeInterv: "b614b401-b14a-40a6-b63f-0166f7868e13",
@@ -79,7 +86,10 @@ export default function App() {
   // Checkbox state : live mode
   const [liveModeCheckbox, setLiveModeCheckbox] = useBoolean(false)
 
-
+  // Control modal opening
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [modalCompletion, setModalCompletion] = useState(0);
+  const [modalTitle, setModalTitle] = useState("Wait...")
 
 
   const initBLE = async () => {
@@ -153,9 +163,19 @@ export default function App() {
   };
 
   // General Function to Write Characteristics
-  const writeCharacteristic = async (serviceUUID: string, characUUID: string, data: Uint8Array) => {
+  const writeCharacteristicString = async (serviceUUID: string, characUUID: string, data: Uint8Array) => {
     try {
       const service = await server?.getPrimaryService(serviceUUID);
+      if (service)
+        writeCharacteristic(service, characUUID, data)
+    } catch (error) {
+      console.error(`Error getting service ${serviceUUID}:`, error);
+    }
+  };
+
+  // General Function to Write Characteristics
+  const writeCharacteristic = async (service: BluetoothRemoteGATTService, characUUID: string, data: Uint8Array) => {
+    try {
       const characteristic = await service?.getCharacteristic(characUUID);
       await characteristic?.writeValue(data);
       console.log(`Wrote ${data} to ${characUUID}`);
@@ -165,9 +185,10 @@ export default function App() {
   };
 
 
+
   // Trigger Measurement
   const triggerMeasurement = async () => {
-    await writeCharacteristic(BLE_SERVICE_UUID.dataCollection, CHARACTERISTICS.measurementTrigger, Uint8Array.of(0x01));
+    await writeCharacteristicString(BLE_SERVICE_UUID.dataCollection, CHARACTERISTICS.measurementTrigger, Uint8Array.of(0x01));
   };
 
 
@@ -277,9 +298,9 @@ export default function App() {
     setLiveModeCheckbox.toggle();
 
     if (event.target.checked)
-      await writeCharacteristic(BLE_SERVICE_UUID.liveMode, CHARACTERISTICS.liveModeConfig, Uint8Array.of(0x01));
+      await writeCharacteristicString(BLE_SERVICE_UUID.liveMode, CHARACTERISTICS.liveModeConfig, Uint8Array.of(0x01));
     else
-      await writeCharacteristic(BLE_SERVICE_UUID.liveMode, CHARACTERISTICS.liveModeConfig, Uint8Array.of(0x00));
+      await writeCharacteristicString(BLE_SERVICE_UUID.liveMode, CHARACTERISTICS.liveModeConfig, Uint8Array.of(0x00));
 
   }
 
@@ -302,6 +323,106 @@ export default function App() {
   }
 
 
+  const downloadCSV = (data: number[], filename: string = "file.csv") => {
+    const csvContent = data.map(value => value.toString()).join("\n"); // Convert to CSV format
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const readDatalogData = async () => {
+
+    setModalTitle("Datalog export")
+    onOpen()
+
+
+    const service = await server?.getPrimaryService(BLE_SERVICE_UUID.dataLog);
+    if (!service) return;
+
+    const characteristic = await service?.getCharacteristic(CHARACTERISTICS.datalogData);
+    if (!characteristic) return;
+
+    await characteristic.startNotifications();
+
+    let fullDataBuffer: number[] = [];
+
+    const waitForNotification = (expectedIndex: number): Promise<number[]> => {
+      return new Promise((resolve) => {
+        const handler = (event: any) => {
+          const ev_value: DataView = event.target.value;
+          // console.log(ev_value)
+
+          const receivedIndex = ev_value.getUint16(1, false); // Little-endian
+          const length = ev_value.getUint8(3);
+
+          if (receivedIndex !== expectedIndex) {
+            console.warn(`Unexpected index ${receivedIndex} (expected ${expectedIndex}), ignoring...`);
+            return;
+          }
+
+          let receivedValues: number[] = [];
+          for (let i = 4; i < 4 + length * 4; i += 4) {
+            receivedValues.push(ev_value.getFloat32(i, false));
+          }
+
+          // console.log(`Received ${length} values from index ${receivedIndex}`);
+          characteristic.removeEventListener("characteristicvaluechanged", handler);
+          resolve(receivedValues);
+        };
+
+        characteristic.addEventListener("characteristicvaluechanged", handler);
+      });
+    };
+
+    const startTime = performance.now();
+
+
+    for (let index = 0; index < 4096; index += 40) {
+      // console.log(`Requesting data from index ${index}`);
+
+      // Construct the request packet (0x01XXXX28)
+      const requestPacket = new Uint8Array(4);
+      requestPacket[0] = 0x01;                      // Command
+      requestPacket[1] = (index >> 8) & 0xff;   // Lower byte of index
+      requestPacket[2] = index & 0xff;    // Upper byte of index
+      requestPacket[3] = 0x28;                      // 40 values requested
+
+
+      await writeCharacteristic(service, CHARACTERISTICS.datalogData, requestPacket);
+
+      // Wait for response and store it
+      const chunk = await waitForNotification(index);
+      fullDataBuffer.push(...chunk);
+
+      setModalCompletion(Math.round(index * 100 / 4096));
+
+      // In case datalog is not full
+      if (chunk.length === 0) {
+        setModalCompletion(100);
+        continue
+      }
+    }
+
+    // Stop timing
+    const endTime = performance.now();
+    const elapsedTime = (endTime - startTime) / 1000; // Convert to seconds
+
+    console.log("Finished fetching all data:", fullDataBuffer);
+    console.log(`Total time taken: ${elapsedTime.toFixed(2)} seconds`);
+
+    downloadCSV(fullDataBuffer, "datalog.csv");
+
+
+  };
+
+
   // DFU
 
   async function switchDFU() {
@@ -313,7 +434,7 @@ export default function App() {
       await characteristic?.startNotifications();
 
       // Then write 0x01 in the charac
-      await writeCharacteristic(BLE_SERVICE_UUID.secureDFUService, CHARACTERISTICS.DFUButtonlessWithoutBonds, Uint8Array.of(0x01));
+      await writeCharacteristicString(BLE_SERVICE_UUID.secureDFUService, CHARACTERISTICS.DFUButtonlessWithoutBonds, Uint8Array.of(0x01));
 
       // The sensor should now reboot ! Disconnecting UI 
       sensorConnectedToggle.off()
@@ -412,8 +533,15 @@ export default function App() {
 
 
 
-            <Button onClick={enableMeasCounterNotifications}>Notify Measurement Counter</Button>
-            <Text>Measurement Counter: {measCounter}</Text>
+            <HStack>
+              <Button onClick={enableMeasCounterNotifications}>Notify Measurement Counter</Button>
+              <Text>Measurement Counter: {measCounter}</Text>
+            </HStack>
+
+            <HStack>
+              <Button onClick={readDatalogData}>Full Datalog Export</Button>
+              <Text>Progression: {measCounter}</Text>
+            </HStack>
 
             <HStack>
               <Button onClick={readMeasInterv}>Read</Button>
@@ -424,6 +552,8 @@ export default function App() {
               <Button onClick={switchDFU}><Text>Switch into DFU mode. Sensor is going to <b>reboot</b>.</Text></Button>
             </HStack>
           </VStack>
+
+          <ModalCustom title={modalTitle} isOpen={isOpen} onClose={onClose} completion={modalCompletion} forbidBGClick></ModalCustom>
 
         </> :
 
