@@ -9,6 +9,7 @@ import {
   Routes
 } from "react-router-dom"
 import BLE from "./components/BLE/BLE"
+import BLE_MP from "./components/BLE/BLE_MP"
 import DFUlib from "./components/BLE/DFU/DFUlib"
 import Characteristics from "./components/Characteristics"
 import Decoder from "./components/Decoder"
@@ -33,6 +34,7 @@ export const App = () => (
           <Route path="/products" element={<Products />} />
           <Route path="/characteristics" element={<Characteristics />} />
           <Route path="/download" element={<Download />} />
+          <Route path="/ble-tool-mp" element={<BLE_MP />} />
           <Route path="/ble-tool" element={<BLE />} />
           <Route path="/ble-tool/dfu" element={<DFUlib />} />
         </Routes>

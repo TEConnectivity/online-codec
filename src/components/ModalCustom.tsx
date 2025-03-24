@@ -7,7 +7,7 @@ interface myProps {
     onClose: () => void;
     text?: string,
     title: string,
-    forbidBGClick: boolean
+    forbidBGClick?: boolean
     completion: number
 }
 

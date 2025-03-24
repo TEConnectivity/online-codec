@@ -24,6 +24,7 @@
     "@typescript-eslint/parser": "^7.0.0",
     "crc-32": "^1.2.2",
     "eslint-plugin-unused-imports": "^3.1.0",
+    "fft.js": "^4.0.4",
     "framer-motion": "^11.0.25",
     "jszip": "^3.10.1",
     "plotly.js": "^3.0.0",
