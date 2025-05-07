@@ -23,14 +23,14 @@ export default function App() {
 
           <Tr >
             <Td>8931N </Td>
-            <Td>4.0.x (<i>Multipoint</i>)</Td>
-            <Td>✅ (Beta)</Td>
+            <Td>4.1.x (<i>Multipoint</i>)</Td>
+            <Td>✅</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >
             <Td>8911N</Td>
-            <Td>4.0.x (<i>Multipoint</i>)</Td>
-            <Td>✅ (Beta)</Td>
+            <Td>4.1.x (<i>Multipoint</i>)</Td>
+            <Td>✅</Td>
             <Td>✅</Td>
           </Tr>
           <Tr >

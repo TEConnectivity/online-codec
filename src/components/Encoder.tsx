@@ -21,7 +21,7 @@ export default function App() {
       </ChakraLink> )</Text>
       <Select value={sensorFamily} onChange={(ev) => setSensorFamily(ev.target.value as SensorFamily)} >
         <option value={SensorFamily.Singlepoint}>59XXN / 69XXN / 79XXN - SinglePoint (3.5.0)</option>
-        <option value={SensorFamily.Multipoint}>8911N / 8931N - Multipoint (4.0.x)</option>
+        <option value={SensorFamily.Multipoint}>8911N / 8931N - Multipoint (4.1.x)</option>
       </Select>
 
       <CharacSelector family={sensorFamily} />
