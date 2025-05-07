@@ -20,16 +20,13 @@ export default function App(props: Props) {
 
 
   useEffect(() => {
-    console.log(props.payload.type)
     try {
       if (props.payload.type === CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI) {
         const array_encoded = encode_multi_frame(props.charac, props.operation, props.payload, props.family);
-        console.log(array_encoded)
         setMultiFrameResult(array_encoded);
       }
       else {
         const encodedFrame = encode(props.charac, props.operation, props.payload, props.family);
-        console.log(encodedFrame)
         setMultiFrameResult([encodedFrame]);
       }
       setDecodingError(false);
@@ -47,11 +44,11 @@ export default function App(props: Props) {
         <VStack width="100%" my="1rem" justifyContent="flex-start">
           <Text>Send the following frame in this order:</Text>
           {multiFrameResult?.map((frame, index) =>
-            <Input isReadOnly value={frame.toHexString() || ''}></Input>
+            <Input key={index} isReadOnly value={frame.toHexString() || ''}></Input>
           )}
           <Text>Base64:</Text>
           {multiFrameResult?.map((frame, index) =>
-            <Input isReadOnly value={frame.toBase64() || ''}></Input>
+            <Input key={index} isReadOnly value={frame.toBase64() || ''}></Input>
           )}
           <Text>LoRa fPort :</Text>
           <Input isReadOnly value={multiFrameResult?.at(0)?.fport}></Input>
