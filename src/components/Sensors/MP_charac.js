@@ -210,28 +210,20 @@ export const MP_Charac = [
         "type": ""
     },
     {
+        "uuid": "DA03",
+        "charac_name": "Raw Time data",
+        "payload_size": "4",
+        "ble": "r",
+        "lora": "wr",
+        "type": "raw_time_data"
+    },
+    {
         "uuid": "B402",
         "charac_name": "Live mode configuration",
         "payload_size": "1",
         "ble": "r|w",
         "lora": "",
         "type": ""
-    },
-    {
-        "uuid": "DB01",
-        "charac_name": "Datalog data",
-        "payload_size": "4",
-        "ble": "r|w|n",
-        "lora": "wr",
-        "type": "datalog_data"
-    },
-    {
-        "uuid": "DB02",
-        "charac_name": "Datalog analysis request",
-        "payload_size": "3",
-        "ble": "r|w|n",
-        "lora": "wr",
-        "type": "datalog_analysis"
     },
     {
         "uuid": "F810",

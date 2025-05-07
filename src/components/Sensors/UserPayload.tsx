@@ -19,6 +19,7 @@ import WindowingFunction from "./Downlinkconfiguration/Multpoint/WindowingFuncti
 import DatalogAnalysis from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogAnalysis";
 import DatalogData from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogData";
 import Threshold from "./Downlinkconfiguration/SinglePoint/Threshold/Threshold";
+import RawTimeData from "./Downlinkconfiguration/Multpoint/RawTimeData";
 
 
 
@@ -35,8 +36,6 @@ interface Props {
  * Produce <input> block depending on the type of charac (threshold, measurement interval, etc...)
  */
 export default function App(props: Props) {
-
-  console.log(props)
 
   const [userPayload, setUserPayload] = useState<UserPayloadType | MultiFramePayload>({} as UserPayloadType)
 
@@ -106,6 +105,9 @@ export default function App(props: Props) {
       break;
     case (CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI):
       returnComponent = <MultipointThreshold onInputChange={handleInputChange} />
+      break;
+    case (CharacTypeMP.RAW_TIME_DATA):
+      returnComponent = <RawTimeData onInputChange={handleInputChange} />
       break;
     default:
       returnComponent = <Text>Sorry the configuration of this characheristic is not yet supported</Text>
