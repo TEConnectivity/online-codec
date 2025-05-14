@@ -468,7 +468,7 @@ export default function App() {
       requestPacket[3] = 0x28;            // 40 values requested
 
 
-      const MAX_RETRIES = 3; // Set a limit on the number of retries if needed
+      const MAX_RETRIES = 10; // Set a limit on the number of retries if needed
 
       const writeAndWaitForResponse = async (service: BluetoothRemoteGATTService, requestPacket: Uint8Array, index: number) => {
         let retries = 0;
@@ -481,7 +481,7 @@ export default function App() {
             // Wait for the response or timeout after 5 seconds
             const chunk = await Promise.race([
               waitForNotification(index), // The actual function that waits for the response
-              new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout waiting for chunk')), 1000)), // Timeout after 5 seconds
+              new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Timeout waiting for chunk')), 2000)), // Timeout after seconds
             ]);
 
             // If we reach here, it means chunk was resolved before the timeout
