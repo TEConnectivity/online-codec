@@ -1,9 +1,14 @@
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, ListItem, Select, Skeleton, Stack, StackDivider, Text, UnorderedList, useBoolean, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Input, ListItem, Select, Skeleton, Stack, StackDivider, Text, UnorderedList, useBoolean, useDisclosure, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import ModalCustom from "../ModalCustom";
 import DFUlib from "./DFU/DFUlib";
 import PlotFFT from "./PlotFFT";
+import { displayUint8ArrayAsHex, hexStringToUint8Array } from "@te-connectivity/iot-codec";
+
+// Have to us the deprecated crypto-js module to works with AES-ECB encryption
+import CryptoJS from "crypto-js";
+
 
 
 const BW_MODE_BANDWIDTH: Record<number, number> = {
@@ -54,6 +59,7 @@ const BLE_SERVICE_UUID = {
 
   vibration: "b614fa00-b14a-40a6-b63f-0166f7868e13",
 
+  factory: "b614ee00-b14a-40a6-b63f-0166f7868e13",
 
   deviceInformation: "device_information",
 
@@ -89,6 +95,9 @@ const CHARACTERISTICS = {
   liveModeInterv: "b614b401-b14a-40a6-b63f-0166f7868e13",
   liveModeConfig: "b614b402-b14a-40a6-b63f-0166f7868e13",
 
+  // Factory Activation
+  factoryActivation: "b614eeff-b14a-40a6-b63f-0166f7868e13",
+
   // DFU
   DFUControlPoint: "8ec90001-f315-4f60-9fb8-838830daea50",
   DFUPacket: "8ec90002-f315-4f60-9fb8-838830daea50",
@@ -122,6 +131,8 @@ export default function App() {
     modelNumber: "",
     serialNumber: ""
   });
+
+  const [factoryKey, setFactorKey] = useState("")
 
   const [measCounter, setMeasCounter] = useState(0);
   const [measInterval, setMeasInterval] = useState({ h: 0, m: 0, s: 0 });
@@ -549,6 +560,62 @@ export default function App() {
     }
   }
 
+
+
+  // CRYPTO-JS HELPERS
+
+  function uint8ArrayToWordArray(u8Array: Uint8Array): CryptoJS.lib.WordArray {
+    const words = [];
+    for (let i = 0; i < u8Array.length; i += 4) {
+      words.push(
+        (u8Array[i] << 24) |
+        (u8Array[i + 1] << 16) |
+        (u8Array[i + 2] << 8) |
+        (u8Array[i + 3])
+      );
+    }
+    return CryptoJS.lib.WordArray.create(words, u8Array.length);
+  }
+
+  function wordArrayToUint8Array(wordArray: CryptoJS.lib.WordArray): Uint8Array {
+    const { words, sigBytes } = wordArray;
+    const u8Array = new Uint8Array(sigBytes);
+    for (let i = 0; i < sigBytes; i++) {
+      u8Array[i] = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+    }
+    return u8Array;
+  }
+
+
+  async function switchFactoryMode() {
+    const service = await server?.getPrimaryService(BLE_SERVICE_UUID.factory)
+    if (service) {
+
+      let buffer = await readCharacteristicFromService(service, CHARACTERISTICS.factoryActivation, "buffer")
+      if (buffer) {
+
+        const challengeBytes = uint8ArrayToWordArray(new Uint8Array(buffer.buffer, buffer.byteOffset, 16));
+
+        const rawKey = CryptoJS.enc.Hex.parse(factoryKey);
+
+
+        const encrypted = CryptoJS.AES.encrypt(challengeBytes, rawKey, {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.NoPadding, // or Pkcs7 if required
+        });
+
+        console.log("challenge", displayUint8ArrayAsHex(wordArrayToUint8Array(challengeBytes)))
+        console.log(wordArrayToUint8Array(encrypted.ciphertext))
+
+        await writeCharacteristic(service, CHARACTERISTICS.factoryActivation, wordArrayToUint8Array(encrypted.ciphertext))
+
+        // Sensor should be disconnected now
+
+      }
+
+    }
+  }
+
   return (
     <>
 
@@ -557,7 +624,7 @@ export default function App() {
         // Sensor in normal state
         <>
           <Flex flexDirection="column">
-            <Text mt="10px">This BLE tool is in beta-state and <Text as="b">should not be used</Text> in production. Support Singlepoint firmware, tested on 3.5.0.</Text>
+            <Text mt="10px">This BLE tool is in beta-state and <Text as="b">should not be used</Text> in production. Support Multipoint firmware, tested on 4.1.</Text>
             <Button onClick={initBLE}>Scan nearby devices (take up to 30s)</Button>
             <Text>{log}</Text>
 
@@ -675,6 +742,11 @@ export default function App() {
             <HStack>
               <Button onClick={readMeasInterv}>Read</Button>
               <Text>Measurement Interval: {measInterval.h}:{measInterval.m}:{measInterval.s}</Text>
+            </HStack>
+
+            <HStack>
+              <Input value={factoryKey} onChange={(ev) => setFactorKey(ev.target.value)}></Input>
+              <Button onClick={switchFactoryMode}><Text>Switch into factory mode</Text></Button>
             </HStack>
 
             <HStack>
