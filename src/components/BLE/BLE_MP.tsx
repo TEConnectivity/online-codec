@@ -4,7 +4,7 @@ import { useState } from "react";
 import ModalCustom from "../ModalCustom";
 import DFUlib from "./DFU/DFUlib";
 import PlotFFT from "./PlotFFT";
-import { displayUint8ArrayAsHex, hexStringToUint8Array } from "@te-connectivity/iot-codec";
+import { displayUint8ArrayAsHex } from "@te-connectivity/iot-codec";
 
 // Have to us the deprecated crypto-js module to works with AES-ECB encryption
 import CryptoJS from "crypto-js";
