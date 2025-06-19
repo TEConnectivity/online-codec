@@ -62,6 +62,17 @@ export default function App({ onInputChange }: ChildrenProps) {
         return newState;
       })
     }
+    else if (source === "peak_count") {
+      setInputValues(prevValues => {
+        const newState = { ...prevValues, peak_count: parsedInput };
+        onInputChange(newState);
+        return newState;
+      })
+    }
+
+
+
+
   };
 
 
@@ -111,6 +122,18 @@ export default function App({ onInputChange }: ChildrenProps) {
             </NumberInput>
           </InputGroup>
 
+          <InputGroup>
+            <InputLeftAddon>
+              Number of peak
+            </InputLeftAddon>
+            <NumberInput precision={0} min={1} max={64} value={inputValues.peak_count} onChange={(value) => handleChange("peak_count", value)}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </InputGroup>
 
         </HStack>
       </Stack>
