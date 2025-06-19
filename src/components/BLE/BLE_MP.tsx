@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Input, ListItem, Select, Skeleton, Stack, StackDivider, Text, UnorderedList, useBoolean, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, HStack, Input, ListItem, Radio, RadioGroup, Select, Skeleton, Stack, StackDivider, Text, UnorderedList, useBoolean, useDisclosure, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import ModalCustom from "../ModalCustom";
@@ -133,6 +133,8 @@ export default function App() {
   });
 
   const [factoryKey, setFactorKey] = useState("")
+
+  const [axisSelected, setAxis] = useState<string>("Y")
 
   const [measCounter, setMeasCounter] = useState(0);
   const [measInterval, setMeasInterval] = useState({ h: 0, m: 0, s: 0 });
@@ -473,7 +475,17 @@ export default function App() {
 
       // Construct the request packet (0x01XXXX28)
       const requestPacket = new Uint8Array(4);
-      requestPacket[0] = 0x01;                      // Command
+      switch (axisSelected) {
+        case ("X"):
+          requestPacket[0] = 0x04;
+          break;
+        case ("Y"):
+          requestPacket[0] = 0x02;
+          break;
+        case ("Z"):
+          requestPacket[0] = 0x01;
+          break;
+      }
       requestPacket[1] = (index >> 8) & 0xff;   // Lower byte of index
       requestPacket[2] = index & 0xff;    // Upper byte of index
       requestPacket[3] = 0x28;            // 40 values requested
@@ -731,6 +743,13 @@ export default function App() {
 
             <HStack>
               <Button onClick={readRawData}>Read all raw data</Button>
+              <RadioGroup onChange={setAxis} value={axisSelected}>
+                <Stack direction='row'>
+                  <Radio value="X" >X</Radio>
+                  <Radio value="Y">Y</Radio>
+                  <Radio value="Z">Z</Radio>
+                </Stack>
+              </RadioGroup>
             </HStack>
 
 
