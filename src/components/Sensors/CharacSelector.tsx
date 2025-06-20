@@ -130,7 +130,7 @@ export default function App(props: AppProps) {
 
 
       {/* If WRITE or WRITE+READ is selected : generate userPayload component frame */}
-      {(charac && (operation === Operation.WRITE || operation === Operation.READWRITE)) && <UserPayload family={props.family} charac={charac} operation={operation} />}
+      {(charac && (operation === Operation.WRITE || operation === Operation.WRITEREAD)) && <UserPayload family={props.family} charac={charac} operation={operation} />}
 
 
     </VStack>

@@ -23,6 +23,7 @@ export default function App({ onInputChange }: ChildrenProps) {
     lora_mode: "on_measurement",
     level: 0,
     type: CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI,
+    multi_frame: true
   });
 
 

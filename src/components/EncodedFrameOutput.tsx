@@ -22,11 +22,11 @@ export default function App(props: Props) {
   useEffect(() => {
     try {
       if (props.payload.type === CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI) {
-        const array_encoded = encode_multi_frame(props.charac, props.operation, props.payload, props.family);
+        const array_encoded = encode_multi_frame(props.charac, props.operation, props.payload,);
         setMultiFrameResult(array_encoded);
       }
       else {
-        const encodedFrame = encode(props.charac, props.operation, props.payload, props.family);
+        const encodedFrame = encode(props.charac, props.operation, props.payload);
         setMultiFrameResult([encodedFrame]);
       }
       setDecodingError(false);
