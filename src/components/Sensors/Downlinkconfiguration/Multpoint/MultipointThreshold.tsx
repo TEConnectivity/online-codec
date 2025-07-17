@@ -103,8 +103,8 @@ export default function App({ onInputChange }: ChildrenProps) {
           </NumberInput>
           <Text>is</Text>
           <Select value={inputValues.direction} onChange={(ev) => handleChange("direction", ev.target.value)} >
-            <option value={"above"}>Above (data32 {">"} above)</option>
-            <option value={"below"}>Below (data32 {"<"} above)</option>
+            <option value={"above"}>Above (data32 {">"} Threshold Level)</option>
+            <option value={"below"}>Below (data32 {"<"} Threshold Level)</option>
           </Select>
         </HStack>
         {inputValues.set_lora_mode &&

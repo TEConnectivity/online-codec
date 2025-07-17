@@ -110,7 +110,7 @@ export const MP_Charac = [
         "charac_name": "Device status",
         "payload_size": "1",
         "ble": "r|n",
-        "lora": "r",
+        "lora": "",
         "type": ""
     },
     {
