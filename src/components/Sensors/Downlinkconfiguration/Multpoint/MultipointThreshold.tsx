@@ -16,7 +16,7 @@ export default function App({ onInputChange }: ChildrenProps) {
     set_ble_mode: false,
     set_lora_mode: false,
     direction: "above",
-    enabled: true,
+    enabled: false,
     event_flag: false,
     id_data: Multipoint_Threshold_ID_DATA.X_Analysis_window_RMS_of_window_1,
     ble_mode: "burst+periodic",
