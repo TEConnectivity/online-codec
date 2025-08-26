@@ -214,7 +214,7 @@ export const MP_Charac = [
         "charac_name": "Raw Time data",
         "payload_size": "4",
         "ble": "r",
-        "lora": "wr",
+        "lora": "",
         "type": "raw_time_data"
     },
     {
