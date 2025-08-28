@@ -18,6 +18,8 @@ import Encoder from "./components/Encoder"
 import Footer from "./components/Footer"
 import NavBar from "./components/NavBar"
 import Products from "./components/Products"
+import FactorySwitcher from "./components/BLE/FactoryMode/FactorySwitcher"
+import RegionSwitcher from "./components/BLE/FactoryMode/RegionSwitcher"
 
 
 
@@ -37,6 +39,10 @@ export const App = () => (
           <Route path="/ble-tool-mp" element={<BLE_MP />} />
           <Route path="/ble-tool" element={<BLE />} />
           <Route path="/ble-tool/dfu" element={<DFUlib />} />
+          <Route path="/ble-tool/region-change" element={<FactorySwitcher />} />
+
+          {/* This one is only used for debug purpose if a sensor is suspected to be already be in factory mode */}
+          <Route path="/ble-tool/region-change/factory" element={<RegionSwitcher />} />
         </Routes>
       </Container>
       <Footer />
