@@ -1,5 +1,5 @@
 import { InputGroup, InputLeftAddon, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
-import { CharacTypeMP, RawTimeDataType } from "@te-connectivity/iot-codec";
+import { CharacTypeVib4_1_4, RawTimeDataType } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
@@ -17,7 +17,7 @@ export default function App({ onInputChange }: ChildrenProps) {
     axis_selected: "z",
     index: 0,
     length: 1,
-    type: CharacTypeMP.RAW_TIME_DATA,
+    type: CharacTypeVib4_1_4.RAW_TIME_DATA,
   });
 
 

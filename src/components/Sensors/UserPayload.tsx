@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { CharacTypeCommon, CharacTypeMP, CharacTypeSP, Characteristic, MultiFramePayload, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
+import { CharacTypeCommon, CharacTypeMP, CharacTypeSP, CharacTypeVib4_1_4, Characteristic, MultiFramePayload, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 import BLEActivation from "./Downlinkconfiguration/Common/BLEActivation";
@@ -19,7 +19,7 @@ import WindowingFunction from "./Downlinkconfiguration/Multpoint/WindowingFuncti
 import DatalogAnalysis from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogAnalysis";
 import DatalogData from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogData";
 import Threshold from "./Downlinkconfiguration/SinglePoint/Threshold/Threshold";
-
+import RawTimeData from "./Downlinkconfiguration/Multpoint/RawTimeData";
 
 
 interface Props {
@@ -105,10 +105,9 @@ export default function App(props: Props) {
     case (CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI):
       returnComponent = <MultipointThreshold onInputChange={handleInputChange} />
       break;
-    // Raw data is not accessible from LoRaWAN in 4.1.3 !
-    // case (CharacTypeMP.RAW_TIME_DATA):
-    //   returnComponent = <RawTimeData onInputChange={handleInputChange} />
-    //   break;
+    case (CharacTypeVib4_1_4.RAW_TIME_DATA):
+      returnComponent = <RawTimeData onInputChange={handleInputChange} />
+      break;
     default:
       returnComponent = <Text>Sorry the configuration of this characheristic is not yet supported</Text>
   }
