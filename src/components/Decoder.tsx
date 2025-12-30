@@ -98,7 +98,7 @@ export default function App() {
       }
     } catch {
       setIsInputError.on()
-      setErrorMessage("Invalid Base64 String")
+      setErrorMessage("Decoding error, contact TE")
     }
 
   }
