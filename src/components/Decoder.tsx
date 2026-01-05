@@ -82,11 +82,9 @@ export default function App() {
     try {
       var base64_decoded_input = _isBase64 ? base64ToHex(_input) : _input
       if (checkInputLength(base64_decoded_input, _isBase64)) {
-        let decoded_frame
         try {
-          decoded_frame = te_decoder(hexStringToUint8Array(base64_decoded_input), parseInt(_fPort))
           setIsInputError.off()
-          setDecodedFrame(decoded_frame)
+          setDecodedFrame(te_decoder(hexStringToUint8Array(base64_decoded_input), parseInt(_fPort)))
         } catch {
           setIsInputError.on()
           setErrorMessage("Decoding error, contact TE")
