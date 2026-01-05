@@ -1,3 +1,4 @@
 [submodule "src/submodules/ttn-payload-formater"]
 	path = src/submodules/ttn-payload-formater
 	url = https://github.com/TEConnectivity/payload-decoder
+	branch = master
