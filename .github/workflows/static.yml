@@ -33,6 +33,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+      - name: Pull latest submodule changes
+        run: |
+          git submodule update --remote --recursive
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:

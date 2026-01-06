@@ -43,6 +43,7 @@
     "webbluetooth": "^3.2.1"
   },
   "scripts": {
+    "preinstall": "git submodule update --init --recursive --remote --merge",
     "start": "react-scripts start",
     "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test",
