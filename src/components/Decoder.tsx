@@ -85,7 +85,8 @@ export default function App() {
         try {
           setIsInputError.off()
           setDecodedFrame(te_decoder(hexStringToUint8Array(base64_decoded_input), parseInt(_fPort)))
-        } catch {
+        } catch (error) {
+          console.error("Error during te_decoder call:", error)
           setIsInputError.on()
           setErrorMessage("Decoding error, contact TE")
         }
