@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { CharacTypeCommon, CharacTypeMP, CharacTypeSP, CharacTypeVib4_1_4, Characteristic, MultiFramePayload, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
+import { V3_5, V4_1, V4_1_4, V5_2, Characteristic, MultiFramePayload, Operation, DeviceModel, UserPayloadType } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 import BLEActivation from "./Downlinkconfiguration/Common/BLEActivation";
@@ -20,12 +20,14 @@ import DatalogAnalysis from "./Downlinkconfiguration/SinglePoint/Threshold/Datal
 import DatalogData from "./Downlinkconfiguration/SinglePoint/Threshold/DatalogData";
 import Threshold from "./Downlinkconfiguration/SinglePoint/Threshold/Threshold";
 import RawTimeData from "./Downlinkconfiguration/Multpoint/RawTimeData";
+import ProtocolVersion from "./Downlinkconfiguration/5.2/ProtocolVersion";
+import NetworkLostConfig from "./Downlinkconfiguration/5.2/NetworkLostConfig";
 
 
 interface Props {
   charac: Characteristic,
   operation: Operation,
-  family: SensorFamily
+  family: DeviceModel
 }
 
 
@@ -50,64 +52,81 @@ export default function App(props: Props) {
   // Output is completlty different, depending on type of charac : 
   switch (props.charac.type) {
 
-    case (CharacTypeCommon.THRESHOLD):
+    case (V3_5.CharacTypeSP_3_5_0.THRESHOLD):
       returnComponent = <Threshold onInputChange={handleInputChange} />
       break;
-    case (CharacTypeCommon.BLE_ACTIVATION):
+    case (V3_5.CharacTypeCommon_3_5_0.BLE_ACTIVATION):
       returnComponent = <BLEActivation onInputChange={handleInputChange} />
       break;
-    case (CharacTypeCommon.BATTERY):
+    case (V3_5.CharacTypeCommon_3_5_0.BATTERY):
       returnComponent = <Battery onInputChange={handleInputChange} />
       break;
-    case (CharacTypeCommon.KEEPALIVE):
+    case (V3_5.CharacTypeCommon_3_5_0.KEEPALIVE):
       returnComponent = <Keepalive onInputChange={handleInputChange} />
       break;
-    case (CharacTypeCommon.LORA_MODE):
+    case (V3_5.CharacTypeCommon_3_5_0.LORA_MODE):
       returnComponent = <LoRaMode onInputChange={handleInputChange} />
       break;
-    case (CharacTypeCommon.LORA_PERCENTAGE):
+    case (V3_5.CharacTypeCommon_3_5_0.LORA_PERCENTAGE):
       returnComponent = <LoRaConfirmation onInputChange={handleInputChange} />
       break;
 
     // SINGLEPOINT
-    case (CharacTypeSP.DATALOG_DATA):
+    case (V3_5.CharacTypeSP_3_5_0.DATALOG_DATA):
       returnComponent = <DatalogData onInputChange={handleInputChange} />
       break;
-    case (CharacTypeSP.DATALOG_ANALYSIS):
+    case (V3_5.CharacTypeSP_3_5_0.DATALOG_ANALYSIS):
       returnComponent = <DatalogAnalysis onInputChange={handleInputChange} />
       break;
-    case (CharacTypeSP.MEAS_INTERVAL):
+    case (V3_5.CharacTypeSP_3_5_0.MEAS_INTERVAL):
       returnComponent = <MeasurementInterval onInputChange={handleInputChange} />
       break;
 
-    // MULTIPOINT
-    case (CharacTypeMP.AXIS_SELECTION):
+    // Vibration  4.1.3
+    case (V4_1.CharacTypeMP_4_1_3.AXIS_SELECTION):
       returnComponent = <AxisSelection onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.PRESET_SELECTION):
+    case (V4_1.CharacTypeMP_4_1_3.PRESET_SELECTION):
       returnComponent = <PresetSelection onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.WINDOWING_FUNCTION):
+    case (V4_1.CharacTypeMP_4_1_3.WINDOWING_FUNCTION):
       returnComponent = <WindowingFunction onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.PRESET_CONFIGURATION):
+    case (V4_1.CharacTypeMP_4_1_3.PRESET_CONFIGURATION):
       returnComponent = <PresetConfiguration onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.PRESET_REQUEST):
+    case (V4_1.CharacTypeMP_4_1_3.PRESET_REQUEST):
       returnComponent = <PresetRequest onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.WINDOW_CONFIGURATION):
+    case (V4_1.CharacTypeMP_4_1_3.WINDOW_CONFIGURATION):
       returnComponent = <WindowConfiguration onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.WINDOW_REQUEST):
+    case (V4_1.CharacTypeMP_4_1_3.WINDOW_REQUEST):
       returnComponent = <WindowRequest onInputChange={handleInputChange} />
       break;
-    case (CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI):
+    case (V4_1.CharacTypeMP_4_1_3.MULTIPOINT_THRESHOLD_MULTI):
       returnComponent = <MultipointThreshold onInputChange={handleInputChange} />
       break;
-    case (CharacTypeVib4_1_4.RAW_TIME_DATA):
+
+    // Vibration  4.1.4
+
+    case (V4_1_4.CharacTypeVib4_1_4.RAW_TIME_DATA):
       returnComponent = <RawTimeData onInputChange={handleInputChange} />
       break;
+
+    // Gen 5.2
+
+    case (V5_2.CharacTypeGen_5_2.PROTOCOL_VERSION):
+      returnComponent = <ProtocolVersion onInputChange={handleInputChange} />
+      break;
+
+    case (V5_2.CharacTypeGen_5_2.NETWORK_LOST_CONFIG):
+      returnComponent = <NetworkLostConfig onInputChange={handleInputChange} />
+      break;
+
+
+
+
     default:
       returnComponent = <Text>Sorry the configuration of this characheristic is not yet supported</Text>
   }

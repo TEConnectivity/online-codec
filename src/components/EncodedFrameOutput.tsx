@@ -1,11 +1,11 @@
 import { Input, Text, VStack } from "@chakra-ui/react";
-import { Characteristic, CharacTypeMP, encode, encode_multi_frame, Frame, MultiFramePayload, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
+import { Characteristic, V4_1, encode, encode_multi_frame, Frame, MultiFramePayload, Operation, DeviceModel, UserPayloadType } from "@te-connectivity/iot-codec";
 import { useEffect, useState } from "react";
 
 interface Props {
   charac: Characteristic,
   operation: Operation,
-  family: SensorFamily,
+  family: DeviceModel,
   payload: UserPayloadType | MultiFramePayload
 }
 
@@ -21,7 +21,7 @@ export default function App(props: Props) {
 
   useEffect(() => {
     try {
-      if (props.payload.type === CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI) {
+      if (props.payload.type === V4_1.CharacTypeMP_4_1_3.MULTIPOINT_THRESHOLD_MULTI) {
         const array_encoded = encode_multi_frame(props.charac, props.operation, props.payload,);
         setMultiFrameResult(array_encoded);
       }

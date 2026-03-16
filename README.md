@@ -38,8 +38,8 @@ Please update yours sensors to these firmware for the application to support the
 
 | Sensor        | Encoding | Decoding |
 | ------------- | -------- | -------- |
-| 8931  (4.0.1) | ❌        | ✅        |
-| 8911  (4.0.1) | ❌        | ✅        |
+| 8931  (4.1)   | ✅        | ✅        |
+| 8911  (4.1)   | ✅        | ✅        |
 | 59XX  (3.5.0) | ✅        | ✅        |
 | 69XX  (3.5.0) | ✅        | ✅        |
 | 79XX  (3.5.0) | ✅        | ✅        |

@@ -1,11 +1,11 @@
 import { Checkbox, HStack, Select, Text, useBoolean } from "@chakra-ui/react";
-import { CharacTypeMP, PresetSelectionType } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 import { ChangeEvent, useState } from "react";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: PresetSelectionType) => void;
+  onInputChange: (data: V4_1.PresetSelectionType) => void;
 }
 
 
@@ -20,16 +20,16 @@ export default function App({ onInputChange }: ChildrenProps) {
   function handlePresetChange(event: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>) {
     console.log(event.target.value)
 
-    var newState: PresetSelectionType
+    var newState: V4_1.PresetSelectionType
     if (event.target.name === "slotOne") {
       setSlotOne(event.target.value);
-      newState = { main_preset: parseInt(event.target.value), type: CharacTypeMP.PRESET_SELECTION }
+      newState = { main_preset: parseInt(event.target.value), type: V4_1.CharacTypeMP_4_1_3.PRESET_SELECTION }
       if (rotating)
         newState.secondary_preset = parseInt(slotTwo);
     }
     else if (event.target.name === "slotTwo") {
       setSlotTwo(event.target.value)
-      newState = { main_preset: parseInt(slotOne), secondary_preset: parseInt(event.target.value), type: CharacTypeMP.PRESET_SELECTION }
+      newState = { main_preset: parseInt(slotOne), secondary_preset: parseInt(event.target.value), type: V4_1.CharacTypeMP_4_1_3.PRESET_SELECTION }
     }
     else {
       // Rotating
@@ -37,9 +37,9 @@ export default function App({ onInputChange }: ChildrenProps) {
 
       const target = event.target as HTMLInputElement
       if (target.checked)
-        newState = { main_preset: parseInt(slotOne), secondary_preset: parseInt(slotTwo), type: CharacTypeMP.PRESET_SELECTION }
+        newState = { main_preset: parseInt(slotOne), secondary_preset: parseInt(slotTwo), type: V4_1.CharacTypeMP_4_1_3.PRESET_SELECTION }
       else
-        newState = { main_preset: parseInt(slotOne), type: CharacTypeMP.PRESET_SELECTION }
+        newState = { main_preset: parseInt(slotOne), type: V4_1.CharacTypeMP_4_1_3.PRESET_SELECTION }
 
     }
 

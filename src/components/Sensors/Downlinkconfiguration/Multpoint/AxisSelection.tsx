@@ -1,10 +1,10 @@
 import { Checkbox, CheckboxGroup, Stack, Text, Tooltip } from "@chakra-ui/react";
-import { AxisSelectionType, CharacTypeMP } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: AxisSelectionType) => void;
+  onInputChange: (data: V4_1.AxisSelectionType) => void;
 }
 
 
@@ -14,7 +14,7 @@ export default function App({ onInputChange }: ChildrenProps) {
   // Fonction pour gérer le changement de chaque case à cocher
   function handleCheckBoxChange(inputValues: ("x" | "y" | "z")[]) {
 
-    var newState: AxisSelectionType = { axis_selected: inputValues, type: CharacTypeMP.AXIS_SELECTION }
+    var newState: V4_1.AxisSelectionType = { axis_selected: inputValues, type: V4_1.CharacTypeMP_4_1_3.AXIS_SELECTION }
     onInputChange(newState)
 
   };

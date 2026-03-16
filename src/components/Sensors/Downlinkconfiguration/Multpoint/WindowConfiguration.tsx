@@ -1,24 +1,24 @@
 import { Checkbox, HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Stack, Text } from "@chakra-ui/react";
-import { CharacTypeMP, WindowConfigurationType } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 
 
 interface ChildrenProps {
-  onInputChange: (data: WindowConfigurationType) => void;
+  onInputChange: (data: V4_1.WindowConfigurationType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<WindowConfigurationType>({
+  const [inputValues, setInputValues] = useState<V4_1.WindowConfigurationType>({
     enable: true,
     frequency_max: 128,
     frequency_min: 0,
     peak_count: 3,
     preset_id: 0,
     window_id: 1,
-    type: CharacTypeMP.WINDOW_CONFIGURATION,
+    type: V4_1.CharacTypeMP_4_1_3.WINDOW_CONFIGURATION,
   });
 
 

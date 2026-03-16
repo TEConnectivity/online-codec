@@ -1,25 +1,25 @@
 import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Text } from "@chakra-ui/react";
-import { CharacTypeMP, PresetConfigurationType } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
 
 interface ChildrenProps {
-  onInputChange: (data: PresetConfigurationType) => void;
+  onInputChange: (data: V4_1.PresetConfigurationType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<PresetConfigurationType>({
+  const [inputValues, setInputValues] = useState<V4_1.PresetConfigurationType>({
     preset_id: 0,
     frame_format: 0,
     bandwidth_mode: 0,
     meas_interval_hour: 0,
     meas_interval_minute: 1,
     meas_interval_second: 0,
-    type: CharacTypeMP.PRESET_CONFIGURATION,
+    type: V4_1.CharacTypeMP_4_1_3.PRESET_CONFIGURATION,
   });
 
 

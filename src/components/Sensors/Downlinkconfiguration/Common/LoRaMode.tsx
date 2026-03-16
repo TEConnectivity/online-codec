@@ -1,28 +1,28 @@
 import { Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
-import { CharacTypeCommon, LoramodeType } from "@te-connectivity/iot-codec";
+import { V3_5 } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: LoramodeType) => void;
+  onInputChange: (data: V3_5.LoramodeType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<LoramodeType>({
-    mode: 0,
-    type: CharacTypeCommon.LORA_MODE
+  const [inputValues, setInputValues] = useState<V3_5.LoramodeType>({
+    mode: "on_measurement",
+    type: V3_5.CharacTypeCommon_3_5_0.LORA_MODE
   });
 
 
-  function handleModeChange(mode: string) {
+  function handleModeChange(mode: "on_measurement" | "silent") {
 
     setInputValues(prevState => {
-      const newState = { ...prevState, mode: clamp(0, 65535, parseInt(mode)) };
+      const newState = { ...prevState, mode: mode };
       onInputChange(newState);
       return newState;
     });
@@ -36,8 +36,8 @@ export default function App({ onInputChange }: ChildrenProps) {
 
       <RadioGroup onChange={handleModeChange} value={inputValues.mode.toString()} >
         <Stack direction={['column', 'row']}>
-          <Radio value='0'>On measurement (nominal mode)</Radio>
-          <Radio value='1'>Silent mode, no LoRa communication except if threshold is configured</Radio>
+          <Radio value='on_measurement'>On measurement (nominal mode)</Radio>
+          <Radio value='silent'>Silent mode, no LoRa communication except if threshold is configured</Radio>
         </Stack>
       </RadioGroup>
 

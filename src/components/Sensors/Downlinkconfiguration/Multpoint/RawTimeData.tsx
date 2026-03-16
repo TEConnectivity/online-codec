@@ -1,23 +1,23 @@
 import { InputGroup, InputLeftAddon, Link, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
-import { CharacTypeVib4_1_4, RawTimeDataType } from "@te-connectivity/iot-codec";
+import { V4_1_4 } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: RawTimeDataType) => void;
+  onInputChange: (data: V4_1_4.RawTimeDataType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<RawTimeDataType>({
+  const [inputValues, setInputValues] = useState<V4_1_4.RawTimeDataType>({
     axis_selected: "z",
     index: 0,
     length: 1,
-    type: CharacTypeVib4_1_4.RAW_TIME_DATA,
+    type: V4_1_4.CharacTypeVib4_1_4.RAW_TIME_DATA,
   });
 
 
@@ -27,7 +27,7 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   // Callback function, when the user edit the form, the payload is automatically regenerated
 
-  function handleAxisChange(axis_selected: ("x"|"y"|"z")) {
+  function handleAxisChange(axis_selected: ("x" | "y" | "z")) {
     setInputValues(prevState => {
       const newState = { ...prevState, axis_selected: axis_selected };
       onInputChange(newState);
@@ -59,11 +59,11 @@ export default function App({ onInputChange }: ChildrenProps) {
 
   return (
     <VStack >
-      
-      <Text>This command allow to request the raw time signal buffer. Only the last measurement can be requested. 
+
+      <Text>This command allow to request the raw time signal buffer. Only the last measurement can be requested.
       </Text>
       <Text>
-      A measurement is composed of 4096 samples. The size of the requested chunk should be configured depending on the network quality.
+        A measurement is composed of 4096 samples. The size of the requested chunk should be configured depending on the network quality.
       </Text>
 
       <Text>Select axis : </Text>
@@ -104,9 +104,9 @@ export default function App({ onInputChange }: ChildrenProps) {
           </NumberInput>
         </InputGroup>
 
-    </Stack>
+      </Stack>
 
-    <Text>The above request will generates an answer that is {inputValues.length*2 + 4} bytes long. Check with an <Link color='teal.500' href="https://avbentem.github.io/airtime-calculator/ttn/eu868/0" isExternal>airtime calculator</Link> to see if you will face fragmentation.</Text>
+      <Text>The above request will generates an answer that is {inputValues.length * 2 + 4} bytes long. Check with an <Link color='teal.500' href="https://avbentem.github.io/airtime-calculator/ttn/eu868/0" isExternal>airtime calculator</Link> to see if you will face fragmentation.</Text>
 
 
     </VStack>

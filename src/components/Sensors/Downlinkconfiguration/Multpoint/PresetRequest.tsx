@@ -1,21 +1,21 @@
 import { HStack, Select, Text } from "@chakra-ui/react";
-import { CharacTypeMP, PresetRequestType } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 import { preset_list } from "./PresetSelection";
 
 
 interface ChildrenProps {
-  onInputChange: (data: PresetRequestType) => void;
+  onInputChange: (data: V4_1.PresetRequestType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<PresetRequestType>({
+  const [inputValues, setInputValues] = useState<V4_1.PresetRequestType>({
     preset_id: 0,
-    type: CharacTypeMP.PRESET_REQUEST,
+    type: V4_1.CharacTypeMP_4_1_3.PRESET_REQUEST,
   });
 
 

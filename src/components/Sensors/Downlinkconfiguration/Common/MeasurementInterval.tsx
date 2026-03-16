@@ -1,20 +1,20 @@
 import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper } from "@chakra-ui/react";
-import { CharacTypeSP, MeasIntervalType } from "@te-connectivity/iot-codec";
+import { V3_5 } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 
 interface ChildrenProps {
-  onInputChange: (data: MeasIntervalType) => void;
+  onInputChange: (data: V3_5.MeasIntervalType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<MeasIntervalType>({
+  const [inputValues, setInputValues] = useState<V3_5.MeasIntervalType>({
     hour: '0',
     minute: '0',
     second: '0',
-    type: CharacTypeSP.MEAS_INTERVAL
+    type: V3_5.CharacTypeSP_3_5_0.MEAS_INTERVAL
   });
 
 

@@ -1,10 +1,10 @@
 import { HStack, Select, Text } from "@chakra-ui/react";
-import { CharacTypeMP, WindowingFunctionType } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: WindowingFunctionType) => void;
+  onInputChange: (data: V4_1.WindowingFunctionType) => void;
 }
 
 
@@ -14,7 +14,7 @@ export default function App({ onInputChange }: ChildrenProps) {
   // Fonction pour gérer le changement de chaque case à cocher
   function handleChange(value: "hann" | "flattop" | "none") {
 
-    var newState: WindowingFunctionType = { function: value, type: CharacTypeMP.WINDOWING_FUNCTION }
+    var newState: V4_1.WindowingFunctionType = { function: value, type: V4_1.CharacTypeMP_4_1_3.WINDOWING_FUNCTION }
     onInputChange(newState)
 
   };

@@ -1,8 +1,8 @@
 import { Checkbox, Link, ListItem, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, UnorderedList, useBoolean } from "@chakra-ui/react";
-import { BLEActivationType, CharacTypeCommon } from "@te-connectivity/iot-codec";
+import { V3_5 } from "@te-connectivity/iot-codec";
 
 interface ChildrenProps {
-  onInputChange: (data: BLEActivationType) => void;
+  onInputChange: (data: V3_5.BLEActivationType) => void;
 }
 
 
@@ -14,7 +14,7 @@ export default function App({ onInputChange }: ChildrenProps) {
   // Callback function, when the user edit the form, the payload is automatically regenerated
   function handleCheckBoxChange(checked: boolean) {
     bleActivatedToggle.toggle()
-    onInputChange({ checked: checked, type: CharacTypeCommon.BLE_ACTIVATION })
+    onInputChange({ checked: checked, type: V3_5.CharacTypeCommon_3_5_0.BLE_ACTIVATION })
   }
 
 

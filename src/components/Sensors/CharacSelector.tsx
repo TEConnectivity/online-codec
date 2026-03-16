@@ -8,10 +8,9 @@ import {
 import * as React from "react";
 
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { Characteristic, Operation, SensorFamily, UserPayloadType } from "@te-connectivity/iot-codec";
+import { Characteristic, FirmwareVersion, Operation, DeviceModel, UserPayloadType, V3_5, V4_1, V4_1_4, V5_2, FirmwareSupportMap } from "@te-connectivity/iot-codec";
 import EncodedFrameOutput from "../EncodedFrameOutput";
-import { MP_Charac } from "./MP_charac";
-import { SP_Charac } from "./SP_charac";
+
 import UserPayload from "./UserPayload";
 
 
@@ -23,7 +22,8 @@ function getArrayOperation(charac: Characteristic) {
 }
 
 interface AppProps {
-  family: SensorFamily;
+  family: DeviceModel;
+  fwVersion: FirmwareVersion;
 }
 
 
@@ -35,14 +35,25 @@ export default function App(props: AppProps) {
   // Will hold the charac object
   const [charac, setCharac] = React.useState<Characteristic>()
 
-  // Ternary should be switched to switch/case if more sensor family than SP/MP is added
-  const CHARAC_DATABASE = props.family === SensorFamily.Singlepoint ? SP_Charac : MP_Charac;
+  let CHARAC_DATABASE: Characteristic[] = [];
 
 
-  // Clear charac when sensor family change
+  const db = (FirmwareSupportMap as unknown as Record<
+    FirmwareVersion,
+    Partial<Record<DeviceModel, Record<string, Characteristic>>>
+  >)[props.fwVersion]?.[props.family];
+
+
+  if (db) {
+    CHARAC_DATABASE = Object.values(db);
+  }
+
+
+  // Clear charac when sensor family or firmware version changes
   React.useEffect(() => {
     setCharac(undefined);
-  }, [props.family])
+    setCharacOperation("");
+  }, [props.family, props.fwVersion])
 
 
 
@@ -53,14 +64,7 @@ export default function App(props: AppProps) {
 
     console.log(charac)
 
-    switch (props.family) {
-      case (SensorFamily.Singlepoint):
-        setCharac(SP_Charac.find(charac => charac.charac_name === charac_name) as Characteristic);
-        break;
-      case (SensorFamily.Multipoint):
-        setCharac(MP_Charac.find(charac => charac.charac_name === charac_name) as Characteristic);
-        break;
-    }
+    setCharac(CHARAC_DATABASE.find(charac => charac.charac_name === charac_name) as Characteristic);
 
 
   }
@@ -105,7 +109,7 @@ export default function App(props: AppProps) {
       {/* Select characteristic */}
       <FormControl>
         <FormLabel>Downlink Command</FormLabel>
-        <AutoComplete key={props.family} restoreOnBlurIfEmpty={false} suggestWhenEmpty onChange={handleCharacChange} openOnFocus>
+        <AutoComplete key={`${props.family}-${props.fwVersion}`} restoreOnBlurIfEmpty={false} suggestWhenEmpty onChange={handleCharacChange} openOnFocus>
           <AutoCompleteInput variant="filled" />
           <AutoCompleteList>
             {CHARAC_DATABASE.map((charac, cid) => (

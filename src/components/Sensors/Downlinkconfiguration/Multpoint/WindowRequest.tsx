@@ -1,5 +1,5 @@
 import { HStack, Select, Text } from "@chakra-ui/react";
-import { CharacTypeMP, WindowRequestType } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";
 import { preset_list } from "./PresetSelection";
@@ -7,17 +7,17 @@ import { window_list } from "./WindowConfiguration";
 
 
 interface ChildrenProps {
-  onInputChange: (data: WindowRequestType) => void;
+  onInputChange: (data: V4_1.WindowRequestType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<WindowRequestType>({
+  const [inputValues, setInputValues] = useState<V4_1.WindowRequestType>({
     window_id: 1,
     preset_id: 0,
-    type: CharacTypeMP.WINDOW_REQUEST,
+    type: V4_1.CharacTypeMP_4_1_3.WINDOW_REQUEST,
   });
 
 

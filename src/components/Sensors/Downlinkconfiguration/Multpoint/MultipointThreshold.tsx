@@ -1,28 +1,28 @@
 import { Checkbox, CheckboxGroup, HStack, NumberInput, NumberInputField, Select, Stack, Text, Tooltip } from "@chakra-ui/react";
-import { CharacTypeMP, Multipoint_Threshold_ID_DATA, MultipointThresholdHL } from "@te-connectivity/iot-codec";
+import { V4_1 } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 
 
 interface ChildrenProps {
-  onInputChange: (data: MultipointThresholdHL) => void;
+  onInputChange: (data: V4_1.MultipointThresholdHL) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<MultipointThresholdHL>({
+  const [inputValues, setInputValues] = useState<V4_1.MultipointThresholdHL>({
     auto_clear: false,
     set_ble_mode: false,
     set_lora_mode: false,
     direction: "above",
     enabled: false,
     event_flag: false,
-    id_data: Multipoint_Threshold_ID_DATA.X_Analysis_window_RMS_of_window_1,
+    id_data: V4_1.Multipoint_Threshold_ID_DATA.X_Analysis_window_RMS_of_window_1,
     ble_mode: "burst+periodic",
     lora_mode: "on_measurement",
     level: 0,
-    type: CharacTypeMP.MULTIPOINT_THRESHOLD_MULTI,
+    type: V4_1.CharacTypeMP_4_1_3.MULTIPOINT_THRESHOLD_MULTI,
     multi_frame: true
   });
 
@@ -75,7 +75,7 @@ export default function App({ onInputChange }: ChildrenProps) {
       <Stack >
 
         <Select value={inputValues.id_data} onChange={(ev) => handleChange("id_data", ev.target.value)} >
-          {Object.entries(Multipoint_Threshold_ID_DATA)
+          {Object.entries(V4_1.Multipoint_Threshold_ID_DATA)
             .filter(([key]) => isNaN(Number(key))) // Filter out reverse-mapping entries
             .map(([key, value]) => (
               <option key={value} value={value}>

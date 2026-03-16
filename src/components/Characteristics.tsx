@@ -13,7 +13,7 @@ import {
   Tr
 } from '@chakra-ui/react';
 
-import { SP_Charac } from './Sensors/SP_charac';
+import { V3_5 } from "@te-connectivity/iot-codec";
 
 
 export default function App() {
@@ -22,7 +22,7 @@ export default function App() {
   return (
     <Flex flexDirection={'column'}>
 
-      <Text p={"10px"} fontSize="19px" textAlign={"center"}>List given for illustratives purposes. Please refer to detailed spectech associated with each sensor for the full list.</Text>
+      <Text p={"10px"} fontSize="19px" textAlign={"center"}>List given for illustratives purposes for SP 3.5.x. Please refer to detailed spectech associated with each sensor for the full list.</Text>
 
       <Divider />
       <TableContainer>
@@ -39,7 +39,7 @@ export default function App() {
           </Thead>
           <Tbody>
 
-            {SP_Charac.map((charac, cid) => (
+            {Object.values(V3_5.Charac_DB_common).map((charac, cid) => (
               <Tr key={cid}>
                 <Td>{charac.uuid}</Td>
                 <Td>{charac.charac_name}</Td>
