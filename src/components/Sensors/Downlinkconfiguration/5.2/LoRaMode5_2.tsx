@@ -1,24 +1,24 @@
 import { Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
-import { V3_5 } from "@te-connectivity/iot-codec";
+import { V5_2 } from "@te-connectivity/iot-codec";
 import { useState } from "react";
 
 
 
 interface ChildrenProps {
-  onInputChange: (data: V3_5.LoramodeType) => void;
+  onInputChange: (data: V5_2.LoramodeType) => void;
 }
 
 
 export default function App({ onInputChange }: ChildrenProps) {
 
 
-  const [inputValues, setInputValues] = useState<V3_5.LoramodeType>({
+  const [inputValues, setInputValues] = useState<V5_2.LoramodeType>({
     mode: "on_measurement",
-    type: V3_5.CharacTypeCommon_3_5_0.LORA_MODE
+    type: V5_2.CharacTypeSP_5_2.LORA_MODE
   });
 
 
-  function handleModeChange(mode: "on_measurement" | "silent") {
+  function handleModeChange(mode: "on_measurement" | "silent" | "merged") {
 
     setInputValues(prevState => {
       const newState = { ...prevState, mode: mode };
@@ -37,6 +37,7 @@ export default function App({ onInputChange }: ChildrenProps) {
         <Stack direction={['column', 'row']}>
           <Radio value='on_measurement'>On measurement (nominal mode)</Radio>
           <Radio value='silent'>Silent mode, no LoRa communication except if threshold is configured</Radio>
+          <Radio value='merged'>Merged measurement mode, <Text color={"red"}>Only works if Protocol version 2 is enabled</Text></Radio>
         </Stack>
       </RadioGroup>
 

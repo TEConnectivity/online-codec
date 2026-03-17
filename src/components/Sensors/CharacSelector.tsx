@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { Characteristic, FirmwareVersion, Operation, DeviceModel, UserPayloadType, V3_5, V4_1, V4_1_4, V5_2, FirmwareSupportMap } from "@te-connectivity/iot-codec";
+import { Characteristic, FirmwareVersion, Operation, DeviceModel, UserPayloadType, FirmwareSupportMap } from "@te-connectivity/iot-codec";
 import EncodedFrameOutput from "../EncodedFrameOutput";
 
 import UserPayload from "./UserPayload";

@@ -1,4 +1,4 @@
-import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Text } from "@chakra-ui/react";
+import { HStack, InputGroup, InputLeftAddon, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text } from "@chakra-ui/react";
 import { V5_2 } from "@te-connectivity/iot-codec";
 import { clamp } from "framer-motion";
 import { useState } from "react";

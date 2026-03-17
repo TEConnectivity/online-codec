@@ -22,6 +22,8 @@ import Threshold from "./Downlinkconfiguration/SinglePoint/Threshold/Threshold";
 import RawTimeData from "./Downlinkconfiguration/Multpoint/RawTimeData";
 import ProtocolVersion from "./Downlinkconfiguration/5.2/ProtocolVersion";
 import NetworkLostConfig from "./Downlinkconfiguration/5.2/NetworkLostConfig";
+import LoRaMode5_2 from "./Downlinkconfiguration/5.2/LoRaMode5_2"
+import MergedMeasurement from "./Downlinkconfiguration/5.2/MergedMeasurement";
 
 
 interface Props {
@@ -123,6 +125,18 @@ export default function App(props: Props) {
     case (V5_2.CharacTypeGen_5_2.NETWORK_LOST_CONFIG):
       returnComponent = <NetworkLostConfig onInputChange={handleInputChange} />
       break;
+
+    // SP 5.2
+
+    case (V5_2.CharacTypeSP_5_2.LORA_MODE):
+      // eslint-disable-next-line 
+      returnComponent = <LoRaMode5_2 onInputChange={handleInputChange} />
+      break;
+
+    case (V5_2.CharacTypeSP_5_2.MERGE_MEASUREMENT):
+      returnComponent = <MergedMeasurement onInputChange={handleInputChange} />
+      break;
+
 
 
 
