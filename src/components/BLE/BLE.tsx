@@ -177,7 +177,7 @@ export default function App() {
   const writeCharacteristic = async (service: BluetoothRemoteGATTService, characUUID: string, data: Uint8Array) => {
     try {
       const characteristic = await service?.getCharacteristic(characUUID);
-      await characteristic?.writeValue(data);
+      await characteristic?.writeValue(data as BufferSource);
       console.log(`Wrote ${data} to ${characUUID}`);
     } catch (error) {
       console.error(`Error writing ${characUUID}:`, error);

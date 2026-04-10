@@ -2,7 +2,9 @@ import { Box, Button, HStack, InputGroup, Progress, Stack, StackDivider, Text, V
 import crc32 from "crc-32";
 import { useState } from "react";
 import SecureDfu from "web-bluetooth-dfu";
-const SecureDfuPackage = require("./firmwarePackage");
+
+import SecureDfuPackage from "./firmwarePackage.esm";
+
 
 type FirmwarePackageType = InstanceType<typeof SecureDfuPackage>;
 

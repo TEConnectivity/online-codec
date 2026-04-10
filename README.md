@@ -36,13 +36,14 @@ This website use the TE Connectivity [iot-codec](https://github.com/TEConnectivi
 
 Please update yours sensors to these firmware for the application to support them.
 
-| Sensor        | Encoding | Decoding |
-| ------------- | -------- | -------- |
-| 8931  (4.1)   | ✅        | ✅        |
-| 8911  (4.1)   | ✅        | ✅        |
-| 59XX  (3.5.0) | ✅        | ✅        |
-| 69XX  (3.5.0) | ✅        | ✅        |
-| 79XX  (3.5.0) | ✅        | ✅        |
+| Sensor             | Encoding | Decoding |
+| ------------------ | -------- | -------- |
+| All sensors  (5.2) | ✅        | ✅        |
+| 8931  (4.1)        | ✅        | ✅        |
+| 8911  (4.1)        | ✅        | ✅        |
+| 59XX  (3.5.0)      | ✅        | ✅        |
+| 69XX  (3.5.0)      | ✅        | ✅        |
+| 79XX  (3.5.0)      | ✅        | ✅        |
 
 
 

@@ -2,7 +2,8 @@ import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPane
 import { base64ToHex, hexStringToUint8Array } from '@te-connectivity/iot-codec';
 import { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { te_decoder } from '../submodules/ttn-payload-formater/TnnJsDecoder/TE_TtnDecoder';
+import { te_decoder } from '../utils/TE_TtnDecoder.esm';
+
 
 export default function App() {
 

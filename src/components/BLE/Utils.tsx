@@ -42,7 +42,7 @@ export const readCharacteristicFromService = async <T extends BLEDataType>(
 export const writeCharacteristic = async (service: BluetoothRemoteGATTService, characUUID: string, data: Uint8Array) => {
     try {
         const characteristic = await service?.getCharacteristic(characUUID);
-        await characteristic?.writeValue(data);
+        await characteristic?.writeValue(data as BufferSource);
         console.log(`Wrote ${data} to ${characUUID}`);
         return true
     } catch (error) {

@@ -37,10 +37,10 @@ jobs:
       - name: Pull latest submodule changes
         run: |
           git submodule update --remote --recursive
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 22
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
       - name: Build
         run: |
           npm install
@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './build'
+          path: './dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

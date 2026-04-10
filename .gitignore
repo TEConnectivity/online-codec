@@ -2,6 +2,10 @@
 
 .vscode/
 
+
+src/utils/TE_TtnDecoder.esm.js
+
+
 # dependencies
 /node_modules
 /.pnp
@@ -12,6 +16,8 @@
 
 # production
 /build
+dist/
+
 
 # misc
 .DS_Store
