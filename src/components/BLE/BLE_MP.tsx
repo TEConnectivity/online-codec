@@ -64,7 +64,10 @@ const BLE_SERVICE_UUID = {
 
   deviceInformation: "device_information",
 
-  secureDFUService: "0000fe59-0000-1000-8000-00805f9b34fb"
+  secureDFUService: "0000fe59-0000-1000-8000-00805f9b34fb",
+
+  // Only starting from ver 5.x
+  frameConfiguration: "b614db00-aa00-40a6-b63f-0166f7868e13"
 
 }
 
@@ -99,6 +102,10 @@ const CHARACTERISTICS = {
   // Factory Activation
   factoryActivation: "b614eeff-b14a-40a6-b63f-0166f7868e13",
 
+  // Frame configuration (starting from 5.x)
+  protocolVersion: "b614eeff-aa01-40a6-b63f-0166f7868e13",
+
+
   // DFU
   DFUControlPoint: "8ec90001-f315-4f60-9fb8-838830daea50",
   DFUPacket: "8ec90002-f315-4f60-9fb8-838830daea50",
@@ -113,23 +120,31 @@ export type PeakType = {
   mag: number;
 };
 
+
 export type LastMeasurementType = {
   temp16: number,
   peak_list: PeakType[]
   velocity: number,
-  p2p: number
+  p2p: number,
+
+  // prot v2
+  window_count: number
+  windows: number[] //list of int, window energy
 }
 
 export default function App() {
 
   const [isDeviceInfoLoaded, isDeviceInfoLoadedToggle] = useBoolean(false)
   const [deviceInfo, setDeviceInfo] = useState({
-    firmwareVersion: "",
+    firmwareVersion: "", // example SW_59XXN_HCC512B_5.1.4
     hardwareRevision: "",
     manufacturer: "",
     modelNumber: "",
     serialNumber: ""
   });
+
+  const [versionInt, setVersionInt] = useState(4)
+  const [protVersion, setProtVer] = useState(1)
 
   const [factoryKey, setFactorKey] = useState("")
 
@@ -143,7 +158,7 @@ export default function App() {
 
 
 
-  const [lastMeasurement, setLastMeasurement] = useState<LastMeasurementType>({ temp16: 0, velocity: 0, p2p: 0, peak_list: [{ freq: 1, mag: 2 }] })
+  const [lastMeasurement, setLastMeasurement] = useState<LastMeasurementType>({ temp16: 0, velocity: 0, p2p: 0, peak_list: [], window_count: 0, windows: [] })
 
 
   const [server, setServer] = useState<BluetoothRemoteGATTServer>();
@@ -196,8 +211,19 @@ export default function App() {
         manufacturer: manufacturer || "N/A",
         modelNumber: modelNumber || "N/A",
       });
+
+      // Read protocol version if version is superior than 4.x
+      const verInt = parseInt(deviceInfo.firmwareVersion.split("_HCC512B_")[1][0])
+      setVersionInt(verInt)
+      if (verInt > 4) {
+        const modelNumber = await readCharacteristicFromService(service, CHARACTERISTICS.modelNumber, "int8");
+        setProtVer(modelNumber)
+      }
+
       setLog("Connected!");
       isDeviceInfoLoadedToggle.on()
+
+
 
     } catch (error) {
       setLog(`Error connecting... Please try again : ${error}`)
@@ -297,7 +323,7 @@ export default function App() {
   function parseLastData(buffer: DataView): LastMeasurementType {
     console.log(buffer)
 
-    const new_state: LastMeasurementType = { temp16: buffer.getInt16(2) / 100, velocity: 0, p2p: 0, peak_list: [] }
+    const new_state: LastMeasurementType = { temp16: buffer.getInt16(2) / 100, velocity: 0, p2p: 0, peak_list: [], window_count: 0, windows: [] }
 
     const bw_mode: number = buffer.getUint8(6)
     console.log("BW MODE " + bw_mode);
@@ -310,13 +336,40 @@ export default function App() {
     new_state.p2p = p2p;
 
     const velocity = buffer.getUint16(11)
-    new_state.velocity = velocity;
 
-    const peak_count = buffer.getUint8(13)
+    let protv2ByteOffset = 0
+    switch (versionInt) {
+
+      case (4):
+        break;
+      case (5):
+        {
+          switch (protVersion) {
+            case (2):
+              new_state.velocity = velocity / 100.0;
+              new_state.window_count = buffer.getUint8(13)
+              protv2ByteOffset += 1 + new_state.window_count * 2 //2 byte per window plus the window count itself
+              for (let window_index = 0; window_index < new_state.window_count; window_index++) {
+                new_state.windows.push(buffer.getUint16(13 + (2 * window_index)))
+              }
+              break;
+
+
+            default:
+              new_state.velocity = velocity;
+          }
+          break;
+        }
+
+    }
+
+
+
+    const peak_count = buffer.getUint8(protv2ByteOffset + 13)
     console.log("Peak count " + peak_count)
 
     /** Les peaks demarrent a partir de cet offset */
-    const offsetStartPeaks = 14
+    const offsetStartPeaks = protv2ByteOffset + 14
 
     // En bit
     const peak_size = 19;
@@ -658,10 +711,19 @@ export default function App() {
 
             <PlotFFT rawData={fftData} bw_mode={selectedBW}></PlotFFT>
             <Box>
+              Protocol Version : {protVersion}
               Peak list :
               <UnorderedList>
                 {lastMeasurement.peak_list.map((peak, cid) => (
                   <ListItem>Freq: {peak.freq} Hz, Mag: {peak.mag.toFixed(4)}</ListItem>
+                ))}
+
+              </UnorderedList>
+
+              Window List (if prot v2) :
+              <UnorderedList>
+                {lastMeasurement.windows.map((window, id) => (
+                  <ListItem>Window {id}: {window}</ListItem>
                 ))}
 
               </UnorderedList>
