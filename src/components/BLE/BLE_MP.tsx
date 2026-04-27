@@ -67,7 +67,7 @@ const BLE_SERVICE_UUID = {
   secureDFUService: "0000fe59-0000-1000-8000-00805f9b34fb",
 
   // Only starting from ver 5.x
-  frameConfiguration: "b614db00-aa00-40a6-b63f-0166f7868e13"
+  frameConfiguration: "b614aa00-b14a-40a6-b63f-0166f7868e13",
 
 }
 
@@ -103,7 +103,7 @@ const CHARACTERISTICS = {
   factoryActivation: "b614eeff-b14a-40a6-b63f-0166f7868e13",
 
   // Frame configuration (starting from 5.x)
-  protocolVersion: "b614eeff-aa01-40a6-b63f-0166f7868e13",
+  protocolVersion: "b614aa01-b14a-40a6-b63f-0166f7868e13",
 
 
   // DFU
@@ -213,11 +213,12 @@ export default function App() {
       });
 
       // Read protocol version if version is superior than 4.x
-      const verInt = parseInt(deviceInfo.firmwareVersion.split("_HCC512B_")[1][0])
+      const verInt = parseInt(firmwareVersion.split("_HCC512B_")[1][0])
       setVersionInt(verInt)
       if (verInt > 4) {
-        const modelNumber = await readCharacteristicFromService(service, CHARACTERISTICS.modelNumber, "int8");
-        setProtVer(modelNumber)
+        const service_frame = await gattServer.getPrimaryService(BLE_SERVICE_UUID.frameConfiguration);
+        const protVersion = await readCharacteristicFromService(service_frame, CHARACTERISTICS.protocolVersion, "int8");
+        setProtVer(protVersion)
       }
 
       setLog("Connected!");
@@ -421,6 +422,34 @@ export default function App() {
     return new_state;
   }
 
+
+  // ---------------- 5.X
+
+  const handleProtVersionChange = (event: any) => {
+    const ev_value: DataView = event.target.value;
+    const value = ev_value.getUint8(0)
+    setProtVer(value);
+    console.log("Received Notification (prot ver):", value);
+  };
+
+
+  const writeProtv1 = async () => {
+    const service = await server?.getPrimaryService(BLE_SERVICE_UUID.frameConfiguration);
+    if (service) {
+      await writeCharacteristic(service, CHARACTERISTICS.protocolVersion, Uint8Array.of(0x01));
+      setProtVer(1)
+    }
+  };
+
+
+  const writeProtv2 = async () => {
+    const service = await server?.getPrimaryService(BLE_SERVICE_UUID.frameConfiguration);
+    if (service) {
+      await writeCharacteristic(service, CHARACTERISTICS.protocolVersion, Uint8Array.of(0x02));
+      setProtVer(2)
+    }
+
+  };
 
 
 
@@ -711,8 +740,10 @@ export default function App() {
 
             <PlotFFT rawData={fftData} bw_mode={selectedBW}></PlotFFT>
             <Box>
-              Protocol Version : {protVersion}
-              Peak list :
+              <Text>
+                Protocol Version : {protVersion} <br></br>
+                Peak list :
+              </Text>
               <UnorderedList>
                 {lastMeasurement.peak_list.map((peak, cid) => (
                   <ListItem>Freq: {peak.freq} Hz, Mag: {peak.mag.toFixed(4)}</ListItem>
@@ -774,6 +805,12 @@ export default function App() {
               <Button onClick={readMeasInterv}>Read</Button>
               <Text>Measurement Interval: {measInterval.h}:{measInterval.m}:{measInterval.s}</Text>
             </HStack>
+            <HStack>
+              <Text>Firmware 5.x Only : </Text>
+              <Button onClick={writeProtv1}>Prot v1</Button>
+              <Button onClick={writeProtv2}>Prot v2</Button>
+            </HStack>
+
 
             <HStack>
               <Input value={factoryKey} onChange={(ev) => setFactorKey(ev.target.value)}></Input>
