@@ -59,3 +59,12 @@ export const dataViewToHex = (dataView: DataView): string => {
     return hex;
 };
 
+// Converts an even-length hex string (e.g. "0A1B") into its raw bytes.
+export const hexToBytes = (hex: string): Uint8Array => {
+    const bytes = new Uint8Array(Math.floor(hex.length / 2));
+    for (let i = 0; i < bytes.length; i++) {
+        bytes[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+    }
+    return bytes;
+};
+
